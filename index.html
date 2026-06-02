@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Calendario y Control Horario GESEMPA-PYME</title>
+
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#0f7a3b" />
+  <meta name="background-color" content="#f5f7f4" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <link rel="icon" href="./assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div id="loginView" class="login-view">
+    <div class="login-card">
+      <img src="./assets/logo-gesempa.png" class="login-logo" alt="GESEMPA-PYME" />
+
+      <h1>Calendario y Control Horario</h1>
+      <p>GESEMPA-PYME</p>
+
+      <input id="authName" type="text" placeholder="Nombre completo" />
+      <input id="authEmail" type="email" placeholder="Email" />
+      <input id="authPassword" type="password" placeholder="Contraseña" />
+
+      <button id="loginBtn" class="primary-btn">Entrar</button>
+      <button id="registerBtn" class="secondary-btn">Crear cuenta</button>
+
+      <div id="authMessage" class="message"></div>
+    </div>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <header class="app-header">
+      <div class="brand">
+        <img src="./assets/logo-gesempa.png" alt="GESEMPA-PYME" />
+        <div>
+          <strong>GESEMPA-PYME</strong>
+          <span>Control horario</span>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="ghost-btn">Salir</button>
+    </header>
+
+    <main class="app-main">
+      <section id="homeTab" class="tab active">
+        <div class="status-card">
+          <div>
+            <p class="eyebrow">Empleado conectado</p>
+            <h2 id="currentEmployeeName">—</h2>
+            <span id="currentRole" class="role-pill">—</span>
+          </div>
+
+          <div id="clockStatus" class="clock-status outside">Fuera</div>
+        </div>
+
+        <div class="clock-card">
+          <button id="clockBtn" class="clock-btn">Fichar entrada</button>
+
+          <div class="today-grid">
+            <div>
+              <span>Entrada</span>
+              <strong id="todayIn">—</strong>
+            </div>
+            <div>
+              <span>Salida</span>
+              <strong id="todayOut">—</strong>
+            </div>
+            <div>
+              <span>Total</span>
+              <strong id="todayTotal">00:00</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-panel">
+          <h3>Incidencias del día</h3>
+          <p id="todayIncident">Sin incidencias detectadas.</p>
+        </div>
+      </section>
+
+      <section id="calendarTab" class="tab">
+        <div class="section-head compact">
+          <div>
+            <h2>Calendario anual</h2>
+            <p>Vista básica preparada para vacaciones, permisos, bajas y festivos.</p>
+          </div>
+
+          <select id="calendarEmployeeSelect"></select>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <section id="recordsTab" class="tab">
+        <div class="section-head">
+          <div>
+            <h2>Fichajes</h2>
+            <p>Historial básico de registros horarios.</p>
+          </div>
+        </div>
+
+        <div id="recordsList" class="records-list"></div>
+      </section>
+
+      <section id="employeesTab" class="tab admin-only">
+        <div class="section-head">
+          <div>
+            <h2>Empleados</h2>
+            <p>Gestión inicial de perfiles de empleados.</p>
+          </div>
+        </div>
+
+        <form id="employeeForm" class="employee-form">
+          <input id="employeeName" type="text" placeholder="Nombre del empleado" required />
+          <input id="employeeEmail" type="email" placeholder="Email de acceso" required />
+
+          <select id="employeeRole">
+            <option value="employee">Empleado</option>
+            <option value="admin">Administrador</option>
+          </select>
+
+          <input id="employeeColor" type="color" value="#0f7a3b" />
+
+          <input id="employeeSchedule" type="text" value="L-V 09:00-14:00 / 16:00-19:00" />
+
+          <button class="primary-btn" type="submit">Guardar empleado</button>
+        </form>
+
+        <div id="employeesList" class="employees-list"></div>
+      </section>
+
+      <section id="settingsTab" class="tab">
+        <div class="section-head">
+          <div>
+            <h2>Ajustes</h2>
+            <p>Configuración básica de empresa y aplicación.</p>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <strong>Empresa</strong>
+          <span>GESEMPA-PYME</span>
+          <strong>Horario base</strong>
+          <span>Lunes a viernes, jornada comercial ordinaria.</span>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button data-tab="homeTab" class="active">Inicio</button>
+      <button data-tab="calendarTab">Calendario</button>
+      <button data-tab="recordsTab">Fichajes</button>
+      <button data-tab="employeesTab" id="employeesNavBtn">Empleados</button>
+      <button data-tab="settingsTab">Ajustes</button>
+    </nav>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
