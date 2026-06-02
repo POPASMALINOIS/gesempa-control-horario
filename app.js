@@ -308,9 +308,15 @@ async function clockOut() {
 }
 
 async function handleClock() {
+  alert("1. Entrando en handleClock");
+
   try {
     els.clockBtn.disabled = true;
     els.clockBtn.textContent = "Procesando...";
+
+    alert("2. Usuario: " + (state.user ? state.user.uid : "NO HAY USUARIO"));
+    alert("3. Empleado: " + (state.employee ? state.employee.name : "NO HAY EMPLEADO"));
+    alert("4. Registro de hoy: " + (state.todayRecord ? state.todayRecord.status : "NO HAY REGISTRO"));
 
     if (!state.user) {
       alert("No hay usuario conectado.");
@@ -323,14 +329,18 @@ async function handleClock() {
     }
 
     if (state.todayRecord?.status === "open") {
+      alert("5. Va a fichar salida");
       await clockOut();
     } else {
+      alert("5. Va a fichar entrada");
       await clockIn();
     }
 
+    alert("6. Fichaje realizado correctamente");
+
   } catch (error) {
     console.error("Error al fichar:", error);
-    alert("Error al fichar: " + error.message);
+    alert("ERROR REAL AL FICHAR: " + error.code + " - " + error.message);
   } finally {
     els.clockBtn.disabled = false;
     await refreshData();
