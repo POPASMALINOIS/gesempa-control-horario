@@ -8,7 +8,6 @@
 
   <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#0f7a3b" />
-  <meta name="background-color" content="#f5f7f4" />
   <meta name="mobile-web-app-capable" content="yes" />
 
   <link rel="icon" href="./assets/icons/icon-192.png" />
@@ -25,11 +24,11 @@
       <h1>Calendario y Control Horario</h1>
       <p>GESEMPA-PYME</p>
 
-      <input id="authEmail" type="email" placeholder="Email" />
-      <input id="authPassword" type="password" placeholder="Contraseña" />
+      <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
+      <input id="authPassword" type="password" placeholder="Contraseña" autocomplete="current-password" />
 
-      <button id="loginBtn" class="primary-btn">Entrar</button>
-      <button id="registerBtn" class="secondary-btn">Crear cuenta</button>
+      <button id="loginBtn" class="primary-btn" type="button">Entrar</button>
+      <button id="registerBtn" class="secondary-btn" type="button">Crear cuenta</button>
 
       <div id="authMessage" class="message"></div>
     </div>
@@ -45,7 +44,7 @@
         </div>
       </div>
 
-      <button id="logoutBtn" class="ghost-btn">Salir</button>
+      <button id="logoutBtn" class="ghost-btn" type="button">Salir</button>
     </header>
 
     <main class="app-main">
@@ -61,7 +60,7 @@
         </div>
 
         <div class="clock-card">
-          <button id="clockBtn" class="clock-btn">Fichar entrada</button>
+          <button id="clockBtn" class="clock-btn" type="button">Fichar entrada</button>
 
           <div class="today-grid">
             <div>
@@ -89,7 +88,7 @@
         <div class="section-head compact">
           <div>
             <h2>Calendario anual</h2>
-            <p>Vista básica preparada para vacaciones, permisos, bajas y festivos.</p>
+            <p>Vista básica inicial.</p>
           </div>
 
           <select id="calendarEmployeeSelect"></select>
@@ -102,7 +101,7 @@
         <div class="section-head">
           <div>
             <h2>Fichajes</h2>
-            <p>Historial básico de registros horarios.</p>
+            <p>Historial básico.</p>
           </div>
         </div>
 
@@ -113,7 +112,7 @@
         <div class="section-head">
           <div>
             <h2>Empleados</h2>
-            <p>Gestión inicial de perfiles de empleados.</p>
+            <p>Gestión inicial de empleados.</p>
           </div>
         </div>
 
@@ -127,7 +126,6 @@
           </select>
 
           <input id="employeeColor" type="color" value="#0f7a3b" />
-
           <input id="employeeSchedule" type="text" value="L-V 09:00-14:00 / 16:00-19:00" />
 
           <button class="primary-btn" type="submit">Guardar empleado</button>
@@ -140,7 +138,7 @@
         <div class="section-head">
           <div>
             <h2>Ajustes</h2>
-            <p>Configuración básica de empresa y aplicación.</p>
+            <p>Configuración básica.</p>
           </div>
         </div>
 
@@ -148,20 +146,20 @@
           <strong>Empresa</strong>
           <span>GESEMPA-PYME</span>
           <strong>Horario base</strong>
-          <span>Lunes a viernes, jornada comercial ordinaria.</span>
+          <span>L-V 09:00-14:00 / 16:00-19:00</span>
         </div>
       </section>
     </main>
 
     <nav class="bottom-nav">
-      <button data-tab="homeTab" class="active">Inicio</button>
-      <button data-tab="calendarTab">Calendario</button>
-      <button data-tab="recordsTab">Fichajes</button>
-      <button data-tab="employeesTab" id="employeesNavBtn">Empleados</button>
-      <button data-tab="settingsTab">Ajustes</button>
+      <button data-tab="homeTab" class="active" type="button">Inicio</button>
+      <button data-tab="calendarTab" type="button">Calendario</button>
+      <button data-tab="recordsTab" type="button">Fichajes</button>
+      <button data-tab="employeesTab" id="employeesNavBtn" type="button">Empleados</button>
+      <button data-tab="settingsTab" type="button">Ajustes</button>
     </nav>
   </div>
 
-  <script type="module" src="./app.js?v=5"></script>
+  <script type="module" src="./app.js?v=10"></script>
 </body>
 </html>
