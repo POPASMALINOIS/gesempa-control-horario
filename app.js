@@ -308,10 +308,32 @@ async function clockOut() {
 }
 
 async function handleClock() {
-  if (state.todayRecord?.status === "open") {
-    await clockOut();
-  } else {
-    await clockIn();
+  try {
+    els.clockBtn.disabled = true;
+    els.clockBtn.textContent = "Procesando...";
+
+    if (!state.user) {
+      alert("No hay usuario conectado.");
+      return;
+    }
+
+    if (!state.employee) {
+      alert("No se ha encontrado perfil de empleado para este usuario.");
+      return;
+    }
+
+    if (state.todayRecord?.status === "open") {
+      await clockOut();
+    } else {
+      await clockIn();
+    }
+
+  } catch (error) {
+    console.error("Error al fichar:", error);
+    alert("Error al fichar: " + error.message);
+  } finally {
+    els.clockBtn.disabled = false;
+    await refreshData();
   }
 }
 
