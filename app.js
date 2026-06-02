@@ -517,7 +517,10 @@ els.loginBtn.addEventListener("click", async () => {
 });
 
 els.logoutBtn.addEventListener("click", () => signOut(auth));
-els.clockBtn.addEventListener("click", handleClock);
+els.clockBtn.addEventListener("click", async () => {
+  alert("Botón fichar pulsado");
+  await handleClock();
+});
 els.employeeForm.addEventListener("submit", createEmployee);
 
 document.querySelectorAll(".bottom-nav button").forEach(btn => {
