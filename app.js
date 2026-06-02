@@ -49,7 +49,6 @@ const state = {
 };
 
 const els = {
-  authName: $("authName"),
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
   loginBtn: $("loginBtn"),
@@ -167,56 +166,66 @@ async function createUserAndEmployee(user, name, email, role = "admin") {
 }
 
 async function loadProfile(user) {
-  const userRef = doc(db, "users", user.uid);
-  let userSnap = await getDoc(userRef);
+  try {
+    const userRef = doc(db, "users", user.uid);
+    let userSnap = await getDoc(userRef);
 
-  if (!userSnap.exists()) {
-    await createUserAndEmployee(
-      user,
-      user.displayName || user.email,
-      user.email,
-      "admin"
-    );
+    if (!userSnap.exists()) {
+      const email = user.email || "";
+      const fallbackName = user.displayName || email.split("@")[0] || "Empleado";
 
-    userSnap = await getDoc(userRef);
+      await createUserAndEmployee(
+        user,
+        fallbackName,
+        email,
+        "admin"
+      );
+
+      userSnap = await getDoc(userRef);
+    }
+
+    state.profile = userSnap.data();
+
+    const employeeId = state.profile.employeeId || user.uid;
+    let employeeRef = doc(db, "employees", employeeId);
+    let employeeSnap = await getDoc(employeeRef);
+
+    if (!employeeSnap.exists()) {
+      await setDoc(doc(db, "employees", user.uid), {
+        companyId: APP_COMPANY_ID,
+        employeeId: user.uid,
+        userId: user.uid,
+        name: state.profile.name || user.displayName || user.email,
+        email: state.profile.email || user.email,
+        color: "#0f7a3b",
+        baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
+        role: state.profile.role || "admin",
+        clockStatus: "outside",
+        todayWorkStatus: "work",
+        active: true,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      await updateDoc(userRef, {
+        employeeId: user.uid,
+        updatedAt: serverTimestamp()
+      });
+
+      employeeRef = doc(db, "employees", user.uid);
+      employeeSnap = await getDoc(employeeRef);
+    }
+
+    state.employee = employeeSnap.exists()
+      ? { id: employeeSnap.id, ...employeeSnap.data() }
+      : null;
+
+  } catch (error) {
+    console.error("Error en loadProfile:", error);
+    alert("Error cargando perfil: " + error.message);
+    state.profile = null;
+    state.employee = null;
   }
-
-  state.profile = userSnap.data();
-
-  let employeeId = state.profile.employeeId || user.uid;
-  let employeeRef = doc(db, "employees", employeeId);
-  let employeeSnap = await getDoc(employeeRef);
-
-  if (!employeeSnap.exists()) {
-    await setDoc(doc(db, "employees", user.uid), {
-      companyId: APP_COMPANY_ID,
-      employeeId: user.uid,
-      userId: user.uid,
-      name: state.profile.name || user.displayName || user.email,
-      email: state.profile.email || user.email,
-      color: "#0f7a3b",
-      baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-      role: state.profile.role || "admin",
-      clockStatus: "outside",
-      todayWorkStatus: "work",
-      active: true,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    await updateDoc(userRef, {
-      employeeId: user.uid,
-      updatedAt: serverTimestamp()
-    });
-
-    employeeId = user.uid;
-    employeeRef = doc(db, "employees", employeeId);
-    employeeSnap = await getDoc(employeeRef);
-  }
-
-  state.employee = employeeSnap.exists()
-    ? { id: employeeSnap.id, ...employeeSnap.data() }
-    : null;
 }
 
 function renderShell() {
@@ -497,21 +506,31 @@ function switchTab(tabId) {
 els.registerBtn.addEventListener("click", async () => {
   showAuthMessage("");
 
-  const name = els.authName.value.trim();
-  const email = els.authEmail.value.trim();
+  const email = els.authEmail.value.trim().toLowerCase();
   const password = els.authPassword.value;
 
-  if (!name || !email || !password) {
-    showAuthMessage("Introduce nombre, email y contraseña.");
+  if (!email || !password) {
+    showAuthMessage("Introduce email y contraseña.");
     return;
   }
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(cred.user, { displayName: name });
-    await createUserAndEmployee(cred.user, name, email, "admin");
+
+    const nameFromEmail = email.split("@")[0];
+
+    await updateProfile(cred.user, { displayName: nameFromEmail });
+
+    await createUserAndEmployee(
+      cred.user,
+      nameFromEmail,
+      email,
+      "admin"
+    );
+
   } catch (error) {
-    showAuthMessage(error.message);
+    console.error("Error registro:", error);
+    showAuthMessage("Error al registrar: " + error.message);
   }
 });
 
@@ -553,10 +572,19 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  loginView.classList.add("hidden");
-  appView.classList.remove("hidden");
+  try {
+    loginView.classList.add("hidden");
+    appView.classList.remove("hidden");
 
-  await refreshData();
+    await refreshData();
+
+  } catch (error) {
+    console.error("Error al iniciar app:", error);
+    alert("Error al entrar en la app: " + error.message);
+
+    loginView.classList.remove("hidden");
+    appView.classList.add("hidden");
+  }
 });
 
 if ("serviceWorker" in navigator) {
