@@ -535,20 +535,28 @@ els.registerBtn.addEventListener("click", async () => {
 });
 
 els.loginBtn.addEventListener("click", async () => {
+  alert("Botón ENTRAR pulsado");
+
   showAuthMessage("");
 
-  const email = els.authEmail.value.trim();
+  const email = els.authEmail.value.trim().toLowerCase();
   const password = els.authPassword.value;
+
+  alert("Email introducido: " + email);
 
   if (!email || !password) {
     showAuthMessage("Introduce email y contraseña.");
+    alert("Falta email o contraseña");
     return;
   }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    alert("Login correcto en Firebase");
   } catch (error) {
-    showAuthMessage(error.message);
+    console.error("Error login:", error);
+    showAuthMessage("Error al entrar: " + error.message);
+    alert("ERROR LOGIN: " + error.code + " - " + error.message);
   }
 });
 
@@ -564,13 +572,18 @@ document.querySelectorAll(".bottom-nav button").forEach(btn => {
 });
 
 onAuthStateChanged(auth, async (user) => {
+  alert("Cambio de sesión detectado");
+
   state.user = user;
 
   if (!user) {
+    alert("No hay usuario conectado");
     loginView.classList.remove("hidden");
     appView.classList.add("hidden");
     return;
   }
+
+  alert("Usuario conectado: " + user.email);
 
   try {
     loginView.classList.add("hidden");
@@ -578,9 +591,11 @@ onAuthStateChanged(auth, async (user) => {
 
     await refreshData();
 
+    alert("App cargada correctamente");
+
   } catch (error) {
     console.error("Error al iniciar app:", error);
-    alert("Error al entrar en la app: " + error.message);
+    alert("ERROR AL CARGAR APP: " + error.code + " - " + error.message);
 
     loginView.classList.remove("hidden");
     appView.classList.add("hidden");
