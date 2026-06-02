@@ -168,48 +168,55 @@ async function createUserAndEmployee(user, name, email, role = "admin") {
 
 async function loadProfile(user) {
   const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
+  let userSnap = await getDoc(userRef);
 
   if (!userSnap.exists()) {
-    await createUserAndEmployee(user, user.displayName || user.email, user.email, "employee");
+    await createUserAndEmployee(
+      user,
+      user.displayName || user.email,
+      user.email,
+      "admin"
+    );
+
+    userSnap = await getDoc(userRef);
   }
 
-  const finalUserSnap = await getDoc(userRef);
-  state.profile = finalUserSnap.data();
+  state.profile = userSnap.data();
 
-  const employeeRef = doc(db, "employees", state.profile.employeeId || user.uid);
-  const employeeSnap = await getDoc(employeeRef);
+  let employeeId = state.profile.employeeId || user.uid;
+  let employeeRef = doc(db, "employees", employeeId);
+  let employeeSnap = await getDoc(employeeRef);
+
+  if (!employeeSnap.exists()) {
+    await setDoc(doc(db, "employees", user.uid), {
+      companyId: APP_COMPANY_ID,
+      employeeId: user.uid,
+      userId: user.uid,
+      name: state.profile.name || user.displayName || user.email,
+      email: state.profile.email || user.email,
+      color: "#0f7a3b",
+      baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
+      role: state.profile.role || "admin",
+      clockStatus: "outside",
+      todayWorkStatus: "work",
+      active: true,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    await updateDoc(userRef, {
+      employeeId: user.uid,
+      updatedAt: serverTimestamp()
+    });
+
+    employeeId = user.uid;
+    employeeRef = doc(db, "employees", employeeId);
+    employeeSnap = await getDoc(employeeRef);
+  }
 
   state.employee = employeeSnap.exists()
     ? { id: employeeSnap.id, ...employeeSnap.data() }
     : null;
-}
-
-async function loadEmployees() {
-  const q = query(
-    collection(db, "employees"),
-    where("companyId", "==", APP_COMPANY_ID),
-    orderBy("name")
-  );
-
-  const snap = await getDocs(q);
-  state.employees = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-}
-
-async function loadTodayRecord() {
-  if (!state.employee) return;
-
-  const q = query(
-    collection(db, "timeRecords"),
-    where("companyId", "==", APP_COMPANY_ID),
-    where("employeeId", "==", state.employee.employeeId),
-    where("date", "==", todayKey()),
-    orderBy("createdAt", "desc"),
-    limit(1)
-  );
-
-  const snap = await getDocs(q);
-  state.todayRecord = snap.empty ? null : { id: snap.docs[0].id, ...snap.docs[0].data() };
 }
 
 function renderShell() {
