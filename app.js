@@ -534,7 +534,7 @@ els.loginBtn.addEventListener("click", async () => {
 });
 
 els.logoutBtn.addEventListener("click", () => signOut(auth));
-els.clockBtn.addEventListener("click", async () => {
+els.clockBtn.addEventListener("click", handleClock);
   alert("Botón fichar pulsado");
   await handleClock();
 });
