@@ -418,3 +418,7 @@ button {
     grid-template-columns: repeat(12, 170px);
   }
 }
+.clock-btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
