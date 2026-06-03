@@ -8,8 +8,8 @@ export const firebaseConfig = {
   appId: "1:969679006732:web:1b367e3f31f0b7dc7f9229"
 };
 
-export const APP_COMPANY_ID = "gesempa-pymes";
-export const APP_COMPANY_NAME = "GESEMPA-PYMES";
+export const APP_COMPANY_ID = "gesempa-pyme";
+export const APP_COMPANY_NAME = "GESEMPA-PYME";
 export const MASTER_ADMIN_EMAILS = [
   "jcsanchez@gesempapyme.es",
   "javier@gesempapyme.es"
