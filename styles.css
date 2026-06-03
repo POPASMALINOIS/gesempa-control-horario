@@ -10,6 +10,14 @@
   --danger: #b42318;
   --radius: 18px;
   --shadow: 0 14px 35px rgba(15, 122, 59, .08);
+
+  --work: #0f7a3b;
+  --day_off: #cfd8d3;
+  --permission: #f59e0b;
+  --sick_leave: #dc2626;
+  --holiday: #111827;
+  --vacation: #2563eb;
+  --absence: #7c3aed;
 }
 
 * {
@@ -64,7 +72,8 @@ body {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   border: 1px solid var(--border);
   background: #fff;
@@ -72,6 +81,12 @@ select {
   border-radius: 14px;
   font-size: 15px;
   margin-bottom: 12px;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
 button {
@@ -80,6 +95,7 @@ button {
   padding: 13px 16px;
   font-weight: 700;
   cursor: pointer;
+  font-family: inherit;
 }
 
 .primary-btn {
@@ -98,6 +114,24 @@ button {
 .ghost-btn {
   background: #eef4ef;
   color: var(--green-dark);
+}
+
+.small-btn {
+  background: #eef4ef;
+  color: var(--green-dark);
+  padding: 10px 13px;
+}
+
+.icon-btn {
+  background: #f1f5f2;
+  color: var(--text);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
 }
 
 .message {
@@ -145,7 +179,7 @@ button {
 
 .app-main {
   padding: 18px;
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -231,6 +265,11 @@ button {
   background: #202820;
 }
 
+.clock-btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
 .today-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -255,7 +294,8 @@ button {
   font-size: 18px;
 }
 
-.section-head {
+.section-head,
+.calendar-toolbar {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -263,11 +303,8 @@ button {
   margin-bottom: 14px;
 }
 
-.section-head.compact {
-  margin-bottom: 10px;
-}
-
-.section-head h2 {
+.section-head h2,
+.calendar-toolbar h2 {
   margin: 0;
 }
 
@@ -276,48 +313,190 @@ button {
   color: var(--muted);
 }
 
-.calendar-grid {
+.calendar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-controls {
   display: grid;
-  grid-template-columns: repeat(12, minmax(180px, 1fr));
+  grid-template-columns: 1fr auto;
   gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-.month-card {
-  min-width: 180px;
-  background: var(--card);
+.calendar-controls select {
+  margin: 0;
+}
+
+.view-toggle {
+  display: flex;
+  background: #eaf1ec;
+  padding: 4px;
+  border-radius: 999px;
+  gap: 4px;
+}
+
+.view-toggle button {
+  background: transparent;
+  color: var(--muted);
+  padding: 9px 13px;
+  border-radius: 999px;
+}
+
+.view-toggle button.active {
+  background: white;
+  color: var(--green-dark);
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  color: var(--muted);
 }
 
-.month-card h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.days {
+.dot.work { background: var(--work); }
+.dot.day_off { background: var(--day_off); }
+.dot.permission { background: var(--permission); }
+.dot.sick_leave { background: var(--sick_leave); }
+.dot.holiday { background: var(--holiday); }
+.dot.vacation { background: var(--vacation); }
+.dot.absence { background: var(--absence); }
+
+.monthly-calendar {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.weekdays,
+.month-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 7px;
 }
 
-.day {
-  min-height: 26px;
-  border-radius: 8px;
-  background: #f4f6f4;
-  display: grid;
-  place-items: center;
+.weekdays span {
+  color: var(--muted);
   font-size: 12px;
-  color: #485149;
+  text-align: center;
+  font-weight: 800;
+  padding: 8px 0;
 }
 
-.day.today {
-  background: var(--green);
-  color: #fff;
+.calendar-day {
+  min-height: 74px;
+  border-radius: 16px;
+  background: #f7faf7;
+  border: 1px solid var(--border);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border: 0;
+  cursor: default;
+}
+
+.calendar-day.today {
+  outline: 2px solid var(--green);
+}
+
+.day-number {
   font-weight: 800;
 }
+
+.day-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.calendar-day.status-work .day-label { background: var(--work); }
+.calendar-day.status-day_off .day-label { background: var(--day_off); color: #26312b; }
+.calendar-day.status-permission .day-label { background: var(--permission); }
+.calendar-day.status-sick_leave .day-label { background: var(--sick_leave); }
+.calendar-day.status-holiday .day-label { background: var(--holiday); }
+.calendar-day.status-vacation .day-label { background: var(--vacation); }
+.calendar-day.status-absence .day-label { background: var(--absence); }
+
+.annual-calendar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.year-month {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+
+.year-month h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.year-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.year-day {
+  height: 18px;
+  border-radius: 5px;
+  background: #f1f5f2;
+  cursor: pointer;
+}
+
+.year-day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.year-day.work { background: var(--work); }
+.year-day.day_off { background: var(--day_off); }
+.year-day.permission { background: var(--permission); }
+.year-day.sick_leave { background: var(--sick_leave); }
+.year-day.holiday { background: var(--holiday); }
+.year-day.vacation { background: var(--vacation); }
+.year-day.absence { background: var(--absence); }
 
 .record-item,
 .employee-item {
@@ -392,6 +571,58 @@ button {
   background: #f2f8f4;
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 15, 10, .45);
+  display: grid;
+  place-items: end center;
+  z-index: 50;
+  padding: 18px;
+}
+
+.modal-card {
+  background: white;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 26px;
+  padding: 18px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.22);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.modal-head h3 {
+  margin: 0;
+}
+
+.status-options {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.status-options button {
+  background: #f7faf7;
+  color: var(--text);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.status-options button.active {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
 @media (max-width: 720px) {
   .app-main {
     padding: 14px;
@@ -409,16 +640,34 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .section-head {
-    flex-direction: column;
-    align-items: stretch;
+  .section-head,
+  .calendar-toolbar {
+    align-items: flex-start;
   }
 
-  .calendar-grid {
-    grid-template-columns: repeat(12, 170px);
+  .calendar-controls {
+    grid-template-columns: 1fr;
   }
-}
-.clock-btn:disabled {
-  opacity: .65;
-  cursor: not-allowed;
+
+  .view-toggle {
+    width: 100%;
+  }
+
+  .view-toggle button {
+    flex: 1;
+  }
+
+  .calendar-day {
+    min-height: 58px;
+    padding: 6px;
+  }
+
+  .day-label {
+    font-size: 9px;
+    padding: 3px 5px;
+  }
+
+  .annual-calendar {
+    grid-template-columns: 1fr;
+  }
 }
