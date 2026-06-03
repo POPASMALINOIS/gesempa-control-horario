@@ -47,26 +47,52 @@
 
     <main class="app-main">
       <section id="homeTab" class="tab active">
-        <div class="status-card">
+        <div class="home-hero">
           <div>
-            <p class="eyebrow">Empleado conectado</p>
-            <h2 id="currentEmployeeName">—</h2>
-            <span id="currentRole" class="role-pill">—</span>
+            <p class="eyebrow" id="homeGreeting">Buenos días</p>
+            <h2 id="homeEmployeeName">—</h2>
+            <span id="homeRole" class="role-pill">—</span>
           </div>
-
+      
           <div id="clockStatus" class="clock-status outside">Fuera</div>
         </div>
-
-        <div class="clock-card">
+      
+        <div class="clock-card premium-clock">
           <button id="clockBtn" class="clock-btn" type="button">Fichar entrada</button>
-
+      
           <div class="today-grid">
-            <div><span>Entrada</span><strong id="todayIn">—</strong></div>
-            <div><span>Salida</span><strong id="todayOut">—</strong></div>
-            <div><span>Total</span><strong id="todayTotal">00:00</strong></div>
+            <div>
+              <span>Entrada</span>
+              <strong id="todayIn">—</strong>
+            </div>
+            <div>
+              <span>Salida</span>
+              <strong id="todayOut">—</strong>
+            </div>
+            <div>
+              <span>Horas hoy</span>
+              <strong id="todayTotal">00:00</strong>
+            </div>
           </div>
         </div>
-
+      
+        <div class="home-grid">
+          <div class="home-panel">
+            <h3>Calendario de hoy</h3>
+            <p id="todayCalendarStatus">Sin estado asignado.</p>
+          </div>
+      
+          <div class="home-panel">
+            <h3>Próximos eventos</h3>
+            <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
+          </div>
+        </div>
+      
+        <div class="home-panel">
+          <h3>Últimos fichajes</h3>
+          <div id="latestRecordsList">Sin fichajes recientes.</div>
+        </div>
+      
         <div class="mini-panel">
           <h3>Incidencias del día</h3>
           <p id="todayIncident">Sin incidencias detectadas.</p>
@@ -181,6 +207,6 @@
     </nav>
   </div>
 
-  <script type="module" src="./app.js?v=20"></script>
+  <script type="module" src="./app.js?v=21"></script>
 </body>
 </html>
