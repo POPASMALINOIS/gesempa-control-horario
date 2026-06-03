@@ -624,14 +624,13 @@ function renderMonthlyCalendar() {
     const date = formatDateKey(year, month, day);
     const record = state.calendarDays[date];
     const status = record?.status;
-    const label = status ? WORK_STATUSES[status]?.label : "";
     const todayClass = date === todayKey() ? "today" : "";
     const statusClass = status ? `status-${status}` : "";
+    const title = status ? `${date} · ${WORK_STATUSES[status]?.label}` : date;
 
     html += `
-      <button class="calendar-day ${todayClass} ${statusClass}" type="button" data-date="${date}">
+      <button class="calendar-day ${todayClass} ${statusClass}" type="button" data-date="${date}" title="${title}">
         <span class="day-number">${day}</span>
-        ${label ? `<span class="day-label">${label}</span>` : ""}
       </button>
     `;
   }
@@ -641,7 +640,7 @@ function renderMonthlyCalendar() {
   els.monthlyCalendar.innerHTML = html;
 
   els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]").forEach(btn => {
-    btn.addEventListener("click", () => openCalendarModal(btn.dataset.date));
+    btn.addEventListener("click", () => paintCalendarDay(btn.dataset.date));
   });
 }
 
