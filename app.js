@@ -77,6 +77,9 @@ const els = {
   logoutBtn: $("logoutBtn"),
   currentEmployeeName: $("currentEmployeeName"),
   currentRole: $("currentRole"),
+  homeGreeting: $("homeGreeting"),
+  homeEmployeeName: $("homeEmployeeName"),
+  homeRole: $("homeRole"),
   clockStatus: $("clockStatus"),
   clockBtn: $("clockBtn"),
   todayIn: $("todayIn"),
@@ -375,16 +378,128 @@ async function loadCalendarDays() {
   });
 }
 
-function renderShell() {
-  const admin = isAdmin();
+function getGreeting() {
+  const hour = new Date().getHours();
 
-  els.currentEmployeeName.textContent =
+  if (hour < 14) return "Buenos días";
+  if (hour < 21) return "Buenas tardes";
+  return "Buenas noches";
+}
+
+function getEmployeeDisplayName() {
+  return (
     state.employee?.name ||
     state.profile?.name ||
     state.user?.email ||
-    "Empleado";
+    "Empleado"
+  );
+}
 
-  els.currentRole.textContent = admin ? "Administrador" : "Empleado";
+function renderTodayCalendarStatus() {
+  const today = todayKey();
+  const record = state.calendarDays[today];
+
+  if (!record?.status) {
+    els.todayCalendarStatus.innerHTML = "Sin estado asignado.";
+    return;
+  }
+
+  const status = record.status;
+  const label = WORK_STATUSES[status]?.label || record.statusLabel || "Estado";
+
+  els.todayCalendarStatus.innerHTML = `
+    <span class="today-status-pill ${status}">
+      <i class="dot ${status}"></i>${label}
+    </span>
+  `;
+}
+
+function renderUpcomingCalendarEvents() {
+  const today = todayKey();
+
+  const events = Object.values(state.calendarDays)
+    .filter(day => {
+      if (!day?.date || !day?.status) return false;
+      if (day.date < today) return false;
+      return day.status !== "work";
+    })
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 5);
+
+  if (!events.length) {
+    els.upcomingCalendarEvents.innerHTML = "Sin eventos próximos.";
+    return;
+  }
+
+  els.upcomingCalendarEvents.innerHTML = events.map(event => {
+    const label = WORK_STATUSES[event.status]?.label || event.statusLabel || "Estado";
+
+    return `
+      <div class="home-event">
+        <strong>${dateLabel(event.date)} · ${label}</strong>
+        <span>${event.isWorkingDay ? "Computa como trabajo" : "No computa como trabajo"}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+async function renderLatestRecords() {
+  if (!state.employee) {
+    els.latestRecordsList.innerHTML = "Sin empleado cargado.";
+    return;
+  }
+
+  const q = isAdmin()
+    ? query(collection(db, "timeRecords"), where("companyId", "==", APP_COMPANY_ID))
+    : query(
+        collection(db, "timeRecords"),
+        where("companyId", "==", APP_COMPANY_ID),
+        where("employeeId", "==", state.employee.employeeId)
+      );
+
+  const snap = await getDocs(q);
+
+  const records = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => {
+      const aKey = `${a.date || ""}_${a.clockIn || ""}`;
+      const bKey = `${b.date || ""}_${b.clockIn || ""}`;
+      return bKey.localeCompare(aKey);
+    })
+    .slice(0, 5);
+
+  if (!records.length) {
+    els.latestRecordsList.innerHTML = "Sin fichajes recientes.";
+    return;
+  }
+
+  els.latestRecordsList.innerHTML = records.map(r => `
+    <div class="latest-record">
+      <strong>${dateLabel(r.date)} · ${r.employeeName || "Empleado"}</strong>
+      <span>
+        Entrada: ${timeLabel(r.clockIn)}
+        · Salida: ${timeLabel(r.clockOut)}
+        · Total: ${formatMinutes(r.totalMinutes)}
+      </span>
+    </div>
+  `).join("");
+}
+
+function renderShell() {
+  const admin = isAdmin();
+  const employeeName = getEmployeeDisplayName();
+
+  if (els.currentEmployeeName) {
+    els.currentEmployeeName.textContent = employeeName;
+  }
+
+  if (els.currentRole) {
+    els.currentRole.textContent = admin ? "Administrador" : "Empleado";
+  }
+
+  els.homeGreeting.textContent = getGreeting();
+  els.homeEmployeeName.textContent = employeeName;
+  els.homeRole.textContent = admin ? "Administrador maestro" : "Empleado";
 
   document.querySelectorAll(".admin-only").forEach(el => {
     el.style.display = admin ? "" : "none";
@@ -878,8 +993,11 @@ async function refreshData() {
   renderClock();
   renderEmployees();
   renderCalendar();
+  renderTodayCalendarStatus();
+  renderUpcomingCalendarEvents();
   await renderRecords();
-}
+  await renderLatestRecords();
+  }
 
 function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
