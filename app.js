@@ -68,10 +68,14 @@ const state = {
   selectedCalendarStatus: "work"
 };
 
+let calendarPainting = false;
+let calendarLastPaintedDate = null;
+
 const els = {
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
   loginBtn: $("loginBtn"),
+  registerBtn: $("registerBtn"),
   authMessage: $("authMessage"),
 
   logoutBtn: $("logoutBtn"),
@@ -121,7 +125,7 @@ const els = {
 };
 
 function showMessage(text) {
-  els.authMessage.textContent = text || "";
+  if (els.authMessage) els.authMessage.textContent = text || "";
 }
 
 function todayKey() {
@@ -188,6 +192,17 @@ function calendarDocId(employeeId, date) {
 function firstWeekdayMondayBased(year, monthIndex) {
   const jsDay = new Date(year, monthIndex, 1).getDay();
   return jsDay === 0 ? 6 : jsDay - 1;
+}
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 14) return "Buenos días";
+  if (hour < 21) return "Buenas tardes";
+  return "Buenas noches";
+}
+
+function getEmployeeDisplayName() {
+  return state.employee?.name || state.profile?.name || state.user?.email || "Empleado";
 }
 
 async function ensureCompany() {
@@ -280,7 +295,7 @@ async function loadProfile(user) {
   const email = user.email || "";
   const fallbackName = user.displayName || nameFromEmail(email);
 
-  let userRef = doc(db, "users", user.uid);
+  const userRef = doc(db, "users", user.uid);
   let userSnap = await getDoc(userRef);
 
   if (!userSnap.exists()) {
@@ -295,24 +310,32 @@ async function loadProfile(user) {
   let employeeSnap = await getDoc(employeeRef);
 
   if (!employeeSnap.exists()) {
+    const finalRole = MASTER_ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "employee";
+
     await setDoc(doc(db, "employees", user.uid), {
-  companyId: APP_COMPANY_ID,
-  employeeId: user.uid,
-  userId: user.uid,
-  name: state.profile.name || fallbackName,
-  email: state.profile.email || email,
-  color: "#0f7a3b",
-  baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-  role: MASTER_ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "employee",
-  clockStatus: "outside",
-  todayWorkStatus: "work",
-  active: true,
-  createdAt: serverTimestamp(),
-  updatedAt: serverTimestamp()
-});
+      companyId: APP_COMPANY_ID,
+      employeeId: user.uid,
+      userId: user.uid,
+      name: state.profile.name || fallbackName,
+      email: state.profile.email || email,
+      color: "#0f7a3b",
+      baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
+      role: finalRole,
+      position: finalRole === "admin" ? "Administrador" : "Empleado",
+      phone: "",
+      dni: "",
+      birthDate: "",
+      hireDate: "",
+      clockStatus: "outside",
+      todayWorkStatus: "work",
+      active: true,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
 
     await updateDoc(userRef, {
       employeeId: user.uid,
+      role: finalRole,
       updatedAt: serverTimestamp()
     });
 
@@ -377,28 +400,57 @@ async function loadCalendarDays() {
 
   snap.docs.forEach(d => {
     const item = { id: d.id, ...d.data() };
-    state.calendarDays[item.date] = item;
+    if (item.date && item.status) {
+      state.calendarDays[item.date] = item;
+    }
   });
 }
 
-function getGreeting() {
-  const hour = new Date().getHours();
+function renderShell() {
+  const admin = isAdmin();
+  const employeeName = getEmployeeDisplayName();
 
-  if (hour < 14) return "Buenos días";
-  if (hour < 21) return "Buenas tardes";
-  return "Buenas noches";
+  if (els.currentEmployeeName) els.currentEmployeeName.textContent = employeeName;
+  if (els.currentRole) els.currentRole.textContent = admin ? "Administrador" : "Empleado";
+
+  if (els.homeGreeting) els.homeGreeting.textContent = getGreeting();
+  if (els.homeEmployeeName) els.homeEmployeeName.textContent = employeeName;
+  if (els.homeRole) els.homeRole.textContent = admin ? "Administrador maestro" : "Empleado";
+
+  document.querySelectorAll(".admin-only").forEach(el => {
+    el.style.display = admin ? "" : "none";
+  });
+
+  if (els.employeesNavBtn) {
+    els.employeesNavBtn.style.display = admin ? "" : "none";
+  }
 }
 
-function getEmployeeDisplayName() {
-  return (
-    state.employee?.name ||
-    state.profile?.name ||
-    state.user?.email ||
-    "Empleado"
-  );
+function renderClock() {
+  const record = state.todayRecord;
+  const inside = record?.status === "open";
+
+  els.clockStatus.textContent = inside ? "Dentro" : "Fuera";
+  els.clockStatus.className = `clock-status ${inside ? "inside" : "outside"}`;
+
+  els.clockBtn.disabled = false;
+  els.clockBtn.textContent = inside ? "Fichar salida" : "Fichar entrada";
+  els.clockBtn.classList.toggle("exit", inside);
+
+  els.todayIn.textContent = timeLabel(record?.clockIn);
+  els.todayOut.textContent = timeLabel(record?.clockOut);
+
+  const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
+  els.todayTotal.textContent = formatMinutes(total);
+
+  els.todayIncident.textContent = inside
+    ? "Jornada abierta. Pendiente de fichar salida."
+    : "Sin incidencias detectadas.";
 }
 
 function renderTodayCalendarStatus() {
+  if (!els.todayCalendarStatus) return;
+
   const today = todayKey();
   const record = state.calendarDays[today];
 
@@ -418,6 +470,8 @@ function renderTodayCalendarStatus() {
 }
 
 function renderUpcomingCalendarEvents() {
+  if (!els.upcomingCalendarEvents) return;
+
   const today = todayKey();
 
   const events = Object.values(state.calendarDays)
@@ -447,6 +501,8 @@ function renderUpcomingCalendarEvents() {
 }
 
 async function renderLatestRecords() {
+  if (!els.latestRecordsList) return;
+
   if (!state.employee) {
     els.latestRecordsList.innerHTML = "Sin empleado cargado.";
     return;
@@ -486,51 +542,6 @@ async function renderLatestRecords() {
       </span>
     </div>
   `).join("");
-}
-
-function renderShell() {
-  const admin = isAdmin();
-  const employeeName = getEmployeeDisplayName();
-
-  if (els.currentEmployeeName) {
-    els.currentEmployeeName.textContent = employeeName;
-  }
-
-  if (els.currentRole) {
-    els.currentRole.textContent = admin ? "Administrador" : "Empleado";
-  }
-
-  els.homeGreeting.textContent = getGreeting();
-  els.homeEmployeeName.textContent = employeeName;
-  els.homeRole.textContent = admin ? "Administrador maestro" : "Empleado";
-
-  document.querySelectorAll(".admin-only").forEach(el => {
-    el.style.display = admin ? "" : "none";
-  });
-
-  els.employeesNavBtn.style.display = admin ? "" : "none";
-}
-
-function renderClock() {
-  const record = state.todayRecord;
-  const inside = record?.status === "open";
-
-  els.clockStatus.textContent = inside ? "Dentro" : "Fuera";
-  els.clockStatus.className = `clock-status ${inside ? "inside" : "outside"}`;
-
-  els.clockBtn.disabled = false;
-  els.clockBtn.textContent = inside ? "Fichar salida" : "Fichar entrada";
-  els.clockBtn.classList.toggle("exit", inside);
-
-  els.todayIn.textContent = timeLabel(record?.clockIn);
-  els.todayOut.textContent = timeLabel(record?.clockOut);
-
-  const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
-  els.todayTotal.textContent = formatMinutes(total);
-
-  els.todayIncident.textContent = inside
-    ? "Jornada abierta. Pendiente de fichar salida."
-    : "Sin incidencias detectadas.";
 }
 
 async function clockIn() {
@@ -685,29 +696,8 @@ function renderEmployees() {
   });
 }
 
-function renderCalendarEmployeeSelect() {
-  if (isAdmin()) {
-    els.calendarEmployeeSelect.disabled = false;
-    els.calendarEmployeeSelect.innerHTML = state.employees.length
-      ? state.employees.map(e => `
-          <option value="${e.employeeId}" ${e.employeeId === state.selectedCalendarEmployeeId ? "selected" : ""}>
-            ${e.name}
-          </option>
-        `).join("")
-      : `<option value="">Sin empleados</option>`;
-  } else {
-    els.calendarEmployeeSelect.disabled = true;
-    els.calendarEmployeeSelect.innerHTML = `
-      <option value="${state.employee.employeeId}">
-        ${state.employee.name}
-      </option>
-    `;
-  }
-}
-
 function loadEmployeeIntoForm(employee) {
   els.editingEmployeeId.value = employee.id;
-
   els.employeeName.value = employee.name || "";
   els.employeeEmail.value = employee.email || "";
   els.employeeRole.value = employee.role || "employee";
@@ -719,14 +709,12 @@ function loadEmployeeIntoForm(employee) {
   els.employeeSchedule.value = employee.baseSchedule || "L-V 09:00-14:00 / 16:00-19:00";
   els.employeeColor.value = employee.color || "#0f7a3b";
   els.employeeActive.value = employee.active === false ? "false" : "true";
-
   els.saveEmployeeBtn.textContent = "Actualizar perfil";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function resetEmployeeForm() {
   els.employeeForm.reset();
-
   els.editingEmployeeId.value = "";
   els.employeeRole.value = "employee";
   els.employeeColor.value = "#0f7a3b";
@@ -799,6 +787,26 @@ async function createEmployee(event) {
   await refreshData();
 }
 
+function renderCalendarEmployeeSelect() {
+  if (isAdmin()) {
+    els.calendarEmployeeSelect.disabled = false;
+    els.calendarEmployeeSelect.innerHTML = state.employees.length
+      ? state.employees.map(e => `
+          <option value="${e.employeeId}" ${e.employeeId === state.selectedCalendarEmployeeId ? "selected" : ""}>
+            ${e.name}
+          </option>
+        `).join("")
+      : `<option value="">Sin empleados</option>`;
+  } else {
+    els.calendarEmployeeSelect.disabled = true;
+    els.calendarEmployeeSelect.innerHTML = `
+      <option value="${state.employee.employeeId}">
+        ${state.employee.name}
+      </option>
+    `;
+  }
+}
+
 function renderMonthlyCalendar() {
   const year = currentYear();
   const month = currentMonth();
@@ -834,12 +842,9 @@ function renderMonthlyCalendar() {
   }
 
   html += `</div>`;
-
   els.monthlyCalendar.innerHTML = html;
 
-  els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]").forEach(btn => {
-  btn.addEventListener("click", () => paintCalendarDay(btn.dataset.date));
-  });
+  attachCalendarPaintEvents();
 }
 
 function renderAnnualCalendar() {
@@ -899,84 +904,36 @@ function renderCalendar() {
 }
 
 function attachCalendarPaintEvents() {
-
-  const days = document.querySelectorAll(".calendar-day");
+  const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
 
   days.forEach(day => {
+    day.addEventListener("click", () => {
+      paintCalendarDay(day.dataset.date);
+    });
 
-    day.addEventListener("mousedown", async e => {
+    day.addEventListener("pointerdown", async (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      event.preventDefault();
 
       calendarPainting = true;
+      calendarLastPaintedDate = day.dataset.date;
 
-      const date = e.currentTarget.dataset.date;
-
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
+      await paintCalendarDay(day.dataset.date);
     });
 
-    day.addEventListener("mouseenter", async e => {
-
+    day.addEventListener("pointerenter", async () => {
       if (!calendarPainting) return;
 
-      const date = e.currentTarget.dataset.date;
+      const date = day.dataset.date;
 
-      if (date === calendarLastPaintedDate) return;
-
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    });
-
-    day.addEventListener("touchstart", async e => {
-
-      calendarPainting = true;
-
-      const date = e.currentTarget.dataset.date;
+      if (!date || date === calendarLastPaintedDate) return;
 
       calendarLastPaintedDate = date;
 
       await paintCalendarDay(date);
     });
-
-    day.addEventListener("touchmove", async e => {
-
-      if (!calendarPainting) return;
-
-      const touch = document.elementFromPoint(
-        e.touches[0].clientX,
-        e.touches[0].clientY
-      );
-
-      if (!touch) return;
-
-      const cell = touch.closest(".calendar-day");
-
-      if (!cell) return;
-
-      const date = cell.dataset.date;
-
-      if (!date) return;
-
-      if (date === calendarLastPaintedDate) return;
-
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    });
-
   });
-
-  document.addEventListener("mouseup", () => {
-    calendarPainting = false;
-    calendarLastPaintedDate = null;
-  });
-
-  document.addEventListener("touchend", () => {
-    calendarPainting = false;
-    calendarLastPaintedDate = null;
-  });
-
 }
 
 async function paintCalendarDay(date) {
@@ -995,9 +952,9 @@ async function paintCalendarDay(date) {
 
   const id = calendarDocId(state.selectedCalendarEmployeeId, date);
 
-  // Si el día ya tiene el mismo estado seleccionado, se limpia
   if (existing?.status === state.selectedCalendarStatus) {
     delete state.calendarDays[date];
+
     renderCalendar();
     renderTodayCalendarStatus();
     renderUpcomingCalendarEvents();
@@ -1022,7 +979,6 @@ async function paintCalendarDay(date) {
 
   const statusInfo = WORK_STATUSES[state.selectedCalendarStatus];
   const [year, month] = date.split("-").map(Number);
-
   const previousCreatedAt = existing?.createdAt || serverTimestamp();
 
   state.calendarDays[date] = {
@@ -1045,7 +1001,7 @@ async function paintCalendarDay(date) {
   renderCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
-  
+
   await setDoc(doc(db, "calendarDays", id), {
     companyId: APP_COMPANY_ID,
     employeeId: state.selectedCalendarEmployeeId,
@@ -1085,7 +1041,7 @@ async function refreshData() {
   renderUpcomingCalendarEvents();
   await renderRecords();
   await renderLatestRecords();
-  }
+}
 
 function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
@@ -1116,13 +1072,44 @@ els.loginBtn.addEventListener("click", async () => {
   }
 });
 
+if (els.registerBtn) {
+  els.registerBtn.addEventListener("click", async () => {
+    showMessage("");
+
+    const email = els.authEmail.value.trim().toLowerCase();
+    const password = els.authPassword.value;
+
+    if (!email || !password) {
+      showMessage("Introduce email y contraseña.");
+      return;
+    }
+
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const cleanName = nameFromEmail(email);
+
+      await updateProfile(cred.user, { displayName: cleanName });
+      await createUserAndEmployee(cred.user, cleanName, email, "employee");
+    } catch (error) {
+      console.error(error);
+      showMessage("Error al crear cuenta: " + error.message);
+    }
+  });
+}
+
 els.logoutBtn.addEventListener("click", () => {
   signOut(auth);
 });
 
 els.clockBtn.addEventListener("click", handleClock);
-els.employeeForm.addEventListener("submit", createEmployee);
-els.cancelEmployeeEditBtn.addEventListener("click", resetEmployeeForm);
+
+if (els.employeeForm) {
+  els.employeeForm.addEventListener("submit", createEmployee);
+}
+
+if (els.cancelEmployeeEditBtn) {
+  els.cancelEmployeeEditBtn.addEventListener("click", resetEmployeeForm);
+}
 
 els.prevMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
@@ -1156,6 +1143,8 @@ els.calendarEmployeeSelect.addEventListener("change", async () => {
   state.selectedCalendarEmployeeId = els.calendarEmployeeSelect.value;
   await loadCalendarDays();
   renderCalendar();
+  renderTodayCalendarStatus();
+  renderUpcomingCalendarEvents();
 });
 
 document.querySelectorAll(".paint-btn").forEach(btn => {
@@ -1173,6 +1162,16 @@ document.querySelectorAll(".bottom-nav button").forEach(btn => {
     const tabId = btn.dataset.tab;
     if (tabId) switchTab(tabId);
   });
+});
+
+document.addEventListener("pointerup", () => {
+  calendarPainting = false;
+  calendarLastPaintedDate = null;
+});
+
+document.addEventListener("pointercancel", () => {
+  calendarPainting = false;
+  calendarLastPaintedDate = null;
 });
 
 onAuthStateChanged(auth, async (user) => {
