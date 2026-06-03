@@ -918,6 +918,8 @@ async function paintCalendarDay(date) {
   if (existing?.status === state.selectedCalendarStatus) {
     delete state.calendarDays[date];
     renderCalendar();
+    renderTodayCalendarStatus();
+    renderUpcomingCalendarEvents();
 
     await setDoc(doc(db, "calendarDays", id), {
       companyId: APP_COMPANY_ID,
@@ -960,7 +962,9 @@ async function paintCalendarDay(date) {
   };
 
   renderCalendar();
-
+  renderTodayCalendarStatus();
+  renderUpcomingCalendarEvents();
+  
   await setDoc(doc(db, "calendarDays", id), {
     companyId: APP_COMPANY_ID,
     employeeId: state.selectedCalendarEmployeeId,
