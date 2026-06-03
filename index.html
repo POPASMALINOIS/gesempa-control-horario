@@ -85,16 +85,40 @@
       </section>
 
       <section id="calendarTab" class="tab">
-        <div class="section-head compact">
+        <div class="calendar-toolbar">
           <div>
-            <h2>Calendario anual</h2>
-            <p>Vista básica inicial.</p>
+            <p class="eyebrow">Calendario laboral</p>
+            <h2 id="calendarTitle">—</h2>
           </div>
 
-          <select id="calendarEmployeeSelect"></select>
+          <div class="calendar-actions">
+            <button id="prevMonthBtn" class="small-btn" type="button">‹</button>
+            <button id="todayCalendarBtn" class="small-btn" type="button">Hoy</button>
+            <button id="nextMonthBtn" class="small-btn" type="button">›</button>
+          </div>
         </div>
 
-        <div id="calendarGrid" class="calendar-grid"></div>
+        <div class="calendar-controls">
+          <select id="calendarEmployeeSelect"></select>
+
+          <div class="view-toggle">
+            <button id="monthViewBtn" class="active" type="button">Mensual</button>
+            <button id="yearViewBtn" type="button">Anual</button>
+          </div>
+        </div>
+
+        <div class="legend">
+          <span><i class="dot work"></i>Trabajo</span>
+          <span><i class="dot day_off"></i>Día libre</span>
+          <span><i class="dot permission"></i>Permiso</span>
+          <span><i class="dot sick_leave"></i>Baja</span>
+          <span><i class="dot holiday"></i>Festivo</span>
+          <span><i class="dot vacation"></i>Vacaciones</span>
+          <span><i class="dot absence"></i>Ausencia</span>
+        </div>
+
+        <div id="monthlyCalendar" class="monthly-calendar"></div>
+        <div id="annualCalendar" class="annual-calendar hidden"></div>
       </section>
 
       <section id="recordsTab" class="tab">
@@ -111,7 +135,7 @@
       <section id="employeesTab" class="tab admin-only">
         <div class="section-head">
           <div>
-            <h2>Empleados</h2>
+            <h2>Equipo</h2>
             <p>Gestión inicial de empleados.</p>
           </div>
         </div>
@@ -155,11 +179,37 @@
       <button data-tab="homeTab" class="active" type="button">Inicio</button>
       <button data-tab="calendarTab" type="button">Calendario</button>
       <button data-tab="recordsTab" type="button">Fichajes</button>
-      <button data-tab="employeesTab" id="employeesNavBtn" type="button">Empleados</button>
+      <button data-tab="employeesTab" id="employeesNavBtn" type="button">Equipo</button>
       <button data-tab="settingsTab" type="button">Ajustes</button>
     </nav>
   </div>
 
-  <script type="module" src="./app.js?v=10"></script>
+  <div id="calendarModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">Estado laboral</p>
+          <h3 id="modalDateTitle">—</h3>
+        </div>
+        <button id="closeCalendarModalBtn" class="icon-btn" type="button">×</button>
+      </div>
+
+      <div class="status-options">
+        <button data-status="work" type="button"><i class="dot work"></i>Trabajo</button>
+        <button data-status="day_off" type="button"><i class="dot day_off"></i>Día libre</button>
+        <button data-status="permission" type="button"><i class="dot permission"></i>Permiso</button>
+        <button data-status="sick_leave" type="button"><i class="dot sick_leave"></i>Baja</button>
+        <button data-status="holiday" type="button"><i class="dot holiday"></i>Festivo</button>
+        <button data-status="vacation" type="button"><i class="dot vacation"></i>Vacaciones</button>
+        <button data-status="absence" type="button"><i class="dot absence"></i>Ausencia / trabajo fuera</button>
+      </div>
+
+      <textarea id="calendarNotes" placeholder="Observaciones"></textarea>
+
+      <button id="saveCalendarDayBtn" class="primary-btn" type="button">Guardar</button>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js?v=11"></script>
 </body>
 </html>
