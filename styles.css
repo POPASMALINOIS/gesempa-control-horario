@@ -598,3 +598,75 @@ button {
     grid-template-columns: 1fr;
   }
 }
+.field-label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.field-label input {
+  margin: 0;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-actions button {
+  width: 100%;
+}
+
+.employee-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.employee-main strong {
+  font-size: 16px;
+}
+
+.employee-meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.employee-badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.employee-badge.inactive {
+  background: #f1f1ef;
+  color: #777;
+}
+
+.edit-employee-btn {
+  background: #eef4ef;
+  color: var(--green-dark);
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .form-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-item {
+    grid-template-columns: 1fr;
+  }
+}
