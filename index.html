@@ -107,14 +107,14 @@
           </div>
         </div>
 
-        <div class="legend">
-          <span><i class="dot work"></i>Trabajo</span>
-          <span><i class="dot day_off"></i>Día libre</span>
-          <span><i class="dot permission"></i>Permiso</span>
-          <span><i class="dot sick_leave"></i>Baja</span>
-          <span><i class="dot holiday"></i>Festivo</span>
-          <span><i class="dot vacation"></i>Vacaciones</span>
-          <span><i class="dot absence"></i>Ausencia</span>
+        <div class="paint-toolbar">
+          <button class="paint-btn active" data-status="work" type="button"><i class="dot work"></i>Trabajo</button>
+          <button class="paint-btn" data-status="day_off" type="button"><i class="dot day_off"></i>Día libre</button>
+          <button class="paint-btn" data-status="permission" type="button"><i class="dot permission"></i>Permiso</button>
+          <button class="paint-btn" data-status="sick_leave" type="button"><i class="dot sick_leave"></i>Baja</button>
+          <button class="paint-btn" data-status="holiday" type="button"><i class="dot holiday"></i>Festivo</button>
+          <button class="paint-btn" data-status="vacation" type="button"><i class="dot vacation"></i>Vacaciones</button>
+          <button class="paint-btn" data-status="absence" type="button"><i class="dot absence"></i>Ausencia</button>
         </div>
 
         <div id="monthlyCalendar" class="monthly-calendar"></div>
@@ -184,32 +184,6 @@
     </nav>
   </div>
 
-  <div id="calendarModal" class="modal hidden">
-    <div class="modal-card">
-      <div class="modal-head">
-        <div>
-          <p class="eyebrow">Estado laboral</p>
-          <h3 id="modalDateTitle">—</h3>
-        </div>
-        <button id="closeCalendarModalBtn" class="icon-btn" type="button">×</button>
-      </div>
-
-      <div class="status-options">
-        <button data-status="work" type="button"><i class="dot work"></i>Trabajo</button>
-        <button data-status="day_off" type="button"><i class="dot day_off"></i>Día libre</button>
-        <button data-status="permission" type="button"><i class="dot permission"></i>Permiso</button>
-        <button data-status="sick_leave" type="button"><i class="dot sick_leave"></i>Baja</button>
-        <button data-status="holiday" type="button"><i class="dot holiday"></i>Festivo</button>
-        <button data-status="vacation" type="button"><i class="dot vacation"></i>Vacaciones</button>
-        <button data-status="absence" type="button"><i class="dot absence"></i>Ausencia / trabajo fuera</button>
-      </div>
-
-      <textarea id="calendarNotes" placeholder="Observaciones"></textarea>
-
-      <button id="saveCalendarDayBtn" class="primary-btn" type="button">Guardar</button>
-    </div>
-  </div>
-
-  <script type="module" src="./app.js?v=11"></script>
+  <script type="module" src="./app.js?v=13"></script>
 </body>
 </html>
