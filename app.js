@@ -68,9 +68,6 @@ const state = {
   selectedCalendarStatus: "work"
 };
 
-let calendarPainting = false;
-let calendarLastPaintedDate = null;
-
 const els = {
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
@@ -840,64 +837,8 @@ function renderMonthlyCalendar() {
 
   els.monthlyCalendar.innerHTML = html;
 
-  attachCalendarPaintEvents();
-}
-
-function attachCalendarPaintEvents() {
-  const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
-
-  days.forEach(day => {
-    day.addEventListener("mousedown", async (event) => {
-      event.preventDefault();
-
-      calendarPainting = true;
-
-      const date = event.currentTarget.dataset.date;
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    });
-
-    day.addEventListener("mouseenter", async (event) => {
-      if (!calendarPainting) return;
-
-      const date = event.currentTarget.dataset.date;
-
-      if (!date || date === calendarLastPaintedDate) return;
-
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    });
-
-    day.addEventListener("touchstart", async (event) => {
-      calendarPainting = true;
-
-      const date = event.currentTarget.dataset.date;
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    }, { passive: true });
-
-    day.addEventListener("touchmove", async (event) => {
-      if (!calendarPainting) return;
-
-      const touch = event.touches[0];
-      if (!touch) return;
-
-      const element = document.elementFromPoint(touch.clientX, touch.clientY);
-      const cell = element?.closest(".calendar-day[data-date]");
-
-      if (!cell) return;
-
-      const date = cell.dataset.date;
-
-      if (!date || date === calendarLastPaintedDate) return;
-
-      calendarLastPaintedDate = date;
-
-      await paintCalendarDay(date);
-    }, { passive: true });
+  els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]").forEach(btn => {
+  btn.addEventListener("click", () => paintCalendarDay(btn.dataset.date));
   });
 }
 
@@ -1269,13 +1210,3 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
-
-document.addEventListener("mouseup", () => {
-  calendarPainting = false;
-  calendarLastPaintedDate = null;
-});
-
-document.addEventListener("touchend", () => {
-  calendarPainting = false;
-  calendarLastPaintedDate = null;
-});
