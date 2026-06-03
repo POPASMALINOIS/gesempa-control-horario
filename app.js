@@ -658,18 +658,44 @@ async function paintCalendarDay(date) {
 
   if (!date || !state.selectedCalendarEmployeeId) return;
 
-  const statusInfo = WORK_STATUSES[state.selectedCalendarStatus];
-  const [year, month] = date.split("-").map(Number);
+  const existing = state.calendarDays[date];
 
   const selectedEmployee = state.employees.find(
     e => e.employeeId === state.selectedCalendarEmployeeId
   );
 
-  const previousCreatedAt = state.calendarDays[date]?.createdAt || serverTimestamp();
   const id = calendarDocId(state.selectedCalendarEmployeeId, date);
 
+  // Si el día ya tiene el mismo estado seleccionado, se limpia
+  if (existing?.status === state.selectedCalendarStatus) {
+    delete state.calendarDays[date];
+    renderCalendar();
+
+    await setDoc(doc(db, "calendarDays", id), {
+      companyId: APP_COMPANY_ID,
+      employeeId: state.selectedCalendarEmployeeId,
+      employeeName: selectedEmployee?.name || "",
+      date,
+      status: null,
+      statusLabel: "",
+      isWorkingDay: null,
+      isPresenceInOffice: null,
+      notes: "",
+      cleared: true,
+      updatedBy: state.user.uid,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return;
+  }
+
+  const statusInfo = WORK_STATUSES[state.selectedCalendarStatus];
+  const [year, month] = date.split("-").map(Number);
+
+  const previousCreatedAt = existing?.createdAt || serverTimestamp();
+
   state.calendarDays[date] = {
-    ...(state.calendarDays[date] || {}),
+    ...(existing || {}),
     companyId: APP_COMPANY_ID,
     employeeId: state.selectedCalendarEmployeeId,
     employeeName: selectedEmployee?.name || "",
@@ -681,6 +707,7 @@ async function paintCalendarDay(date) {
     isWorkingDay: statusInfo.isWorkingDay,
     isPresenceInOffice: statusInfo.isPresenceInOffice,
     notes: "",
+    cleared: false,
     updatedBy: state.user.uid
   };
 
@@ -698,6 +725,7 @@ async function paintCalendarDay(date) {
     isWorkingDay: statusInfo.isWorkingDay,
     isPresenceInOffice: statusInfo.isPresenceInOffice,
     notes: "",
+    cleared: false,
     createdBy: state.user.uid,
     updatedBy: state.user.uid,
     createdAt: previousCreatedAt,
