@@ -10,3 +10,7 @@ export const firebaseConfig = {
 
 export const APP_COMPANY_ID = "gesempa-pymes";
 export const APP_COMPANY_NAME = "GESEMPA-PYMES";
+export const MASTER_ADMIN_EMAILS = [
+  "jcsanchez@gesempapyme.es",
+  "javier@gesempapyme.es"
+];
