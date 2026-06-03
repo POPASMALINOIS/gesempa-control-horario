@@ -35,6 +35,51 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 const $ = (id) => document.getElementById(id);
 
+const WORK_STATUSES = {
+  work: {
+    label: "Trabajo",
+    isWorkingDay: true,
+    isPresenceInOffice: true
+  },
+  day_off: {
+    label: "Día libre",
+    isWorkingDay: false,
+    isPresenceInOffice: false
+  },
+  permission: {
+    label: "Permiso",
+    isWorkingDay: false,
+    isPresenceInOffice: false
+  },
+  sick_leave: {
+    label: "Baja",
+    isWorkingDay: false,
+    isPresenceInOffice: false
+  },
+  holiday: {
+    label: "Festivo",
+    isWorkingDay: false,
+    isPresenceInOffice: false
+  },
+  vacation: {
+    label: "Vacaciones",
+    isWorkingDay: false,
+    isPresenceInOffice: false
+  },
+  absence: {
+    label: "Ausencia",
+    isWorkingDay: true,
+    isPresenceInOffice: false
+  }
+};
+
+const MONTHS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+const WEEKDAYS = ["L", "M", "X", "J", "V", "S", "D"];
+
 const loginView = $("loginView");
 const appView = $("appView");
 
@@ -43,7 +88,13 @@ const state = {
   profile: null,
   employee: null,
   employees: [],
-  todayRecord: null
+  todayRecord: null,
+  calendarDays: {},
+  selectedCalendarEmployeeId: null,
+  calendarDate: new Date(),
+  calendarView: "month",
+  selectedCalendarDate: null,
+  selectedCalendarStatus: "work"
 };
 
 const els = {
@@ -72,8 +123,22 @@ const els = {
   employeeColor: $("employeeColor"),
   employeeSchedule: $("employeeSchedule"),
   employeesNavBtn: $("employeesNavBtn"),
-  calendarGrid: $("calendarGrid"),
-  calendarEmployeeSelect: $("calendarEmployeeSelect")
+
+  calendarTitle: $("calendarTitle"),
+  calendarEmployeeSelect: $("calendarEmployeeSelect"),
+  prevMonthBtn: $("prevMonthBtn"),
+  nextMonthBtn: $("nextMonthBtn"),
+  todayCalendarBtn: $("todayCalendarBtn"),
+  monthViewBtn: $("monthViewBtn"),
+  yearViewBtn: $("yearViewBtn"),
+  monthlyCalendar: $("monthlyCalendar"),
+  annualCalendar: $("annualCalendar"),
+
+  calendarModal: $("calendarModal"),
+  modalDateTitle: $("modalDateTitle"),
+  closeCalendarModalBtn: $("closeCalendarModalBtn"),
+  calendarNotes: $("calendarNotes"),
+  saveCalendarDayBtn: $("saveCalendarDayBtn")
 };
 
 function showMessage(text) {
@@ -118,6 +183,27 @@ function formatMinutes(total) {
 
 function isAdmin() {
   return state.profile?.role === "admin" || state.employee?.role === "admin";
+}
+
+function currentYear() {
+  return state.calendarDate.getFullYear();
+}
+
+function currentMonth() {
+  return state.calendarDate.getMonth();
+}
+
+function formatDateKey(year, monthIndex, day) {
+  return `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function calendarDocId(employeeId, date) {
+  return `${APP_COMPANY_ID}_${employeeId}_${date}`;
+}
+
+function firstWeekdayMondayBased(year, monthIndex) {
+  const jsDay = new Date(year, monthIndex, 1).getDay();
+  return jsDay === 0 ? 6 : jsDay - 1;
 }
 
 async function ensureCompany() {
@@ -214,6 +300,10 @@ async function loadProfile(user) {
   state.employee = employeeSnap.exists()
     ? { id: employeeSnap.id, ...employeeSnap.data() }
     : null;
+
+  if (!state.selectedCalendarEmployeeId) {
+    state.selectedCalendarEmployeeId = state.employee?.employeeId || user.uid;
+  }
 }
 
 async function loadEmployees() {
@@ -226,6 +316,7 @@ async function loadEmployees() {
 
   state.employees = snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
+    .filter(e => e.active !== false)
     .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 }
 
@@ -246,13 +337,29 @@ async function loadTodayRecord() {
 
   const records = snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => {
-      const aTime = a.clockIn || "";
-      const bTime = b.clockIn || "";
-      return bTime.localeCompare(aTime);
-    });
+    .sort((a, b) => (b.clockIn || "").localeCompare(a.clockIn || ""));
 
   state.todayRecord = records[0] || null;
+}
+
+async function loadCalendarDays() {
+  if (!state.selectedCalendarEmployeeId) return;
+
+  const q = query(
+    collection(db, "calendarDays"),
+    where("companyId", "==", APP_COMPANY_ID),
+    where("employeeId", "==", state.selectedCalendarEmployeeId),
+    where("year", "==", currentYear())
+  );
+
+  const snap = await getDocs(q);
+
+  state.calendarDays = {};
+
+  snap.docs.forEach(d => {
+    const item = { id: d.id, ...d.data() };
+    state.calendarDays[item.date] = item;
+  });
 }
 
 function renderShell() {
@@ -431,10 +538,26 @@ function renderEmployees() {
         </div>
       `).join("")
     : "<p>No hay empleados creados.</p>";
+}
 
-  els.calendarEmployeeSelect.innerHTML = state.employees.length
-    ? state.employees.map(e => `<option value="${e.employeeId}">${e.name}</option>`).join("")
-    : `<option value="">Sin empleados</option>`;
+function renderCalendarEmployeeSelect() {
+  if (isAdmin()) {
+    els.calendarEmployeeSelect.disabled = false;
+    els.calendarEmployeeSelect.innerHTML = state.employees.length
+      ? state.employees.map(e => `
+          <option value="${e.employeeId}" ${e.employeeId === state.selectedCalendarEmployeeId ? "selected" : ""}>
+            ${e.name}
+          </option>
+        `).join("")
+      : `<option value="">Sin empleados</option>`;
+  } else {
+    els.calendarEmployeeSelect.disabled = true;
+    els.calendarEmployeeSelect.innerHTML = `
+      <option value="${state.employee.employeeId}">
+        ${state.employee.name}
+      </option>
+    `;
+  }
 }
 
 async function createEmployee(event) {
@@ -478,38 +601,178 @@ async function createEmployee(event) {
   await refreshData();
 }
 
-function renderCalendar() {
-  const year = new Date().getFullYear();
-  const today = todayKey();
+function renderMonthlyCalendar() {
+  const year = currentYear();
+  const month = currentMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const offset = firstWeekdayMondayBased(year, month);
 
-  const months = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ];
+  els.calendarTitle.textContent = `${MONTHS[month]} ${year}`;
 
-  els.calendarGrid.innerHTML = months.map((monthName, monthIndex) => {
+  let html = `
+    <div class="weekdays">
+      ${WEEKDAYS.map(d => `<span>${d}</span>`).join("")}
+    </div>
+    <div class="month-days">
+  `;
+
+  for (let i = 0; i < offset; i++) {
+    html += `<div class="calendar-day empty"></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = formatDateKey(year, month, day);
+    const record = state.calendarDays[date];
+    const status = record?.status;
+    const label = status ? WORK_STATUSES[status]?.label : "";
+    const todayClass = date === todayKey() ? "today" : "";
+    const statusClass = status ? `status-${status}` : "";
+
+    html += `
+      <button class="calendar-day ${todayClass} ${statusClass}" type="button" data-date="${date}">
+        <span class="day-number">${day}</span>
+        ${label ? `<span class="day-label">${label}</span>` : ""}
+      </button>
+    `;
+  }
+
+  html += `</div>`;
+
+  els.monthlyCalendar.innerHTML = html;
+
+  els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]").forEach(btn => {
+    btn.addEventListener("click", () => openCalendarModal(btn.dataset.date));
+  });
+}
+
+function renderAnnualCalendar() {
+  const year = currentYear();
+
+  els.calendarTitle.textContent = `${year}`;
+
+  els.annualCalendar.innerHTML = MONTHS.map((monthName, monthIndex) => {
     const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    const offset = firstWeekdayMondayBased(year, monthIndex);
 
-    const days = Array.from({ length: daysInMonth }, (_, i) => {
-      const day = i + 1;
-      const date = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    let daysHtml = "";
 
-      return `<div class="day ${date === today ? "today" : ""}">${day}</div>`;
-    }).join("");
+    for (let i = 0; i < offset; i++) {
+      daysHtml += `<div class="year-day empty"></div>`;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = formatDateKey(year, monthIndex, day);
+      const record = state.calendarDays[date];
+      const status = record?.status || "";
+      const title = record?.status ? `${date} · ${WORK_STATUSES[status]?.label || ""}` : date;
+
+      daysHtml += `
+        <button class="year-day ${status}" type="button" data-date="${date}" title="${title}"></button>
+      `;
+    }
 
     return `
-      <div class="month-card">
+      <div class="year-month">
         <h3>${monthName}</h3>
-        <div class="days">${days}</div>
+        <div class="year-days">${daysHtml}</div>
       </div>
     `;
   }).join("");
+
+  els.annualCalendar.querySelectorAll(".year-day[data-date]").forEach(btn => {
+    btn.addEventListener("click", () => openCalendarModal(btn.dataset.date));
+  });
+}
+
+function renderCalendar() {
+  renderCalendarEmployeeSelect();
+
+  const isMonth = state.calendarView === "month";
+
+  els.monthlyCalendar.classList.toggle("hidden", !isMonth);
+  els.annualCalendar.classList.toggle("hidden", isMonth);
+  els.monthViewBtn.classList.toggle("active", isMonth);
+  els.yearViewBtn.classList.toggle("active", !isMonth);
+
+  if (isMonth) {
+    renderMonthlyCalendar();
+  } else {
+    renderAnnualCalendar();
+  }
+}
+
+function openCalendarModal(date) {
+  if (!isAdmin()) {
+    alert("De momento solo el administrador puede modificar el calendario.");
+    return;
+  }
+
+  state.selectedCalendarDate = date;
+
+  const existing = state.calendarDays[date];
+  state.selectedCalendarStatus = existing?.status || "work";
+
+  els.modalDateTitle.textContent = dateLabel(date);
+  els.calendarNotes.value = existing?.notes || "";
+
+  document.querySelectorAll(".status-options button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.status === state.selectedCalendarStatus);
+  });
+
+  els.calendarModal.classList.remove("hidden");
+}
+
+function closeCalendarModal() {
+  els.calendarModal.classList.add("hidden");
+  state.selectedCalendarDate = null;
+}
+
+async function saveCalendarDay() {
+  if (!state.selectedCalendarDate || !state.selectedCalendarEmployeeId) return;
+
+  const statusInfo = WORK_STATUSES[state.selectedCalendarStatus];
+  const [year, month] = state.selectedCalendarDate.split("-").map(Number);
+
+  const selectedEmployee = state.employees.find(
+    e => e.employeeId === state.selectedCalendarEmployeeId
+  );
+
+  const id = calendarDocId(state.selectedCalendarEmployeeId, state.selectedCalendarDate);
+
+  await setDoc(doc(db, "calendarDays", id), {
+    companyId: APP_COMPANY_ID,
+    employeeId: state.selectedCalendarEmployeeId,
+    employeeName: selectedEmployee?.name || "",
+    date: state.selectedCalendarDate,
+    year,
+    month,
+    status: state.selectedCalendarStatus,
+    statusLabel: statusInfo.label,
+    isWorkingDay: statusInfo.isWorkingDay,
+    isPresenceInOffice: statusInfo.isPresenceInOffice,
+    notes: els.calendarNotes.value.trim(),
+    createdBy: state.user.uid,
+    updatedBy: state.user.uid,
+    updatedAt: serverTimestamp(),
+    createdAt: state.calendarDays[state.selectedCalendarDate]?.createdAt || serverTimestamp()
+  }, { merge: true });
+
+  closeCalendarModal();
+
+  await loadCalendarDays();
+  renderCalendar();
 }
 
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
+
+  if (!state.selectedCalendarEmployeeId) {
+    state.selectedCalendarEmployeeId = state.employee?.employeeId;
+  }
+
   await loadTodayRecord();
+  await loadCalendarDays();
 
   renderShell();
   renderClock();
@@ -577,6 +840,59 @@ els.logoutBtn.addEventListener("click", () => {
 
 els.clockBtn.addEventListener("click", handleClock);
 els.employeeForm.addEventListener("submit", createEmployee);
+
+els.prevMonthBtn.addEventListener("click", async () => {
+  state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
+  await loadCalendarDays();
+  renderCalendar();
+});
+
+els.nextMonthBtn.addEventListener("click", async () => {
+  state.calendarDate = new Date(currentYear(), currentMonth() + 1, 1);
+  await loadCalendarDays();
+  renderCalendar();
+});
+
+els.todayCalendarBtn.addEventListener("click", async () => {
+  state.calendarDate = new Date();
+  await loadCalendarDays();
+  renderCalendar();
+});
+
+els.monthViewBtn.addEventListener("click", () => {
+  state.calendarView = "month";
+  renderCalendar();
+});
+
+els.yearViewBtn.addEventListener("click", () => {
+  state.calendarView = "year";
+  renderCalendar();
+});
+
+els.calendarEmployeeSelect.addEventListener("change", async () => {
+  state.selectedCalendarEmployeeId = els.calendarEmployeeSelect.value;
+  await loadCalendarDays();
+  renderCalendar();
+});
+
+document.querySelectorAll(".status-options button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.selectedCalendarStatus = btn.dataset.status;
+
+    document.querySelectorAll(".status-options button").forEach(option => {
+      option.classList.toggle("active", option === btn);
+    });
+  });
+});
+
+els.closeCalendarModalBtn.addEventListener("click", closeCalendarModal);
+els.saveCalendarDayBtn.addEventListener("click", saveCalendarDay);
+
+els.calendarModal.addEventListener("click", (event) => {
+  if (event.target === els.calendarModal) {
+    closeCalendarModal();
+  }
+});
 
 document.querySelectorAll(".bottom-nav button").forEach(btn => {
   btn.addEventListener("click", () => {
