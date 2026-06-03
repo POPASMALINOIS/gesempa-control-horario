@@ -818,3 +818,8 @@ button {
   user-select: none;
   -webkit-user-select: none;
 }
+html,
+body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
