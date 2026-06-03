@@ -36,41 +36,13 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 const $ = (id) => document.getElementById(id);
 
 const WORK_STATUSES = {
-  work: {
-    label: "Trabajo",
-    isWorkingDay: true,
-    isPresenceInOffice: true
-  },
-  day_off: {
-    label: "Día libre",
-    isWorkingDay: false,
-    isPresenceInOffice: false
-  },
-  permission: {
-    label: "Permiso",
-    isWorkingDay: false,
-    isPresenceInOffice: false
-  },
-  sick_leave: {
-    label: "Baja",
-    isWorkingDay: false,
-    isPresenceInOffice: false
-  },
-  holiday: {
-    label: "Festivo",
-    isWorkingDay: false,
-    isPresenceInOffice: false
-  },
-  vacation: {
-    label: "Vacaciones",
-    isWorkingDay: false,
-    isPresenceInOffice: false
-  },
-  absence: {
-    label: "Ausencia",
-    isWorkingDay: true,
-    isPresenceInOffice: false
-  }
+  work: { label: "Trabajo", isWorkingDay: true, isPresenceInOffice: true },
+  day_off: { label: "Día libre", isWorkingDay: false, isPresenceInOffice: false },
+  permission: { label: "Permiso", isWorkingDay: false, isPresenceInOffice: false },
+  sick_leave: { label: "Baja", isWorkingDay: false, isPresenceInOffice: false },
+  holiday: { label: "Festivo", isWorkingDay: false, isPresenceInOffice: false },
+  vacation: { label: "Vacaciones", isWorkingDay: false, isPresenceInOffice: false },
+  absence: { label: "Ausencia", isWorkingDay: true, isPresenceInOffice: false }
 };
 
 const MONTHS = [
@@ -93,7 +65,6 @@ const state = {
   selectedCalendarEmployeeId: null,
   calendarDate: new Date(),
   calendarView: "month",
-  selectedCalendarDate: null,
   selectedCalendarStatus: "work"
 };
 
@@ -132,13 +103,7 @@ const els = {
   monthViewBtn: $("monthViewBtn"),
   yearViewBtn: $("yearViewBtn"),
   monthlyCalendar: $("monthlyCalendar"),
-  annualCalendar: $("annualCalendar"),
-
-  calendarModal: $("calendarModal"),
-  modalDateTitle: $("modalDateTitle"),
-  closeCalendarModalBtn: $("closeCalendarModalBtn"),
-  calendarNotes: $("calendarNotes"),
-  saveCalendarDayBtn: $("saveCalendarDayBtn")
+  annualCalendar: $("annualCalendar")
 };
 
 function showMessage(text) {
@@ -307,11 +272,7 @@ async function loadProfile(user) {
 }
 
 async function loadEmployees() {
-  const q = query(
-    collection(db, "employees"),
-    where("companyId", "==", APP_COMPANY_ID)
-  );
-
+  const q = query(collection(db, "employees"), where("companyId", "==", APP_COMPANY_ID));
   const snap = await getDocs(q);
 
   state.employees = snap.docs
@@ -394,10 +355,7 @@ function renderClock() {
   els.todayIn.textContent = timeLabel(record?.clockIn);
   els.todayOut.textContent = timeLabel(record?.clockOut);
 
-  const total = inside
-    ? minutesBetween(record.clockIn, nowIso())
-    : record?.totalMinutes || 0;
-
+  const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
   els.todayTotal.textContent = formatMinutes(total);
 
   els.todayIncident.textContent = inside
@@ -472,7 +430,6 @@ async function handleClock() {
     }
 
     await refreshData();
-
   } catch (error) {
     console.error(error);
     alert("Error al fichar: " + error.message);
@@ -487,20 +444,13 @@ async function renderRecords() {
     return;
   }
 
-  let q;
-
-  if (isAdmin()) {
-    q = query(
-      collection(db, "timeRecords"),
-      where("companyId", "==", APP_COMPANY_ID)
-    );
-  } else {
-    q = query(
-      collection(db, "timeRecords"),
-      where("companyId", "==", APP_COMPANY_ID),
-      where("employeeId", "==", state.employee.employeeId)
-    );
-  }
+  const q = isAdmin()
+    ? query(collection(db, "timeRecords"), where("companyId", "==", APP_COMPANY_ID))
+    : query(
+        collection(db, "timeRecords"),
+        where("companyId", "==", APP_COMPANY_ID),
+        where("employeeId", "==", state.employee.employeeId)
+      );
 
   const snap = await getDocs(q);
 
@@ -663,7 +613,7 @@ function renderAnnualCalendar() {
       const date = formatDateKey(year, monthIndex, day);
       const record = state.calendarDays[date];
       const status = record?.status || "";
-      const title = record?.status ? `${date} · ${WORK_STATUSES[status]?.label || ""}` : date;
+      const title = status ? `${date} · ${WORK_STATUSES[status]?.label || ""}` : date;
 
       daysHtml += `
         <button class="year-day ${status}" type="button" data-date="${date}" title="${title}"></button>
@@ -679,7 +629,7 @@ function renderAnnualCalendar() {
   }).join("");
 
   els.annualCalendar.querySelectorAll(".year-day[data-date]").forEach(btn => {
-    btn.addEventListener("click", () => openCalendarModal(btn.dataset.date));
+    btn.addEventListener("click", () => paintCalendarDay(btn.dataset.date));
   });
 }
 
@@ -700,66 +650,59 @@ function renderCalendar() {
   }
 }
 
-function openCalendarModal(date) {
+async function paintCalendarDay(date) {
   if (!isAdmin()) {
     alert("De momento solo el administrador puede modificar el calendario.");
     return;
   }
 
-  state.selectedCalendarDate = date;
-
-  const existing = state.calendarDays[date];
-  state.selectedCalendarStatus = existing?.status || "work";
-
-  els.modalDateTitle.textContent = dateLabel(date);
-  els.calendarNotes.value = existing?.notes || "";
-
-  document.querySelectorAll(".status-options button").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.status === state.selectedCalendarStatus);
-  });
-
-  els.calendarModal.classList.remove("hidden");
-}
-
-function closeCalendarModal() {
-  els.calendarModal.classList.add("hidden");
-  state.selectedCalendarDate = null;
-}
-
-async function saveCalendarDay() {
-  if (!state.selectedCalendarDate || !state.selectedCalendarEmployeeId) return;
+  if (!date || !state.selectedCalendarEmployeeId) return;
 
   const statusInfo = WORK_STATUSES[state.selectedCalendarStatus];
-  const [year, month] = state.selectedCalendarDate.split("-").map(Number);
+  const [year, month] = date.split("-").map(Number);
 
   const selectedEmployee = state.employees.find(
     e => e.employeeId === state.selectedCalendarEmployeeId
   );
 
-  const id = calendarDocId(state.selectedCalendarEmployeeId, state.selectedCalendarDate);
+  const previousCreatedAt = state.calendarDays[date]?.createdAt || serverTimestamp();
+  const id = calendarDocId(state.selectedCalendarEmployeeId, date);
 
-  await setDoc(doc(db, "calendarDays", id), {
+  state.calendarDays[date] = {
+    ...(state.calendarDays[date] || {}),
     companyId: APP_COMPANY_ID,
     employeeId: state.selectedCalendarEmployeeId,
     employeeName: selectedEmployee?.name || "",
-    date: state.selectedCalendarDate,
+    date,
     year,
     month,
     status: state.selectedCalendarStatus,
     statusLabel: statusInfo.label,
     isWorkingDay: statusInfo.isWorkingDay,
     isPresenceInOffice: statusInfo.isPresenceInOffice,
-    notes: els.calendarNotes.value.trim(),
+    notes: "",
+    updatedBy: state.user.uid
+  };
+
+  renderCalendar();
+
+  await setDoc(doc(db, "calendarDays", id), {
+    companyId: APP_COMPANY_ID,
+    employeeId: state.selectedCalendarEmployeeId,
+    employeeName: selectedEmployee?.name || "",
+    date,
+    year,
+    month,
+    status: state.selectedCalendarStatus,
+    statusLabel: statusInfo.label,
+    isWorkingDay: statusInfo.isWorkingDay,
+    isPresenceInOffice: statusInfo.isPresenceInOffice,
+    notes: "",
     createdBy: state.user.uid,
     updatedBy: state.user.uid,
-    updatedAt: serverTimestamp(),
-    createdAt: state.calendarDays[state.selectedCalendarDate]?.createdAt || serverTimestamp()
+    createdAt: previousCreatedAt,
+    updatedAt: serverTimestamp()
   }, { merge: true });
-
-  closeCalendarModal();
-
-  await loadCalendarDays();
-  renderCalendar();
 }
 
 async function refreshData() {
@@ -826,7 +769,6 @@ els.registerBtn.addEventListener("click", async () => {
 
     await updateProfile(cred.user, { displayName: cleanName });
     await createUserAndEmployee(cred.user, cleanName, email, "admin");
-
   } catch (error) {
     console.error(error);
     showMessage("Error al crear cuenta: " + error.message);
@@ -874,23 +816,14 @@ els.calendarEmployeeSelect.addEventListener("change", async () => {
   renderCalendar();
 });
 
-document.querySelectorAll(".status-options button").forEach(btn => {
+document.querySelectorAll(".paint-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     state.selectedCalendarStatus = btn.dataset.status;
 
-    document.querySelectorAll(".status-options button").forEach(option => {
+    document.querySelectorAll(".paint-btn").forEach(option => {
       option.classList.toggle("active", option === btn);
     });
   });
-});
-
-els.closeCalendarModalBtn.addEventListener("click", closeCalendarModal);
-els.saveCalendarDayBtn.addEventListener("click", saveCalendarDay);
-
-els.calendarModal.addEventListener("click", (event) => {
-  if (event.target === els.calendarModal) {
-    closeCalendarModal();
-  }
 });
 
 document.querySelectorAll(".bottom-nav button").forEach(btn => {
@@ -914,7 +847,6 @@ onAuthStateChanged(auth, async (user) => {
     appView.classList.remove("hidden");
 
     await refreshData();
-
   } catch (error) {
     console.error(error);
     showMessage("Error cargando la app: " + error.message);
