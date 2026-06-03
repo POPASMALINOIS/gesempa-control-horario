@@ -1,4 +1,4 @@
-import { firebaseConfig, APP_COMPANY_ID, APP_COMPANY_NAME } from "./firebase-config.js";
+import { firebaseConfig, APP_COMPANY_ID, APP_COMPANY_NAME, MASTER_ADMIN_EMAILS } from "./firebase-config.js";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
@@ -146,8 +146,13 @@ function formatMinutes(total) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
+function isMasterAdmin() {
+  const email = state.user?.email?.toLowerCase();
+  return MASTER_ADMIN_EMAILS.includes(email);
+}
+
 function isAdmin() {
-  return state.profile?.role === "admin" || state.employee?.role === "admin";
+  return isMasterAdmin();
 }
 
 function currentYear() {
@@ -185,17 +190,18 @@ async function ensureCompany() {
   }
 }
 
-async function createUserAndEmployee(user, name, email, role = "admin") {
+async function createUserAndEmployee(user, name, email, role = "employee") {
   await ensureCompany();
 
-  const cleanName = name || nameFromEmail(email);
+  const cleanEmail = email.toLowerCase();
+  const finalRole = MASTER_ADMIN_EMAILS.includes(cleanEmail) ? "admin" : "employee";
 
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     companyId: APP_COMPANY_ID,
     name: cleanName,
     email,
-    role,
+    role: finalRole,
     employeeId: user.uid,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
@@ -209,7 +215,7 @@ async function createUserAndEmployee(user, name, email, role = "admin") {
     email,
     color: "#0f7a3b",
     baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-    role,
+    role: finalRole,
     clockStatus: "outside",
     todayWorkStatus: "work",
     active: true,
@@ -226,7 +232,7 @@ async function loadProfile(user) {
   let userSnap = await getDoc(userRef);
 
   if (!userSnap.exists()) {
-    await createUserAndEmployee(user, fallbackName, email, "admin");
+    await createUserAndEmployee(user, fallbackName, email, "employee");
     userSnap = await getDoc(userRef);
   }
 
@@ -245,7 +251,7 @@ async function loadProfile(user) {
       email: state.profile.email || email,
       color: "#0f7a3b",
       baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-      role: state.profile.role || "admin",
+      role: MASTER_ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "employee",
       clockStatus: "outside",
       todayWorkStatus: "work",
       active: true,
@@ -796,7 +802,7 @@ els.registerBtn.addEventListener("click", async () => {
     const cleanName = nameFromEmail(email);
 
     await updateProfile(cred.user, { displayName: cleanName });
-    await createUserAndEmployee(cred.user, cleanName, email, "admin");
+    await createUserAndEmployee(cred.user, cleanName, email, "employee");
   } catch (error) {
     console.error(error);
     showMessage("Error al crear cuenta: " + error.message);
