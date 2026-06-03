@@ -125,42 +125,50 @@
         <div class="section-head">
           <div>
             <h2>Equipo</h2>
-            <p>Gestión inicial de empleados.</p>
+            <p>Gestión de perfiles de empleados y administradores.</p>
           </div>
         </div>
-
+      
         <form id="employeeForm" class="employee-form">
-          <input id="employeeName" type="text" placeholder="Nombre del empleado" required />
+          <input id="editingEmployeeId" type="hidden" />
+      
+          <input id="employeeName" type="text" placeholder="Nombre completo" required />
           <input id="employeeEmail" type="email" placeholder="Email de acceso" required />
-
+      
           <select id="employeeRole">
             <option value="employee">Empleado</option>
             <option value="admin">Administrador</option>
           </select>
-
-          <input id="employeeColor" type="color" value="#0f7a3b" />
+      
+          <input id="employeePosition" type="text" placeholder="Cargo / puesto" />
+          <input id="employeePhone" type="text" placeholder="Teléfono" />
+          <input id="employeeDni" type="text" placeholder="DNI / NIE" />
+      
+          <label class="field-label">
+            Fecha de nacimiento
+            <input id="employeeBirthDate" type="date" />
+          </label>
+      
+          <label class="field-label">
+            Fecha de alta en empresa
+            <input id="employeeHireDate" type="date" />
+          </label>
+      
           <input id="employeeSchedule" type="text" value="L-V 09:00-14:00 / 16:00-19:00" />
-
-          <button class="primary-btn" type="submit">Guardar empleado</button>
-        </form>
-
-        <div id="employeesList" class="employees-list"></div>
-      </section>
-
-      <section id="settingsTab" class="tab">
-        <div class="section-head">
-          <div>
-            <h2>Ajustes</h2>
-            <p>Configuración básica.</p>
+          <input id="employeeColor" type="color" value="#0f7a3b" />
+      
+          <select id="employeeActive">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+      
+          <div class="form-actions">
+            <button id="saveEmployeeBtn" class="primary-btn" type="submit">Guardar perfil</button>
+            <button id="cancelEmployeeEditBtn" class="secondary-btn" type="button">Cancelar edición</button>
           </div>
-        </div>
-
-        <div class="settings-card">
-          <strong>Empresa</strong>
-          <span>GESEMPA-PYME</span>
-          <strong>Horario base</strong>
-          <span>L-V 09:00-14:00 / 16:00-19:00</span>
-        </div>
+        </form>
+      
+        <div id="employeesList" class="employees-list"></div>
       </section>
     </main>
 
