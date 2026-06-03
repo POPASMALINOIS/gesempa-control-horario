@@ -84,11 +84,6 @@ textarea {
   font-family: inherit;
 }
 
-textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
 button {
   border: 0;
   border-radius: 14px;
@@ -120,18 +115,6 @@ button {
   background: #eef4ef;
   color: var(--green-dark);
   padding: 10px 13px;
-}
-
-.icon-btn {
-  background: #f1f5f2;
-  color: var(--text);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  font-size: 22px;
-  display: grid;
-  place-items: center;
-  padding: 0;
 }
 
 .message {
@@ -351,23 +334,31 @@ button {
   box-shadow: 0 4px 12px rgba(0,0,0,.06);
 }
 
-.legend {
+.paint-toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-bottom: 12px;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  margin-bottom: 6px;
 }
 
-.legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.paint-btn {
+  white-space: nowrap;
   background: white;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 10px;
-  font-size: 12px;
   color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.paint-btn.active {
+  background: var(--green-soft);
+  color: var(--green-dark);
+  border-color: var(--green);
 }
 
 .dot {
@@ -409,17 +400,17 @@ button {
 }
 
 .calendar-day {
-  min-height: 74px;
-  border-radius: 16px;
+  min-height: 54px;
+  border-radius: 14px;
   background: #f7faf7;
   border: 1px solid var(--border);
-  padding: 8px;
+  padding: 7px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 6px;
+  align-items: flex-start;
+  justify-content: flex-start;
   cursor: pointer;
   position: relative;
+  color: var(--text);
 }
 
 .calendar-day.empty {
@@ -430,28 +421,56 @@ button {
 
 .calendar-day.today {
   outline: 2px solid var(--green);
+  outline-offset: 2px;
 }
 
 .day-number {
-  font-weight: 800;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
 }
 
-.day-label {
-  font-size: 11px;
-  font-weight: 800;
+.calendar-day.status-work {
+  background: var(--work);
   color: white;
-  padding: 4px 6px;
-  border-radius: 999px;
-  align-self: flex-start;
+  border-color: var(--work);
 }
 
-.calendar-day.status-work .day-label { background: var(--work); }
-.calendar-day.status-day_off .day-label { background: var(--day_off); color: #26312b; }
-.calendar-day.status-permission .day-label { background: var(--permission); }
-.calendar-day.status-sick_leave .day-label { background: var(--sick_leave); }
-.calendar-day.status-holiday .day-label { background: var(--holiday); }
-.calendar-day.status-vacation .day-label { background: var(--vacation); }
-.calendar-day.status-absence .day-label { background: var(--absence); }
+.calendar-day.status-day_off {
+  background: var(--day_off);
+  color: #17201a;
+  border-color: var(--day_off);
+}
+
+.calendar-day.status-permission {
+  background: var(--permission);
+  color: white;
+  border-color: var(--permission);
+}
+
+.calendar-day.status-sick_leave {
+  background: var(--sick_leave);
+  color: white;
+  border-color: var(--sick_leave);
+}
+
+.calendar-day.status-holiday {
+  background: var(--holiday);
+  color: white;
+  border-color: var(--holiday);
+}
+
+.calendar-day.status-vacation {
+  background: var(--vacation);
+  color: white;
+  border-color: var(--vacation);
+}
+
+.calendar-day.status-absence {
+  background: var(--absence);
+  color: white;
+  border-color: var(--absence);
+}
 
 .annual-calendar {
   display: grid;
@@ -571,58 +590,6 @@ button {
   background: #f2f8f4;
 }
 
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 15, 10, .45);
-  display: grid;
-  place-items: end center;
-  z-index: 50;
-  padding: 18px;
-}
-
-.modal-card {
-  background: white;
-  width: 100%;
-  max-width: 460px;
-  border-radius: 26px;
-  padding: 18px;
-  box-shadow: 0 24px 70px rgba(0,0,0,.22);
-}
-
-.modal-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  align-items: start;
-  margin-bottom: 14px;
-}
-
-.modal-head h3 {
-  margin: 0;
-}
-
-.status-options {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.status-options button {
-  background: #f7faf7;
-  color: var(--text);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-.status-options button.active {
-  border-color: var(--green);
-  background: var(--green-soft);
-}
-
 @media (max-width: 720px) {
   .app-main {
     padding: 14px;
@@ -658,13 +625,12 @@ button {
   }
 
   .calendar-day {
-    min-height: 58px;
+    min-height: 46px;
     padding: 6px;
   }
 
-  .day-label {
-    font-size: 9px;
-    padding: 3px 5px;
+  .day-number {
+    font-size: 13px;
   }
 
   .annual-calendar {
