@@ -193,13 +193,14 @@ async function createUserAndEmployee(user, name, email, role = "employee") {
   await ensureCompany();
 
   const cleanEmail = email.toLowerCase();
+  const cleanName = name || nameFromEmail(cleanEmail);
   const finalRole = MASTER_ADMIN_EMAILS.includes(cleanEmail) ? "admin" : "employee";
 
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     companyId: APP_COMPANY_ID,
     name: cleanName,
-    email,
+    email: cleanEmail,
     role: finalRole,
     employeeId: user.uid,
     createdAt: serverTimestamp(),
@@ -211,7 +212,7 @@ async function createUserAndEmployee(user, name, email, role = "employee") {
     employeeId: user.uid,
     userId: user.uid,
     name: cleanName,
-    email,
+    email: cleanEmail,
     color: "#0f7a3b",
     baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
     role: finalRole,
@@ -243,20 +244,20 @@ async function loadProfile(user) {
 
   if (!employeeSnap.exists()) {
     await setDoc(doc(db, "employees", user.uid), {
-      companyId: APP_COMPANY_ID,
-      employeeId: user.uid,
-      userId: user.uid,
-      name: state.profile.name || fallbackName,
-      email: state.profile.email || email,
-      color: "#0f7a3b",
-      baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-      role: MASTER_ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "employee",
-      clockStatus: "outside",
-      todayWorkStatus: "work",
-      active: true,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
+  companyId: APP_COMPANY_ID,
+  employeeId: user.uid,
+  userId: user.uid,
+  name: state.profile.name || fallbackName,
+  email: state.profile.email || email,
+  color: "#0f7a3b",
+  baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
+  role: MASTER_ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "employee",
+  clockStatus: "outside",
+  todayWorkStatus: "work",
+  active: true,
+  createdAt: serverTimestamp(),
+  updatedAt: serverTimestamp()
+});
 
     await updateDoc(userRef, {
       employeeId: user.uid,
