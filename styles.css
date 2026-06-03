@@ -20,9 +20,7 @@
   --absence: #7c3aed;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -31,9 +29,7 @@ body {
   color: var(--text);
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
 .login-view {
   min-height: 100vh;
@@ -72,8 +68,7 @@ body {
 }
 
 input,
-select,
-textarea {
+select {
   width: 100%;
   border: 1px solid var(--border);
   background: #fff;
@@ -166,13 +161,8 @@ button {
   margin: 0 auto;
 }
 
-.tab {
-  display: none;
-}
-
-.tab.active {
-  display: block;
-}
+.tab { display: none; }
+.tab.active { display: block; }
 
 .status-card,
 .clock-card,
@@ -244,9 +234,7 @@ button {
   border-radius: 22px;
 }
 
-.clock-btn.exit {
-  background: #202820;
-}
+.clock-btn.exit { background: #202820; }
 
 .clock-btn:disabled {
   opacity: .65;
@@ -273,9 +261,7 @@ button {
   font-size: 13px;
 }
 
-.today-grid strong {
-  font-size: 18px;
-}
+.today-grid strong { font-size: 18px; }
 
 .section-head,
 .calendar-toolbar {
@@ -287,9 +273,7 @@ button {
 }
 
 .section-head h2,
-.calendar-toolbar h2 {
-  margin: 0;
-}
+.calendar-toolbar h2 { margin: 0; }
 
 .section-head p {
   margin: 4px 0 0;
@@ -309,9 +293,7 @@ button {
   margin-bottom: 12px;
 }
 
-.calendar-controls select {
-  margin: 0;
-}
+.calendar-controls select { margin: 0; }
 
 .view-toggle {
   display: flex;
@@ -409,7 +391,6 @@ button {
   align-items: flex-start;
   justify-content: flex-start;
   cursor: pointer;
-  position: relative;
   color: var(--text);
 }
 
@@ -524,14 +505,10 @@ button {
 }
 
 .record-item:last-child,
-.employee-item:last-child {
-  border-bottom: 0;
-}
+.employee-item:last-child { border-bottom: 0; }
 
 .record-item strong,
-.employee-item strong {
-  display: block;
-}
+.employee-item strong { display: block; }
 
 .record-item span,
 .employee-item span {
@@ -560,9 +537,7 @@ button {
   gap: 8px;
 }
 
-.settings-card span {
-  color: var(--muted);
-}
+.settings-card span { color: var(--muted); }
 
 .bottom-nav {
   position: fixed;
@@ -591,21 +566,13 @@ button {
 }
 
 @media (max-width: 720px) {
-  .app-main {
-    padding: 14px;
-  }
+  .app-main { padding: 14px; }
 
-  .status-card {
-    align-items: stretch;
-  }
+  .status-card { align-items: stretch; }
 
-  .today-grid {
-    grid-template-columns: 1fr;
-  }
+  .today-grid { grid-template-columns: 1fr; }
 
-  .employee-form {
-    grid-template-columns: 1fr;
-  }
+  .employee-form { grid-template-columns: 1fr; }
 
   .section-head,
   .calendar-toolbar {
@@ -616,22 +583,16 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .view-toggle {
-    width: 100%;
-  }
+  .view-toggle { width: 100%; }
 
-  .view-toggle button {
-    flex: 1;
-  }
+  .view-toggle button { flex: 1; }
 
   .calendar-day {
     min-height: 46px;
     padding: 6px;
   }
 
-  .day-number {
-    font-size: 13px;
-  }
+  .day-number { font-size: 13px; }
 
   .annual-calendar {
     grid-template-columns: 1fr;
