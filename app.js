@@ -72,7 +72,6 @@ const els = {
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
   loginBtn: $("loginBtn"),
-  registerBtn: $("registerBtn"),
   authMessage: $("authMessage"),
 
   logoutBtn: $("logoutBtn"),
@@ -783,29 +782,6 @@ els.loginBtn.addEventListener("click", async () => {
   } catch (error) {
     console.error(error);
     showMessage("Error al entrar: " + error.message);
-  }
-});
-
-els.registerBtn.addEventListener("click", async () => {
-  showMessage("");
-
-  const email = els.authEmail.value.trim().toLowerCase();
-  const password = els.authPassword.value;
-
-  if (!email || !password) {
-    showMessage("Introduce email y contraseña.");
-    return;
-  }
-
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    const cleanName = nameFromEmail(email);
-
-    await updateProfile(cred.user, { displayName: cleanName });
-    await createUserAndEmployee(cred.user, cleanName, email, "employee");
-  } catch (error) {
-    console.error(error);
-    showMessage("Error al crear cuenta: " + error.message);
   }
 });
 
