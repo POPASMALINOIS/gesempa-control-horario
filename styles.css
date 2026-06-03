@@ -810,3 +810,11 @@ button {
     font-size: 22px;
   }
 }
+
+.monthly-calendar,
+.month-days,
+.calendar-day {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
