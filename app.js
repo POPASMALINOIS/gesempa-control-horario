@@ -68,6 +68,9 @@ const state = {
   selectedCalendarStatus: "work"
 };
 
+let calendarPainting = false;
+let calendarLastPaintedDate = null;
+
 const els = {
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
@@ -837,8 +840,64 @@ function renderMonthlyCalendar() {
 
   els.monthlyCalendar.innerHTML = html;
 
-  els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]").forEach(btn => {
-    btn.addEventListener("click", () => paintCalendarDay(btn.dataset.date));
+  attachCalendarPaintEvents();
+}
+
+function attachCalendarPaintEvents() {
+  const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
+
+  days.forEach(day => {
+    day.addEventListener("mousedown", async (event) => {
+      event.preventDefault();
+
+      calendarPainting = true;
+
+      const date = event.currentTarget.dataset.date;
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+    day.addEventListener("mouseenter", async (event) => {
+      if (!calendarPainting) return;
+
+      const date = event.currentTarget.dataset.date;
+
+      if (!date || date === calendarLastPaintedDate) return;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+    day.addEventListener("touchstart", async (event) => {
+      calendarPainting = true;
+
+      const date = event.currentTarget.dataset.date;
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    }, { passive: true });
+
+    day.addEventListener("touchmove", async (event) => {
+      if (!calendarPainting) return;
+
+      const touch = event.touches[0];
+      if (!touch) return;
+
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      const cell = element?.closest(".calendar-day[data-date]");
+
+      if (!cell) return;
+
+      const date = cell.dataset.date;
+
+      if (!date || date === calendarLastPaintedDate) return;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    }, { passive: true });
   });
 }
 
@@ -896,6 +955,87 @@ function renderCalendar() {
   } else {
     renderAnnualCalendar();
   }
+}
+
+function attachCalendarPaintEvents() {
+
+  const days = document.querySelectorAll(".calendar-day");
+
+  days.forEach(day => {
+
+    day.addEventListener("mousedown", async e => {
+
+      calendarPainting = true;
+
+      const date = e.currentTarget.dataset.date;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+    day.addEventListener("mouseenter", async e => {
+
+      if (!calendarPainting) return;
+
+      const date = e.currentTarget.dataset.date;
+
+      if (date === calendarLastPaintedDate) return;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+    day.addEventListener("touchstart", async e => {
+
+      calendarPainting = true;
+
+      const date = e.currentTarget.dataset.date;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+    day.addEventListener("touchmove", async e => {
+
+      if (!calendarPainting) return;
+
+      const touch = document.elementFromPoint(
+        e.touches[0].clientX,
+        e.touches[0].clientY
+      );
+
+      if (!touch) return;
+
+      const cell = touch.closest(".calendar-day");
+
+      if (!cell) return;
+
+      const date = cell.dataset.date;
+
+      if (!date) return;
+
+      if (date === calendarLastPaintedDate) return;
+
+      calendarLastPaintedDate = date;
+
+      await paintCalendarDay(date);
+    });
+
+  });
+
+  document.addEventListener("mouseup", () => {
+    calendarPainting = false;
+    calendarLastPaintedDate = null;
+  });
+
+  document.addEventListener("touchend", () => {
+    calendarPainting = false;
+    calendarLastPaintedDate = null;
+  });
+
 }
 
 async function paintCalendarDay(date) {
@@ -1129,3 +1269,13 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
+
+document.addEventListener("mouseup", () => {
+  calendarPainting = false;
+  calendarLastPaintedDate = null;
+});
+
+document.addEventListener("touchend", () => {
+  calendarPainting = false;
+  calendarLastPaintedDate = null;
+});
