@@ -1226,3 +1226,21 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
+
+document.addEventListener("gesturestart", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("gesturechange", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("gestureend", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("touchmove", function (event) {
+  if (event.scale !== 1) {
+    event.preventDefault();
+  }
+}, { passive: false });
