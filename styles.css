@@ -823,3 +823,9 @@ body {
   touch-action: manipulation;
   overscroll-behavior: none;
 }
+html,
+body {
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
