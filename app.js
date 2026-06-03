@@ -87,11 +87,20 @@ const els = {
   recordsList: $("recordsList"),
   employeesList: $("employeesList"),
   employeeForm: $("employeeForm"),
+  editingEmployeeId: $("editingEmployeeId"),
   employeeName: $("employeeName"),
   employeeEmail: $("employeeEmail"),
   employeeRole: $("employeeRole"),
-  employeeColor: $("employeeColor"),
+  employeePosition: $("employeePosition"),
+  employeePhone: $("employeePhone"),
+  employeeDni: $("employeeDni"),
+  employeeBirthDate: $("employeeBirthDate"),
+  employeeHireDate: $("employeeHireDate"),
   employeeSchedule: $("employeeSchedule"),
+  employeeColor: $("employeeColor"),
+  employeeActive: $("employeeActive"),
+  saveEmployeeBtn: $("saveEmployeeBtn"),
+  cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
 
   calendarTitle: $("calendarTitle"),
@@ -196,6 +205,38 @@ async function createUserAndEmployee(user, name, email, role = "employee") {
   const cleanName = name || nameFromEmail(cleanEmail);
   const finalRole = MASTER_ADMIN_EMAILS.includes(cleanEmail) ? "admin" : "employee";
 
+  const existingEmployeeQuery = query(
+    collection(db, "employees"),
+    where("companyId", "==", APP_COMPANY_ID),
+    where("email", "==", cleanEmail)
+  );
+
+  const existingEmployeeSnap = await getDocs(existingEmployeeQuery);
+
+  if (!existingEmployeeSnap.empty) {
+    const existingDoc = existingEmployeeSnap.docs[0];
+    const existingData = existingDoc.data();
+
+    await updateDoc(doc(db, "employees", existingDoc.id), {
+      userId: user.uid,
+      role: finalRole,
+      updatedAt: serverTimestamp()
+    });
+
+    await setDoc(doc(db, "users", user.uid), {
+      uid: user.uid,
+      companyId: APP_COMPANY_ID,
+      name: existingData.name || cleanName,
+      email: cleanEmail,
+      role: finalRole,
+      employeeId: existingData.employeeId || existingDoc.id,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return;
+  }
+
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     companyId: APP_COMPANY_ID,
@@ -213,9 +254,14 @@ async function createUserAndEmployee(user, name, email, role = "employee") {
     userId: user.uid,
     name: cleanName,
     email: cleanEmail,
+    role: finalRole,
+    position: finalRole === "admin" ? "Administrador" : "Empleado",
+    phone: "",
+    dni: "",
+    birthDate: "",
+    hireDate: "",
     color: "#0f7a3b",
     baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
-    role: finalRole,
     clockStatus: "outside",
     todayWorkStatus: "work",
     active: true,
@@ -489,11 +535,36 @@ function renderEmployees() {
   els.employeesList.innerHTML = state.employees.length
     ? state.employees.map(e => `
         <div class="employee-item">
-          <strong>${e.name}</strong>
-          <span>${e.email} · ${e.role === "admin" ? "Administrador" : "Empleado"} · ${e.baseSchedule || ""}</span>
+          <div class="employee-main">
+            <strong>${e.name || "Sin nombre"}</strong>
+            <div class="employee-meta">
+              ${e.email || ""}
+              · ${e.role === "admin" ? "Administrador" : "Empleado"}
+              ${e.position ? " · " + e.position : ""}
+              ${e.phone ? " · " + e.phone : ""}
+            </div>
+            <div class="employee-meta">
+              ${e.hireDate ? "Alta: " + dateLabel(e.hireDate) : ""}
+              ${e.birthDate ? " · Nacimiento: " + dateLabel(e.birthDate) : ""}
+            </div>
+            <span class="employee-badge ${e.active === false ? "inactive" : ""}">
+              ${e.active === false ? "Inactivo" : "Activo"}
+            </span>
+          </div>
+
+          <button class="edit-employee-btn" type="button" data-id="${e.id}">
+            Editar
+          </button>
         </div>
       `).join("")
     : "<p>No hay empleados creados.</p>";
+
+  document.querySelectorAll(".edit-employee-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const employee = state.employees.find(e => e.id === btn.dataset.id);
+      if (employee) loadEmployeeIntoForm(employee);
+    });
+  });
 }
 
 function renderCalendarEmployeeSelect() {
@@ -516,44 +587,97 @@ function renderCalendarEmployeeSelect() {
   }
 }
 
+function loadEmployeeIntoForm(employee) {
+  els.editingEmployeeId.value = employee.id;
+
+  els.employeeName.value = employee.name || "";
+  els.employeeEmail.value = employee.email || "";
+  els.employeeRole.value = employee.role || "employee";
+  els.employeePosition.value = employee.position || "";
+  els.employeePhone.value = employee.phone || "";
+  els.employeeDni.value = employee.dni || "";
+  els.employeeBirthDate.value = employee.birthDate || "";
+  els.employeeHireDate.value = employee.hireDate || "";
+  els.employeeSchedule.value = employee.baseSchedule || "L-V 09:00-14:00 / 16:00-19:00";
+  els.employeeColor.value = employee.color || "#0f7a3b";
+  els.employeeActive.value = employee.active === false ? "false" : "true";
+
+  els.saveEmployeeBtn.textContent = "Actualizar perfil";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetEmployeeForm() {
+  els.employeeForm.reset();
+
+  els.editingEmployeeId.value = "";
+  els.employeeRole.value = "employee";
+  els.employeeColor.value = "#0f7a3b";
+  els.employeeSchedule.value = "L-V 09:00-14:00 / 16:00-19:00";
+  els.employeeActive.value = "true";
+  els.saveEmployeeBtn.textContent = "Guardar perfil";
+}
+
 async function createEmployee(event) {
   event.preventDefault();
 
   if (!isAdmin()) {
-    alert("Solo el administrador puede crear empleados.");
+    alert("Solo el administrador puede gestionar perfiles.");
     return;
   }
 
   const name = els.employeeName.value.trim();
   const email = els.employeeEmail.value.trim().toLowerCase();
+  const editingId = els.editingEmployeeId.value;
 
   if (!name || !email) {
-    alert("Introduce nombre y email.");
+    alert("Introduce nombre completo y email.");
     return;
   }
 
-  const id = crypto.randomUUID();
+  const finalRole = MASTER_ADMIN_EMAILS.includes(email) ? "admin" : els.employeeRole.value;
+  const id = editingId || crypto.randomUUID();
 
-  await setDoc(doc(db, "employees", id), {
+  const payload = {
     companyId: APP_COMPANY_ID,
     employeeId: id,
-    userId: null,
     name,
     email,
+    role: finalRole,
+    position: els.employeePosition.value.trim(),
+    phone: els.employeePhone.value.trim(),
+    dni: els.employeeDni.value.trim(),
+    birthDate: els.employeeBirthDate.value,
+    hireDate: els.employeeHireDate.value,
     color: els.employeeColor.value,
     baseSchedule: els.employeeSchedule.value.trim(),
-    role: els.employeeRole.value,
-    clockStatus: "outside",
-    todayWorkStatus: "work",
-    active: true,
-    createdAt: serverTimestamp(),
+    active: els.employeeActive.value === "true",
     updatedAt: serverTimestamp()
-  });
+  };
 
-  els.employeeForm.reset();
-  els.employeeColor.value = "#0f7a3b";
-  els.employeeSchedule.value = "L-V 09:00-14:00 / 16:00-19:00";
+  if (!editingId) {
+    payload.userId = null;
+    payload.clockStatus = "outside";
+    payload.todayWorkStatus = "work";
+    payload.createdAt = serverTimestamp();
+  }
 
+  await setDoc(doc(db, "employees", id), payload, { merge: true });
+
+  if (editingId) {
+    const employee = state.employees.find(e => e.id === editingId);
+
+    if (employee?.userId) {
+      await setDoc(doc(db, "users", employee.userId), {
+        name,
+        email,
+        role: finalRole,
+        employeeId: id,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+  }
+
+  resetEmployeeForm();
   await refreshData();
 }
 
@@ -792,6 +916,7 @@ els.logoutBtn.addEventListener("click", () => {
 
 els.clockBtn.addEventListener("click", handleClock);
 els.employeeForm.addEventListener("submit", createEmployee);
+els.cancelEmployeeEditBtn.addEventListener("click", resetEmployeeForm);
 
 els.prevMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
