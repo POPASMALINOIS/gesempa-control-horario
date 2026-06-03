@@ -919,6 +919,10 @@ function attachCalendarPaintEvents() {
       calendarPainting = true;
       calendarLastPaintedDate = day.dataset.date;
 
+      try {
+        day.setPointerCapture(event.pointerId);
+      } catch (e) {}
+
       await paintCalendarDay(day.dataset.date);
     });
 
@@ -926,11 +930,24 @@ function attachCalendarPaintEvents() {
       if (!calendarPainting) return;
 
       const date = day.dataset.date;
-
       if (!date || date === calendarLastPaintedDate) return;
 
       calendarLastPaintedDate = date;
+      await paintCalendarDay(date);
+    });
 
+    day.addEventListener("pointermove", async (event) => {
+      if (!calendarPainting) return;
+
+      const target = document.elementFromPoint(event.clientX, event.clientY);
+      const cell = target?.closest(".calendar-day[data-date]");
+
+      if (!cell) return;
+
+      const date = cell.dataset.date;
+      if (!date || date === calendarLastPaintedDate) return;
+
+      calendarLastPaintedDate = date;
       await paintCalendarDay(date);
     });
   });
