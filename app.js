@@ -663,6 +663,27 @@ function openRecordModal(record = null) {
   }
 }
 
+function openCloseRecordModal(record) {
+  if (!isAdmin()) {
+    alert("Solo el administrador puede cerrar jornadas.");
+    return;
+  }
+
+  if (!record || record.status !== "open") {
+    alert("Este fichaje no está abierto.");
+    return;
+  }
+
+  openRecordModal(record);
+
+  els.recordModalTitle.textContent = "Cerrar jornada abierta";
+  els.recordClockOut.value = new Date().toTimeString().slice(0, 5);
+
+  if (!els.recordNotes.value) {
+    els.recordNotes.value = "Cierre manual de jornada abierta";
+  }
+}
+
 function closeRecordModal() {
   els.recordModal.classList.add("hidden");
 }
@@ -788,11 +809,19 @@ async function renderRecords() {
 
         ${
           isAdmin()
-            ? `<div class="record-actions">
+            ? <div class="record-actions">
+                ${
+                  isOpen
+                    ? `<button class="close-record-btn" type="button" data-id="${r.id}">
+                        Cerrar jornada
+                      </button>`
+                    : ""
+                }
+              
                 <button class="edit-record-btn" type="button" data-id="${r.id}">
                   Editar
                 </button>
-              </div>`
+              </div>
             : ""
         }
       </div>
@@ -806,6 +835,12 @@ async function renderRecords() {
         if (record) openRecordModal(record);
       });
     });
+    document.querySelectorAll(".close-record-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const record = records.find(r => r.id === btn.dataset.id);
+    if (record) openCloseRecordModal(record);
+  });
+});
   }
 }
 
