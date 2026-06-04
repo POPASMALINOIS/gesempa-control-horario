@@ -947,3 +947,9 @@ textarea {
 .record-open strong::before {
   content: "⚠ ";
 }
+.delete-record-btn {
+  background: rgba(220,38,38,.12);
+  color: #b91c1c;
+  padding: 9px 12px;
+  border-radius: 12px;
+}
