@@ -112,6 +112,17 @@ const els = {
   saveEmployeeBtn: $("saveEmployeeBtn"),
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
+  newRecordBtn: $("newRecordBtn"),
+  recordModal: $("recordModal"),
+  recordModalTitle: $("recordModalTitle"),
+  closeRecordModalBtn: $("closeRecordModalBtn"),
+  editingRecordId: $("editingRecordId"),
+  recordEmployeeSelect: $("recordEmployeeSelect"),
+  recordDate: $("recordDate"),
+  recordClockIn: $("recordClockIn"),
+  recordClockOut: $("recordClockOut"),
+  recordNotes: $("recordNotes"),
+  saveRecordBtn: $("saveRecordBtn"),
 
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
@@ -617,6 +628,108 @@ async function handleClock() {
     els.clockBtn.disabled = false;
     renderClock();
   }
+}
+
+function openRecordModal(record = null) {
+  if (!isAdmin()) {
+    alert("Solo el administrador puede gestionar fichajes manuales.");
+    return;
+  }
+
+  els.recordModal.classList.remove("hidden");
+
+  els.recordEmployeeSelect.innerHTML = state.employees.map(employee => `
+    <option value="${employee.employeeId}">
+      ${employee.name}
+    </option>
+  `).join("");
+
+  if (record) {
+    els.recordModalTitle.textContent = "Editar fichaje";
+    els.editingRecordId.value = record.id;
+    els.recordEmployeeSelect.value = record.employeeId;
+    els.recordDate.value = record.date || todayKey();
+    els.recordClockIn.value = record.clockIn ? new Date(record.clockIn).toTimeString().slice(0, 5) : "";
+    els.recordClockOut.value = record.clockOut ? new Date(record.clockOut).toTimeString().slice(0, 5) : "";
+    els.recordNotes.value = record.notes || "";
+  } else {
+    els.recordModalTitle.textContent = "Nuevo fichaje";
+    els.editingRecordId.value = "";
+    els.recordEmployeeSelect.value = state.selectedCalendarEmployeeId || state.employee?.employeeId || "";
+    els.recordDate.value = todayKey();
+    els.recordClockIn.value = "";
+    els.recordClockOut.value = "";
+    els.recordNotes.value = "";
+  }
+}
+
+function closeRecordModal() {
+  els.recordModal.classList.add("hidden");
+}
+
+function buildDateTimeIso(date, time) {
+  if (!date || !time) return null;
+  return new Date(`${date}T${time}:00`).toISOString();
+}
+
+async function saveManualRecord() {
+  if (!isAdmin()) {
+    alert("Solo el administrador puede guardar fichajes manuales.");
+    return;
+  }
+
+  const employeeId = els.recordEmployeeSelect.value;
+  const date = els.recordDate.value;
+  const clockInTime = els.recordClockIn.value;
+  const clockOutTime = els.recordClockOut.value;
+  const notes = els.recordNotes.value.trim();
+  const editingId = els.editingRecordId.value;
+
+  if (!employeeId || !date || !clockInTime) {
+    alert("Selecciona empleado, fecha y hora de entrada.");
+    return;
+  }
+
+  const employee = state.employees.find(e => e.employeeId === employeeId);
+
+  const clockIn = buildDateTimeIso(date, clockInTime);
+  const clockOut = clockOutTime ? buildDateTimeIso(date, clockOutTime) : null;
+
+  if (clockOut && new Date(clockOut) < new Date(clockIn)) {
+    alert("La hora de salida no puede ser anterior a la entrada.");
+    return;
+  }
+
+  const totalMinutes = clockOut ? minutesBetween(clockIn, clockOut) : 0;
+  const status = clockOut ? "closed" : "open";
+
+  const payload = {
+    companyId: APP_COMPANY_ID,
+    employeeId,
+    employeeName: employee?.name || "",
+    userId: employee?.userId || null,
+    date,
+    clockIn,
+    clockOut,
+    totalMinutes,
+    status,
+    notes,
+    manualEntry: true,
+    editedBy: state.user.uid,
+    editedAt: serverTimestamp(),
+    editReason: notes,
+    updatedAt: serverTimestamp()
+  };
+
+  if (editingId) {
+    await setDoc(doc(db, "timeRecords", editingId), payload, { merge: true });
+  } else {
+    payload.createdAt = serverTimestamp();
+    await addDoc(collection(db, "timeRecords"), payload);
+  }
+
+  closeRecordModal();
+  await refreshData();
 }
 
 async function renderRecords() {
@@ -1226,6 +1339,26 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
+
+if (els.newRecordBtn) {
+  els.newRecordBtn.addEventListener("click", () => openRecordModal());
+}
+
+if (els.closeRecordModalBtn) {
+  els.closeRecordModalBtn.addEventListener("click", closeRecordModal);
+}
+
+if (els.saveRecordBtn) {
+  els.saveRecordBtn.addEventListener("click", saveManualRecord);
+}
+
+if (els.recordModal) {
+  els.recordModal.addEventListener("click", (event) => {
+    if (event.target === els.recordModal) {
+      closeRecordModal();
+    }
+  });
+}
 
 document.addEventListener("gesturestart", function (event) {
   event.preventDefault();
