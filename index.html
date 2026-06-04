@@ -207,6 +207,41 @@
     </nav>
   </div>
 
-  <script type="module" src="./app.js?v=29"></script>
+  <div id="recordModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Gestión de fichaje</p>
+        <h3 id="recordModalTitle">Nuevo fichaje</h3>
+      </div>
+      <button id="closeRecordModalBtn" class="icon-btn" type="button">×</button>
+    </div>
+
+    <input id="editingRecordId" type="hidden" />
+
+    <select id="recordEmployeeSelect"></select>
+
+    <label class="field-label">
+      Fecha
+      <input id="recordDate" type="date" />
+    </label>
+
+    <label class="field-label">
+      Hora entrada
+      <input id="recordClockIn" type="time" />
+    </label>
+
+    <label class="field-label">
+      Hora salida
+      <input id="recordClockOut" type="time" />
+    </label>
+
+    <textarea id="recordNotes" placeholder="Observaciones / motivo de corrección"></textarea>
+
+    <button id="saveRecordBtn" class="primary-btn" type="button">Guardar fichaje</button>
+  </div>
+</div>
+  
+  <script type="module" src="./app.js?v=30"></script>
 </body>
 </html>
