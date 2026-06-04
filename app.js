@@ -750,25 +750,57 @@ async function renderRecords() {
 
   const records = snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
-    .slice(0, 40);
+    .sort((a, b) => {
+      const aKey = `${a.date || ""}_${a.clockIn || ""}`;
+      const bKey = `${b.date || ""}_${b.clockIn || ""}`;
+      return bKey.localeCompare(aKey);
+    })
+    .slice(0, 60);
 
   if (!records.length) {
     els.recordsList.innerHTML = "<p>No hay fichajes registrados todavía.</p>";
     return;
   }
 
-  els.recordsList.innerHTML = records.map(r => `
-    <div class="record-item">
-      <strong>${r.employeeName || "Empleado"} · ${dateLabel(r.date)}</strong>
-      <span>
-        Entrada: ${timeLabel(r.clockIn)}
-        · Salida: ${timeLabel(r.clockOut)}
-        · Total: ${formatMinutes(r.totalMinutes)}
-        · Estado: ${r.status === "open" ? "Abierto" : "Cerrado"}
-      </span>
-    </div>
-  `).join("");
+  els.recordsList.innerHTML = records.map(r => {
+    const isOpen = r.status === "open";
+
+    return `
+      <div class="record-item advanced-record ${isOpen ? "record-open" : ""}">
+        <div class="record-main">
+          <strong>${r.employeeName || "Empleado"} · ${dateLabel(r.date)}</strong>
+          <span>
+            Entrada: ${timeLabel(r.clockIn)}
+            · Salida: ${timeLabel(r.clockOut)}
+            · Total: ${formatMinutes(r.totalMinutes)}
+            · Estado: ${isOpen ? "Abierto" : "Cerrado"}
+          </span>
+
+          ${r.notes ? `<small>Observaciones: ${r.notes}</small>` : ""}
+          ${r.manualEntry ? `<small>Registro manual / corregido</small>` : ""}
+        </div>
+
+        ${
+          isAdmin()
+            ? `<div class="record-actions">
+                <button class="edit-record-btn" type="button" data-id="${r.id}">
+                  Editar
+                </button>
+              </div>`
+            : ""
+        }
+      </div>
+    `;
+  }).join("");
+
+  if (isAdmin()) {
+    document.querySelectorAll(".edit-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const record = records.find(r => r.id === btn.dataset.id);
+        if (record) openRecordModal(record);
+      });
+    });
+  }
 }
 
 function renderEmployees() {
