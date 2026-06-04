@@ -885,3 +885,15 @@ textarea {
   min-height: 90px;
   resize: vertical;
 }
+.primary-action {
+  background: var(--green);
+  color: white;
+  width: auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .primary-action {
+    width: 100%;
+  }
+}
