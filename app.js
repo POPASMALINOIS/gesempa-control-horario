@@ -645,14 +645,14 @@ function openRecordModal(record = null) {
   `).join("");
 
   if (record) {
-    els.recordModalTitle.textContent = "Editar fichaje";
-    els.editingRecordId.value = record.id;
-    els.recordEmployeeSelect.value = record.employeeId;
-    els.recordDate.value = record.date || todayKey();
-    els.recordClockIn.value = record.clockIn ? new Date(record.clockIn).toTimeString().slice(0, 5) : "";
-    els.recordClockOut.value = record.clockOut ? new Date(record.clockOut).toTimeString().slice(0, 5) : "";
-    els.recordNotes.value = record.notes || "";
-  } else {
+  els.recordModalTitle.textContent = "Editar fichaje";
+  els.editingRecordId.value = record.id;
+  els.recordEmployeeSelect.value = record.employeeId;
+  els.recordDate.value = record.date || todayKey();
+  els.recordClockIn.value = record.clockIn ? new Date(record.clockIn).toTimeString().slice(0, 5) : "";
+  els.recordClockOut.value = record.clockOut ? new Date(record.clockOut).toTimeString().slice(0, 5) : "";
+  els.recordNotes.value = record.notes || record.editReason || "";
+} else {
     els.recordModalTitle.textContent = "Nuevo fichaje";
     els.editingRecordId.value = "";
     els.recordEmployeeSelect.value = state.selectedCalendarEmployeeId || state.employee?.employeeId || "";
@@ -722,8 +722,14 @@ async function saveManualRecord() {
   };
 
   if (editingId) {
-    await setDoc(doc(db, "timeRecords", editingId), payload, { merge: true });
-  } else {
+  await setDoc(doc(db, "timeRecords", editingId), {
+    ...payload,
+    manualEntry: true,
+    editedBy: state.user.uid,
+    editedAt: serverTimestamp(),
+    editReason: notes || "Corrección manual de fichaje"
+  }, { merge: true });
+} else {
     payload.createdAt = serverTimestamp();
     await addDoc(collection(db, "timeRecords"), payload);
   }
