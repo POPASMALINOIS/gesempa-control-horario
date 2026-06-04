@@ -897,3 +897,43 @@ textarea {
     width: 100%;
   }
 }
+.advanced-record {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.record-main small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.record-open {
+  border-left: 4px solid var(--permission);
+  padding-left: 12px;
+}
+
+.record-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-record-btn {
+  background: #eef4ef;
+  color: var(--green-dark);
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .advanced-record {
+    grid-template-columns: 1fr;
+  }
+
+  .record-actions {
+    justify-content: flex-start;
+  }
+}
