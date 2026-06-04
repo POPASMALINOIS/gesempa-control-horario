@@ -937,3 +937,13 @@ textarea {
     justify-content: flex-start;
   }
 }
+.close-record-btn {
+  background: rgba(245, 158, 11, .16);
+  color: #92400e;
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+.record-open strong::before {
+  content: "⚠ ";
+}
