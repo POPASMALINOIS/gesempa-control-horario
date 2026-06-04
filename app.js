@@ -3,15 +3,19 @@ import { firebaseConfig, APP_COMPANY_ID, APP_COMPANY_NAME, MASTER_ADMIN_EMAILS }
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  setPersistence,
-  browserLocalPersistence,
-  updateProfile
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 import {
   getFirestore,
@@ -749,6 +753,36 @@ async function saveManualRecord() {
   await refreshData();
 }
 
+async function deleteRecord(recordId) {
+  if (!isAdmin()) {
+    alert("Solo los administradores pueden eliminar fichajes.");
+    return;
+  }
+
+  const firstConfirm = confirm(
+    "¿Seguro que deseas eliminar este fichaje?"
+  );
+
+  if (!firstConfirm) return;
+
+  const secondConfirm = confirm(
+    "Última confirmación.\n\nEl fichaje será eliminado definitivamente y no podrá recuperarse."
+  );
+
+  if (!secondConfirm) return;
+
+  try {
+    await deleteDoc(doc(db, "timeRecords", recordId));
+
+    await refreshData();
+
+    alert("Fichaje eliminado correctamente.");
+  } catch (error) {
+    console.error(error);
+    alert("Error eliminando fichaje.");
+  }
+}
+
 async function renderRecords() {
   if (!state.employee) {
     els.recordsList.innerHTML = "<p>No hay empleado cargado.</p>";
@@ -810,6 +844,10 @@ async function renderRecords() {
                 <button class="edit-record-btn" type="button" data-id="${r.id}">
                   Editar
                 </button>
+                
+                <button class="delete-record-btn" type="button" data-id="${r.id}">
+                  Eliminar
+                </button>
               </div>`
             : ""
         }
@@ -818,20 +856,33 @@ async function renderRecords() {
   }).join("");
 
   if (isAdmin()) {
-    document.querySelectorAll(".edit-record-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const record = records.find(r => r.id === btn.dataset.id);
-        if (record) openRecordModal(record, false);
-      });
-    });
 
-    document.querySelectorAll(".close-record-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const record = records.find(r => r.id === btn.dataset.id);
-        if (record) openRecordModal(record, true);
-      });
+  document.querySelectorAll(".edit-record-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const record = records.find(r => r.id === btn.dataset.id);
+
+      if (record) {
+        openRecordModal(record, false);
+      }
     });
-  }
+  });
+
+  document.querySelectorAll(".close-record-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const record = records.find(r => r.id === btn.dataset.id);
+
+      if (record) {
+        openRecordModal(record, true);
+      }
+    });
+  });
+
+  document.querySelectorAll(".delete-record-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      deleteRecord(btn.dataset.id);
+    });
+  });
+
 }
 
 function renderEmployees() {
