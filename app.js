@@ -841,10 +841,11 @@ async function renderRecords() {
                       </button>`
                     : ""
                 }
+
                 <button class="edit-record-btn" type="button" data-id="${r.id}">
                   Editar
                 </button>
-                
+
                 <button class="delete-record-btn" type="button" data-id="${r.id}">
                   Eliminar
                 </button>
@@ -856,33 +857,26 @@ async function renderRecords() {
   }).join("");
 
   if (isAdmin()) {
-
-  document.querySelectorAll(".edit-record-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const record = records.find(r => r.id === btn.dataset.id);
-
-      if (record) {
-        openRecordModal(record, false);
-      }
+    document.querySelectorAll(".edit-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const record = records.find(r => r.id === btn.dataset.id);
+        if (record) openRecordModal(record, false);
+      });
     });
-  });
 
-  document.querySelectorAll(".close-record-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const record = records.find(r => r.id === btn.dataset.id);
-
-      if (record) {
-        openRecordModal(record, true);
-      }
+    document.querySelectorAll(".close-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const record = records.find(r => r.id === btn.dataset.id);
+        if (record) openRecordModal(record, true);
+      });
     });
-  });
 
-  document.querySelectorAll(".delete-record-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      deleteRecord(btn.dataset.id);
+    document.querySelectorAll(".delete-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        deleteRecord(btn.dataset.id);
+      });
     });
-  });
-
+  }
 }
 
 function renderEmployees() {
