@@ -87,6 +87,7 @@ const els = {
   todayCalendarStatus: $("todayCalendarStatus"),
   upcomingCalendarEvents: $("upcomingCalendarEvents"),
   latestRecordsList: $("latestRecordsList"),
+
   clockStatus: $("clockStatus"),
   clockBtn: $("clockBtn"),
   todayIn: $("todayIn"),
@@ -95,6 +96,18 @@ const els = {
   todayIncident: $("todayIncident"),
 
   recordsList: $("recordsList"),
+  newRecordBtn: $("newRecordBtn"),
+  recordModal: $("recordModal"),
+  recordModalTitle: $("recordModalTitle"),
+  closeRecordModalBtn: $("closeRecordModalBtn"),
+  editingRecordId: $("editingRecordId"),
+  recordEmployeeSelect: $("recordEmployeeSelect"),
+  recordDate: $("recordDate"),
+  recordClockIn: $("recordClockIn"),
+  recordClockOut: $("recordClockOut"),
+  recordNotes: $("recordNotes"),
+  saveRecordBtn: $("saveRecordBtn"),
+
   employeesList: $("employeesList"),
   employeeForm: $("employeeForm"),
   editingEmployeeId: $("editingEmployeeId"),
@@ -112,17 +125,6 @@ const els = {
   saveEmployeeBtn: $("saveEmployeeBtn"),
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
-  newRecordBtn: $("newRecordBtn"),
-  recordModal: $("recordModal"),
-  recordModalTitle: $("recordModalTitle"),
-  closeRecordModalBtn: $("closeRecordModalBtn"),
-  editingRecordId: $("editingRecordId"),
-  recordEmployeeSelect: $("recordEmployeeSelect"),
-  recordDate: $("recordDate"),
-  recordClockIn: $("recordClockIn"),
-  recordClockOut: $("recordClockOut"),
-  recordNotes: $("recordNotes"),
-  saveRecordBtn: $("saveRecordBtn"),
 
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
@@ -214,6 +216,16 @@ function getGreeting() {
 
 function getEmployeeDisplayName() {
   return state.employee?.name || state.profile?.name || state.user?.email || "Empleado";
+}
+
+function buildDateTimeIso(date, time) {
+  if (!date || !time) return null;
+  return new Date(`${date}T${time}:00`).toISOString();
+}
+
+function isoToTimeInput(iso) {
+  if (!iso) return "";
+  return new Date(iso).toTimeString().slice(0, 5);
 }
 
 async function ensureCompany() {
@@ -630,11 +642,13 @@ async function handleClock() {
   }
 }
 
-function openRecordModal(record = null) {
+function openRecordModal(record = null, closeMode = false) {
   if (!isAdmin()) {
     alert("Solo el administrador puede gestionar fichajes manuales.");
     return;
   }
+
+  if (!els.recordModal) return;
 
   els.recordModal.classList.remove("hidden");
 
@@ -645,31 +659,34 @@ function openRecordModal(record = null) {
   `).join("");
 
   if (record) {
-  els.recordModalTitle.textContent = "Editar fichaje";
-  els.editingRecordId.value = record.id;
-  els.recordEmployeeSelect.value = record.employeeId;
-  els.recordDate.value = record.date || todayKey();
-  els.recordClockIn.value = record.clockIn ? new Date(record.clockIn).toTimeString().slice(0, 5) : "";
-  els.recordClockOut.value = record.clockOut ? new Date(record.clockOut).toTimeString().slice(0, 5) : "";
-  els.recordNotes.value = record.notes || record.editReason || "";
-} else {
-    els.recordModalTitle.textContent = "Nuevo fichaje";
-    els.editingRecordId.value = "";
-    els.recordEmployeeSelect.value = state.selectedCalendarEmployeeId || state.employee?.employeeId || "";
-    els.recordDate.value = todayKey();
-    els.recordClockIn.value = "";
-    els.recordClockOut.value = "";
-    els.recordNotes.value = "";
+    els.recordModalTitle.textContent = closeMode ? "Cerrar jornada abierta" : "Editar fichaje";
+    els.editingRecordId.value = record.id;
+    els.recordEmployeeSelect.value = record.employeeId;
+    els.recordDate.value = record.date || todayKey();
+    els.recordClockIn.value = isoToTimeInput(record.clockIn);
+    els.recordClockOut.value = closeMode ? new Date().toTimeString().slice(0, 5) : isoToTimeInput(record.clockOut);
+    els.recordNotes.value = record.notes || record.editReason || "";
+
+    if (closeMode && !els.recordNotes.value) {
+      els.recordNotes.value = "Cierre manual de jornada abierta";
+    }
+
+    return;
   }
+
+  els.recordModalTitle.textContent = "Nuevo fichaje";
+  els.editingRecordId.value = "";
+  els.recordEmployeeSelect.value = state.selectedCalendarEmployeeId || state.employee?.employeeId || "";
+  els.recordDate.value = todayKey();
+  els.recordClockIn.value = "";
+  els.recordClockOut.value = "";
+  els.recordNotes.value = "";
 }
 
 function closeRecordModal() {
-  els.recordModal.classList.add("hidden");
-}
-
-function buildDateTimeIso(date, time) {
-  if (!date || !time) return null;
-  return new Date(`${date}T${time}:00`).toISOString();
+  if (els.recordModal) {
+    els.recordModal.classList.add("hidden");
+  }
 }
 
 async function saveManualRecord() {
@@ -717,19 +734,13 @@ async function saveManualRecord() {
     manualEntry: true,
     editedBy: state.user.uid,
     editedAt: serverTimestamp(),
-    editReason: notes,
+    editReason: notes || "Corrección manual de fichaje",
     updatedAt: serverTimestamp()
   };
 
   if (editingId) {
-  await setDoc(doc(db, "timeRecords", editingId), {
-    ...payload,
-    manualEntry: true,
-    editedBy: state.user.uid,
-    editedAt: serverTimestamp(),
-    editReason: notes || "Corrección manual de fichaje"
-  }, { merge: true });
-} else {
+    await setDoc(doc(db, "timeRecords", editingId), payload, { merge: true });
+  } else {
     payload.createdAt = serverTimestamp();
     await addDoc(collection(db, "timeRecords"), payload);
   }
@@ -788,7 +799,7 @@ async function renderRecords() {
 
         ${
           isAdmin()
-            ? <div class="record-actions">
+            ? `<div class="record-actions">
                 ${
                   isOpen
                     ? `<button class="close-record-btn" type="button" data-id="${r.id}">
@@ -796,11 +807,10 @@ async function renderRecords() {
                       </button>`
                     : ""
                 }
-              
                 <button class="edit-record-btn" type="button" data-id="${r.id}">
                   Editar
                 </button>
-              </div>
+              </div>`
             : ""
         }
       </div>
@@ -808,14 +818,19 @@ async function renderRecords() {
   }).join("");
 
   if (isAdmin()) {
-    
     document.querySelectorAll(".edit-record-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const record = records.find(r => r.id === btn.dataset.id);
-        if (record) openRecordModal(record);
+        if (record) openRecordModal(record, false);
       });
     });
-  
+
+    document.querySelectorAll(".close-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const record = records.find(r => r.id === btn.dataset.id);
+        if (record) openRecordModal(record, true);
+      });
+    });
   }
 }
 
@@ -1091,9 +1106,11 @@ function attachCalendarPaintEvents() {
       if (!calendarPainting) return;
 
       const date = day.dataset.date;
+
       if (!date || date === calendarLastPaintedDate) return;
 
       calendarLastPaintedDate = date;
+
       await paintCalendarDay(date);
     });
 
@@ -1106,9 +1123,11 @@ function attachCalendarPaintEvents() {
       if (!cell) return;
 
       const date = cell.dataset.date;
+
       if (!date || date === calendarLastPaintedDate) return;
 
       calendarLastPaintedDate = date;
+
       await paintCalendarDay(date);
     });
   });
@@ -1281,6 +1300,26 @@ els.logoutBtn.addEventListener("click", () => {
 
 els.clockBtn.addEventListener("click", handleClock);
 
+if (els.newRecordBtn) {
+  els.newRecordBtn.addEventListener("click", () => openRecordModal());
+}
+
+if (els.closeRecordModalBtn) {
+  els.closeRecordModalBtn.addEventListener("click", closeRecordModal);
+}
+
+if (els.saveRecordBtn) {
+  els.saveRecordBtn.addEventListener("click", saveManualRecord);
+}
+
+if (els.recordModal) {
+  els.recordModal.addEventListener("click", (event) => {
+    if (event.target === els.recordModal) {
+      closeRecordModal();
+    }
+  });
+}
+
 if (els.employeeForm) {
   els.employeeForm.addEventListener("submit", createEmployee);
 }
@@ -1352,6 +1391,24 @@ document.addEventListener("pointercancel", () => {
   calendarLastPaintedDate = null;
 });
 
+document.addEventListener("gesturestart", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("gesturechange", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("gestureend", function (event) {
+  event.preventDefault();
+});
+
+document.addEventListener("touchmove", function (event) {
+  if (event.scale !== 1) {
+    event.preventDefault();
+  }
+}, { passive: false });
+
 onAuthStateChanged(auth, async (user) => {
   state.user = user;
 
@@ -1387,41 +1444,3 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
-
-if (els.newRecordBtn) {
-  els.newRecordBtn.addEventListener("click", () => openRecordModal());
-}
-
-if (els.closeRecordModalBtn) {
-  els.closeRecordModalBtn.addEventListener("click", closeRecordModal);
-}
-
-if (els.saveRecordBtn) {
-  els.saveRecordBtn.addEventListener("click", saveManualRecord);
-}
-
-if (els.recordModal) {
-  els.recordModal.addEventListener("click", (event) => {
-    if (event.target === els.recordModal) {
-      closeRecordModal();
-    }
-  });
-}
-
-document.addEventListener("gesturestart", function (event) {
-  event.preventDefault();
-});
-
-document.addEventListener("gesturechange", function (event) {
-  event.preventDefault();
-});
-
-document.addEventListener("gestureend", function (event) {
-  event.preventDefault();
-});
-
-document.addEventListener("touchmove", function (event) {
-  if (event.scale !== 1) {
-    event.preventDefault();
-  }
-}, { passive: false });
