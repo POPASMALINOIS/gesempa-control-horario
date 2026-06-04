@@ -830,3 +830,58 @@ body {
   overscroll-behavior-y: contain;
   -webkit-text-size-adjust: 100%;
 }
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 15, 10, .45);
+  display: grid;
+  place-items: end center;
+  z-index: 80;
+  padding: 18px;
+}
+
+.modal-card {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.22);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.modal-head h3 {
+  margin: 0;
+}
+
+.icon-btn {
+  background: #f1f5f2;
+  color: var(--text);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-family: inherit;
+  min-height: 90px;
+  resize: vertical;
+}
