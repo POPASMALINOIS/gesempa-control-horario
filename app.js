@@ -1703,6 +1703,132 @@ async function renderRecentMovements() {
   `).join("");
 }
 
+async function exportMonthlyExcel() {
+  if (!isAdmin()) {
+    alert("Solo el administrador puede exportar registros.");
+    return;
+  }
+
+  if (!window.XLSX) {
+    alert("No se ha cargado la librería Excel.");
+    return;
+  }
+
+  const selectedEmployee = els.exportEmployee?.value || "all";
+  const selectedMonth = Number(els.exportMonth?.value);
+  const selectedYear = Number(els.exportYear?.value);
+
+  const monthStart = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-01`;
+  const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+  const monthEnd = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(daysInMonth).padStart(2, "0")}`;
+
+  const recordsQuery = query(
+    collection(db, "timeRecords"),
+    where("companyId", "==", APP_COMPANY_ID)
+  );
+
+  const snap = await getDocs(recordsQuery);
+
+  let records = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+
+  records = records.filter(r =>
+    r.date >= monthStart &&
+    r.date <= monthEnd
+  );
+
+  if (selectedEmployee !== "all") {
+    const selectedEmployeeData = state.employees.find(
+      e => e.employeeId === selectedEmployee
+    );
+
+    records = records.filter(r =>
+      r.employeeId === selectedEmployee ||
+      r.userId === selectedEmployeeData?.userId ||
+      r.employeeName === selectedEmployeeData?.name
+    );
+  }
+
+  if (!records.length) {
+    alert("No hay fichajes para exportar en el periodo seleccionado.");
+    return;
+  }
+
+  const employeesToExport = selectedEmployee === "all"
+    ? state.employees
+    : state.employees.filter(e => e.employeeId === selectedEmployee);
+
+  const workbook = XLSX.utils.book_new();
+
+  employeesToExport.forEach(employee => {
+    const employeeRecords = records
+      .filter(r =>
+        r.employeeId === employee.employeeId ||
+        r.userId === employee.userId ||
+        r.employeeName === employee.name
+      )
+      .sort((a, b) => (a.clockIn || "").localeCompare(b.clockIn || ""));
+
+    if (!employeeRecords.length) return;
+
+    const rows = [
+      ["Empleado", employee.name || employee.email || "Empleado"],
+      ["Mes", MONTHS[selectedMonth]],
+      ["Año", selectedYear],
+      [],
+      ["Fecha", "Entrada 1", "Salida 1", "Entrada 2", "Salida 2", "Total día"]
+    ];
+
+    let totalMonthMinutes = 0;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+      const dayRecords = employeeRecords
+        .filter(r => r.date === date)
+        .sort((a, b) => (a.clockIn || "").localeCompare(b.clockIn || ""));
+
+      if (!dayRecords.length) continue;
+
+      const first = dayRecords[0];
+      const second = dayRecords[1];
+
+      const totalDayMinutes = dayRecords.reduce((sum, r) => {
+        return sum + (r.totalMinutes || 0);
+      }, 0);
+
+      totalMonthMinutes += totalDayMinutes;
+
+      rows.push([
+        dateLabel(date),
+        timeLabel(first?.clockIn),
+        timeLabel(first?.clockOut),
+        timeLabel(second?.clockIn),
+        timeLabel(second?.clockOut),
+        formatMinutes(totalDayMinutes)
+      ]);
+    }
+
+    rows.push([]);
+    rows.push(["TOTAL MES", "", "", "", "", formatMinutes(totalMonthMinutes)]);
+
+    const worksheet = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      (employee.name || "Empleado").substring(0, 31)
+    );
+  });
+
+  const fileName = selectedEmployee === "all"
+    ? `Registro_horario_${MONTHS[selectedMonth]}_${selectedYear}.xlsx`
+    : `Registro_horario_${MONTHS[selectedMonth]}_${selectedYear}_${els.exportEmployee.options[els.exportEmployee.selectedIndex].text}.xlsx`;
+
+  XLSX.writeFile(workbook, fileName);
+}
+
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
@@ -1802,6 +1928,10 @@ if (els.closeRecordModalBtn) {
 
 if (els.saveRecordBtn) {
   els.saveRecordBtn.addEventListener("click", saveManualRecord);
+}
+
+if (els.exportExcelBtn) {
+  els.exportExcelBtn.addEventListener("click", exportMonthlyExcel);
 }
 
 if (els.recordModal) {
