@@ -1530,7 +1530,9 @@ async function renderAdminTodayDashboard() {
     ...d.data()
   }));
 
-  const workingNow = todayRecords.filter(r => r.status === "open").length;
+  const openRecords = todayRecords.filter(r => r.status === "open");
+
+  const workingNow = openRecords.length;
 
   const totalMinutesToday = todayRecords.reduce((sum, record) => {
     if (record.status === "closed") {
