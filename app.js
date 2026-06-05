@@ -98,6 +98,7 @@ const els = {
   todayIncident: $("todayIncident"),
   incidentsList: $("incidentsList"),
   incidentsCounter: $("incidentsCounter"),
+  toggleIncidentsBtn: $("toggleIncidentsBtn"),
 
   recordsList: $("recordsList"),
   newRecordBtn: $("newRecordBtn"),
