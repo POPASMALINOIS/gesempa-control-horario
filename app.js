@@ -100,6 +100,7 @@ const els = {
   incidentsCounter: $("incidentsCounter"),
   statActiveEmployees: $("statActiveEmployees"),
   statWorkingNow: $("statWorkingNow"),
+  workingNowList: $("workingNowList"),
   statVacationToday: $("statVacationToday"),
   statPermissionToday: $("statPermissionToday"),
   statSickToday: $("statSickToday"),
@@ -1553,6 +1554,23 @@ async function renderAdminTodayDashboard() {
 
   els.statActiveEmployees.textContent = String(activeEmployees.length);
   els.statWorkingNow.textContent = String(workingNow);
+  if (els.workingNowList) {
+
+  if (!openRecords.length) {
+
+    els.workingNowList.innerHTML =
+      "<small>Nadie trabajando ahora</small>";
+
+  } else {
+
+    els.workingNowList.innerHTML =
+      openRecords
+        .map(r =>
+          `<div class="working-now-item">🟢 ${r.employeeName}</div>`
+        )
+        .join("");
+  }
+}
   els.statVacationToday.textContent = String(countStatus("vacation"));
   els.statPermissionToday.textContent = String(countStatus("permission"));
   els.statSickToday.textContent = String(countStatus("sick_leave"));
