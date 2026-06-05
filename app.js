@@ -2006,6 +2006,23 @@ if (els.cancelEmployeeEditBtn) {
   els.cancelEmployeeEditBtn.addEventListener("click", resetEmployeeForm);
 }
 
+if (els.themeSelector) {
+
+  els.themeSelector.addEventListener("change", () => {
+
+    const value = els.themeSelector.value;
+
+    localStorage.setItem(
+      "gesempa-theme",
+      value
+    );
+
+    applyTheme(value);
+
+  });
+
+}
+
 els.prevMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
   await loadCalendarDays();
@@ -2125,6 +2142,8 @@ onAuthStateChanged(auth, async (user) => {
   try {
     loginView.classList.add("hidden");
     appView.classList.remove("hidden");
+    
+    loadTheme();
 
     await refreshData();
   } catch (error) {
