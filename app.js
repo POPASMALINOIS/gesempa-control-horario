@@ -467,10 +467,11 @@ function renderClock() {
   const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
   els.todayTotal.textContent = formatMinutes(total);
 
-  els.todayIncident.textContent = inside
-    ? "Jornada abierta. Pendiente de fichar salida."
-    : "Sin incidencias detectadas.";
-}
+  if (els.todayIncident) {
+    els.todayIncident.textContent = inside
+      ? "Jornada abierta. Pendiente de fichar salida."
+      : "Sin incidencias detectadas.";
+  }
 
 function renderTodayCalendarStatus() {
   if (!els.todayCalendarStatus) return;
