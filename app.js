@@ -202,6 +202,40 @@ function formatMinutes(total) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
+function applyTheme(theme) {
+
+  if (theme === "dark") {
+    document.body.classList.add("dark-theme");
+    return;
+  }
+
+  if (theme === "light") {
+    document.body.classList.remove("dark-theme");
+    return;
+  }
+
+  const prefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  document.body.classList.toggle(
+    "dark-theme",
+    prefersDark
+  );
+}
+
+function loadTheme() {
+
+  const saved =
+    localStorage.getItem("gesempa-theme") || "auto";
+
+  applyTheme(saved);
+
+  if (els.themeSelector) {
+    els.themeSelector.value = saved;
+  }
+}
+
 function fillExportSelectors() {
   if (!els.exportYear || !els.exportMonth || !els.exportEmployee) return;
 
