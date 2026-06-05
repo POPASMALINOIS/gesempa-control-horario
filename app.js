@@ -64,6 +64,8 @@ const state = {
   employees: [],
   todayRecord: null,
   todayRecords: [],
+  recordsCache: [],
+  recordsCacheLoaded: false,
   calendarDays: {},
   selectedCalendarEmployeeId: null,
   calendarDate: new Date(),
@@ -931,7 +933,8 @@ async function handleClock() {
     } else {
       await clockIn();
     }
-
+    
+    state.recordsCacheLoaded = false;
     await refreshData();
   } catch (error) {
     console.error(error);
@@ -1045,6 +1048,7 @@ async function saveManualRecord() {
   }
 
   closeRecordModal();
+  state.recordsCacheLoaded = false;
   await refreshData();
 }
 
@@ -1069,6 +1073,7 @@ async function deleteRecord(recordId) {
 
   try {
     await deleteDoc(doc(db, "timeRecords", recordId));
+    state.recordsCacheLoaded = false;
     await refreshData();
     alert("Fichaje eliminado correctamente.");
   } catch (error) {
@@ -1077,11 +1082,8 @@ async function deleteRecord(recordId) {
   }
 }
 
-async function renderRecords() {
-  if (!state.employee) {
-    els.recordsList.innerHTML = "<p>No hay empleado cargado.</p>";
-    return;
-  }
+async function loadRecordsCache() {
+  if (state.recordsCacheLoaded) return;
 
   const q = isAdmin()
     ? query(collection(db, "timeRecords"), where("companyId", "==", APP_COMPANY_ID))
@@ -1093,8 +1095,23 @@ async function renderRecords() {
 
   const snap = await getDocs(q);
 
-  let records = snap.docs
-  .map(d => ({ id: d.id, ...d.data() }));
+  state.recordsCache = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+
+  state.recordsCacheLoaded = true;
+}
+
+async function renderRecords() {
+  if (!state.employee) {
+    els.recordsList.innerHTML = "<p>No hay empleado cargado.</p>";
+    return;
+  }
+
+  await loadRecordsCache();
+
+  let records = [...state.recordsCache];
 
   const selectedEmployee = els.exportEmployee?.value || "all";
   
