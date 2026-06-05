@@ -99,12 +99,12 @@
         </div>
 
         <div class="home-panel incidents-panel">
-          <div class="panel-title-row">
-            <h3>Incidencias automáticas</h3>
+          <button id="toggleIncidentsBtn" class="incidents-toggle" type="button">
+            <span>Incidencias automáticas</span>
             <span id="incidentsCounter" class="counter-pill">0</span>
-          </div>
-
-          <div id="incidentsList">
+          </button>
+        
+          <div id="incidentsList" class="incidents-list collapsed">
             Sin incidencias detectadas.
           </div>
         </div>
@@ -273,6 +273,6 @@
     </div>
   </div>
 
-  <script type="module" src="./app.js?v=58"></script>
+  <script type="module" src="./app.js?v=59"></script>
 </body>
 </html>
