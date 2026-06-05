@@ -9,7 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
-  browserLocalPersistence,
+  inMemoryPersistence,
   updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
@@ -32,7 +32,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
-setPersistence(auth, browserLocalPersistence).catch(console.error);
+setPersistence(auth, inMemoryPersistence).catch(console.error);
+signOut(auth).catch(console.error);
 
 const $ = (id) => document.getElementById(id);
 
