@@ -1098,8 +1098,14 @@ async function renderRecords() {
   const selectedEmployee = els.exportEmployee?.value || "all";
   
   if (selectedEmployee !== "all") {
-    records = records.filter(
-      r => r.employeeId === selectedEmployee
+    const selectedEmployeeData = state.employees.find(
+      e => e.employeeId === selectedEmployee
+    );
+  
+    records = records.filter(r =>
+      r.employeeId === selectedEmployee ||
+      r.userId === selectedEmployeeData?.userId ||
+      r.employeeName === selectedEmployeeData?.name
     );
   }
   
