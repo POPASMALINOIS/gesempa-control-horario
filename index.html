@@ -65,13 +65,59 @@
               <span>Entrada</span>
               <strong id="todayIn">—</strong>
             </div>
+
             <div>
               <span>Salida</span>
               <strong id="todayOut">—</strong>
             </div>
+
             <div>
               <span>Horas hoy</span>
               <strong id="todayTotal">00:00</strong>
+            </div>
+          </div>
+        </div>
+
+        <div id="adminTodayDashboard" class="home-panel admin-dashboard admin-only">
+          <div class="panel-title-row">
+            <h3>Resumen de hoy</h3>
+            <span class="counter-pill">Admin</span>
+          </div>
+
+          <div class="admin-stats-grid">
+            <div>
+              <span>Empleados activos</span>
+              <strong id="statActiveEmployees">0</strong>
+            </div>
+
+            <div>
+              <span>Trabajando ahora</span>
+              <strong id="statWorkingNow">0</strong>
+            </div>
+
+            <div>
+              <span>Vacaciones</span>
+              <strong id="statVacationToday">0</strong>
+            </div>
+
+            <div>
+              <span>Permisos</span>
+              <strong id="statPermissionToday">0</strong>
+            </div>
+
+            <div>
+              <span>Bajas</span>
+              <strong id="statSickToday">0</strong>
+            </div>
+
+            <div>
+              <span>Ausencias</span>
+              <strong id="statAbsenceToday">0</strong>
+            </div>
+
+            <div class="wide-stat">
+              <span>Horas registradas hoy</span>
+              <strong id="statCompanyHoursToday">00:00</strong>
             </div>
           </div>
         </div>
@@ -103,7 +149,7 @@
             <span>Incidencias automáticas</span>
             <span id="incidentsCounter" class="counter-pill">0</span>
           </button>
-        
+
           <div id="incidentsList" class="incidents-list collapsed">
             Sin incidencias detectadas.
           </div>
@@ -195,7 +241,7 @@
             <input id="employeeHireDate" type="date" />
           </label>
 
-          <input id="employeeSchedule" type="text" value="L-V 09:00-14:00 / 16:00-19:00" />
+          <input id="employeeSchedule" type="text" value="L-J 09:30-14:00 / 16:30-19:30 · V 09:30-14:00" />
           <input id="employeeColor" type="color" value="#0f7a3b" />
 
           <select id="employeeActive">
@@ -223,8 +269,12 @@
         <div class="settings-card">
           <strong>Empresa</strong>
           <span>GESEMPA-PYME</span>
-          <strong>Horario base</strong>
-          <span>L-V 09:00-14:00 / 16:00-19:00</span>
+          <strong>Horario ordinario</strong>
+          <span>L-J 09:30-14:00 / 16:30-19:30</span>
+          <strong>Viernes</strong>
+          <span>09:30-14:00</span>
+          <strong>Horario de verano</strong>
+          <span>Del 1 al 31 de agosto: 09:30-14:00</span>
         </div>
       </section>
     </main>
@@ -273,6 +323,6 @@
     </div>
   </div>
 
-  <script type="module" src="./app.js?v=59"></script>
+  <script type="module" src="./app.js?v=60"></script>
 </body>
 </html>
