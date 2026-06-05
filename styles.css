@@ -1166,3 +1166,21 @@ textarea {
   }
 
 }
+.export-panel{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin:20px 0;
+    padding:16px;
+    background:#fff;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+.export-panel select{
+    flex:1;
+}
+
+.export-panel button{
+    flex:0 0 auto;
+}
