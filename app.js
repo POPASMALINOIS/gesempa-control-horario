@@ -810,6 +810,10 @@ async function renderRecords() {
                 <button class="edit-record-btn" type="button" data-id="${r.id}">
                   Editar
                 </button>
+                
+                <button class="delete-record-btn" type="button" data-id="${r.id}">
+                  Eliminar
+                </button>
               </div>`
             : ""
         }
@@ -831,8 +835,14 @@ async function renderRecords() {
         if (record) openRecordModal(record, true);
       });
     });
-  }
-}
+  
+    document.querySelectorAll(".delete-record-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        deleteRecord(btn.dataset.id);
+      });
+    });
+      }
+    }
 
 function renderEmployees() {
   if (!isAdmin()) return;
