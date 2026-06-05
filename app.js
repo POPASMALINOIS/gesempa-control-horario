@@ -24,6 +24,7 @@ import {
   where,
   getDocs,
   updateDoc,
+  deleteDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
@@ -747,6 +748,37 @@ async function saveManualRecord() {
 
   closeRecordModal();
   await refreshData();
+}
+
+async function deleteRecord(recordId) {
+  alert("Botón eliminar pulsado");
+
+  if (!isAdmin()) {
+    alert("Solo los administradores pueden eliminar fichajes.");
+    return;
+  }
+
+  if (!recordId) {
+    alert("No se ha encontrado el ID del fichaje.");
+    return;
+  }
+
+  const firstConfirm = confirm("¿Seguro que deseas eliminar este fichaje?");
+  if (!firstConfirm) return;
+
+  const secondConfirm = confirm(
+    "Última confirmación.\n\nEl fichaje será eliminado definitivamente y no podrá recuperarse."
+  );
+  if (!secondConfirm) return;
+
+  try {
+    await deleteDoc(doc(db, "timeRecords", recordId));
+    await refreshData();
+    alert("Fichaje eliminado correctamente.");
+  } catch (error) {
+    console.error(error);
+    alert("Error eliminando fichaje: " + error.message);
+  }
 }
 
 async function renderRecords() {
