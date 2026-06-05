@@ -95,7 +95,10 @@ const els = {
   todayOut: $("todayOut"),
   todayTotal: $("todayTotal"),
   todayIncident: $("todayIncident"),
-
+  incidentsList: $("incidentsList"),
+  incidentsCounter: $("incidentsCounter"),
+  
+  
   recordsList: $("recordsList"),
   newRecordBtn: $("newRecordBtn"),
   recordModal: $("recordModal"),
@@ -450,6 +453,107 @@ function renderShell() {
   }
 }
 
+async function renderIncidents() {
+  if (!els.incidentsList || !els.incidentsCounter) return;
+
+  const incidents = [];
+  const today = todayKey();
+
+  const q = isAdmin()
+    ? query(
+        collection(db, "timeRecords"),
+        where("companyId", "==", APP_COMPANY_ID)
+      )
+    : query(
+        collection(db, "timeRecords"),
+        where("companyId", "==", APP_COMPANY_ID),
+        where("employeeId", "==", state.employee.employeeId)
+      );
+
+  const snap = await getDocs(q);
+
+  const records = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+
+  records.forEach(record => {
+    const employeeName = record.employeeName || "Empleado";
+
+    if (record.status === "open") {
+      incidents.push({
+        level: record.date < today ? "high" : "medium",
+        icon: record.date < today ? "!" : "⚠",
+        title: employeeName,
+        text: record.date < today
+          ? `Jornada abierta desde ${dateLabel(record.date)}`
+          : "Jornada abierta pendiente de cerrar"
+      });
+    }
+
+    if (record.manualEntry) {
+      incidents.push({
+        level: "medium",
+        icon: "✎",
+        title: employeeName,
+        text: `Fichaje manual o corregido el ${dateLabel(record.date)}`
+      });
+    }
+
+    if (record.clockIn && !record.clockOut && record.status !== "open") {
+      incidents.push({
+        level: "medium",
+        icon: "⚠",
+        title: employeeName,
+        text: `Fichaje sin salida el ${dateLabel(record.date)}`
+      });
+    }
+  });
+
+  Object.values(state.calendarDays).forEach(day => {
+    if (!day?.status || day.date < today) return;
+
+    if (day.status === "absence") {
+      incidents.push({
+        level: "info",
+        icon: "↗",
+        title: day.employeeName || getEmployeeDisplayName(),
+        text: `Ausencia / trabajo fuera de oficina el ${dateLabel(day.date)}`
+      });
+    }
+
+    if (["vacation", "permission", "sick_leave", "day_off", "holiday"].includes(day.status)) {
+      incidents.push({
+        level: "info",
+        icon: "•",
+        title: day.employeeName || getEmployeeDisplayName(),
+        text: `${day.statusLabel || WORK_STATUSES[day.status]?.label} el ${dateLabel(day.date)}`
+      });
+    }
+  });
+
+  const limited = incidents.slice(0, 8);
+
+  els.incidentsCounter.textContent = String(incidents.length);
+
+  if (!limited.length) {
+    els.incidentsList.innerHTML = "Sin incidencias detectadas.";
+    return;
+  }
+
+  els.incidentsList.innerHTML = limited.map(item => `
+    <div class="incident-item">
+      <div class="incident-icon ${item.level}">
+        ${item.icon}
+      </div>
+      <div>
+        <div class="incident-title">${item.title}</div>
+        <div class="incident-text">${item.text}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
 function renderClock() {
   const record = state.todayRecord;
   const inside = record?.status === "open";
@@ -467,7 +571,8 @@ function renderClock() {
   const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
   els.todayTotal.textContent = formatMinutes(total);
 
-  els.todayIncident.textContent = inside
+  if (els.todayIncident) {
+    els.todayIncident.textContent = inside
     ? "Jornada abierta. Pendiente de fichar salida."
     : "Sin incidencias detectadas.";
 }
@@ -1279,6 +1384,7 @@ async function refreshData() {
   renderUpcomingCalendarEvents();
   await renderRecords();
   await renderLatestRecords();
+  await renderIncidents();
 }
 
 function switchTab(tabId) {
