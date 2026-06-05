@@ -1867,11 +1867,13 @@ async function refreshData() {
   renderCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
+  setTimeout(async () => {
   await renderRecords();
   await renderLatestRecords();
   await renderIncidents();
   await renderAdminTodayDashboard();
   await renderRecentMovements();
+}, 100);
   
   fillExportSelectors();
 }
