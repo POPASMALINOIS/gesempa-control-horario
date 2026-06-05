@@ -1086,3 +1086,24 @@ textarea {
   opacity: .8;
   margin-top: 2px;
 }
+.incidents-toggle {
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  padding: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.incidents-list {
+  margin-top: 12px;
+}
+
+.incidents-list.collapsed {
+  display: none;
+}
