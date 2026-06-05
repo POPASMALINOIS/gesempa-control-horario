@@ -62,6 +62,7 @@ const state = {
   employee: null,
   employees: [],
   todayRecord: null,
+  todayRecords: [],
   calendarDays: {},
   selectedCalendarEmployeeId: null,
   calendarDate: new Date(),
@@ -461,6 +462,7 @@ async function loadEmployees() {
 async function loadTodayRecord() {
   if (!state.employee) {
     state.todayRecord = null;
+    state.todayRecords = [];
     return;
   }
 
@@ -475,9 +477,14 @@ async function loadTodayRecord() {
 
   const records = snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => (b.clockIn || "").localeCompare(a.clockIn || ""));
+    .sort((a, b) => (a.clockIn || "").localeCompare(b.clockIn || ""));
 
-  state.todayRecord = records[0] || null;
+  state.todayRecords = records;
+
+  state.todayRecord =
+    records.find(r => r.status === "open") ||
+    records[records.length - 1] ||
+    null;
 }
 
 async function loadCalendarDays() {
@@ -663,8 +670,8 @@ async function renderIncidents() {
 }
 
 function renderClock() {
-  const record = state.todayRecord;
-  const inside = record?.status === "open";
+  const openRecord = state.todayRecords.find(r => r.status === "open");
+  const inside = !!openRecord;
 
   els.clockStatus.textContent = inside ? "Dentro" : "Fuera";
   els.clockStatus.className = `clock-status ${inside ? "inside" : "outside"}`;
@@ -673,15 +680,27 @@ function renderClock() {
   els.clockBtn.textContent = inside ? "Fichar salida" : "Fichar entrada";
   els.clockBtn.classList.toggle("exit", inside);
 
-  els.todayIn.textContent = timeLabel(record?.clockIn);
-  els.todayOut.textContent = timeLabel(record?.clockOut);
+  const firstRecord = state.todayRecords[0] || null;
+  const lastClosedRecord = [...state.todayRecords]
+    .reverse()
+    .find(r => r.clockOut);
 
-  const total = inside ? minutesBetween(record.clockIn, nowIso()) : record?.totalMinutes || 0;
-  els.todayTotal.textContent = formatMinutes(total);
+  els.todayIn.textContent = timeLabel(openRecord?.clockIn || firstRecord?.clockIn);
+  els.todayOut.textContent = timeLabel(lastClosedRecord?.clockOut);
+
+  const closedMinutes = state.todayRecords
+    .filter(r => r.status === "closed")
+    .reduce((sum, r) => sum + (r.totalMinutes || 0), 0);
+
+  const openMinutes = openRecord
+    ? minutesBetween(openRecord.clockIn, nowIso())
+    : 0;
+
+  els.todayTotal.textContent = formatMinutes(closedMinutes + openMinutes);
 
   if (els.todayIncident) {
     els.todayIncident.textContent = inside
-      ? "Jornada abierta. Pendiente de fichar salida."
+      ? "Tramo abierto. Pendiente de fichar salida."
       : "Sin incidencias detectadas.";
   }
 }
@@ -788,8 +807,10 @@ async function clockIn() {
     return;
   }
 
-  if (state.todayRecord?.status === "open") {
-    alert("Ya tienes una jornada abierta.");
+  const openRecord = state.todayRecords.find(r => r.status === "open");
+
+  if (openRecord) {
+    alert("Ya tienes un tramo abierto. Primero debes fichar salida.");
     return;
   }
 
@@ -816,15 +837,17 @@ async function clockIn() {
 }
 
 async function clockOut() {
-  if (!state.todayRecord || state.todayRecord.status !== "open") {
-    alert("No hay entrada abierta.");
+  const openRecord = state.todayRecords.find(r => r.status === "open");
+
+  if (!openRecord) {
+    alert("No hay ningún tramo abierto.");
     return;
   }
 
   const out = nowIso();
-  const totalMinutes = minutesBetween(state.todayRecord.clockIn, out);
+  const totalMinutes = minutesBetween(openRecord.clockIn, out);
 
-  await updateDoc(doc(db, "timeRecords", state.todayRecord.id), {
+  await updateDoc(doc(db, "timeRecords", openRecord.id), {
     clockOut: out,
     totalMinutes,
     status: "closed",
@@ -842,7 +865,9 @@ async function handleClock() {
     els.clockBtn.disabled = true;
     els.clockBtn.textContent = "Procesando...";
 
-    if (state.todayRecord?.status === "open") {
+    const openRecord = state.todayRecords.find(r => r.status === "open");
+
+    if (openRecord) {
       await clockOut();
     } else {
       await clockIn();
