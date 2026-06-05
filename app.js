@@ -1583,7 +1583,7 @@ async function renderRecentMovements() {
 
     if (record.clockIn) {
       movements.push({
-        employee: record.employeeName,
+        employee: record.employeeName || "Empleado",
         time: record.clockIn,
         type: "Entrada"
       });
@@ -1591,7 +1591,7 @@ async function renderRecentMovements() {
 
     if (record.clockOut) {
       movements.push({
-        employee: record.employeeName,
+        employee: record.employeeName || "Empleado",
         time: record.clockOut,
         type: "Salida"
       });
