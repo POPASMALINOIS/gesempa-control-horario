@@ -149,8 +149,6 @@ const els = {
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
 
-  themeSelector: $("themeSelector"),
-
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
   prevMonthBtn: $("prevMonthBtn"),
@@ -202,39 +200,6 @@ function formatMinutes(total) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
-function applyTheme(theme) {
-
-  if (theme === "dark") {
-    document.body.classList.add("dark-theme");
-    return;
-  }
-
-  if (theme === "light") {
-    document.body.classList.remove("dark-theme");
-    return;
-  }
-
-  const prefersDark = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-
-  document.body.classList.toggle(
-    "dark-theme",
-    prefersDark
-  );
-}
-
-function loadTheme() {
-
-  const saved =
-    localStorage.getItem("gesempa-theme") || "auto";
-
-  applyTheme(saved);
-
-  if (els.themeSelector) {
-    els.themeSelector.value = saved;
-  }
-}
 
 function fillExportSelectors() {
   if (!els.exportYear || !els.exportMonth || !els.exportEmployee) return;
@@ -2006,23 +1971,6 @@ if (els.cancelEmployeeEditBtn) {
   els.cancelEmployeeEditBtn.addEventListener("click", resetEmployeeForm);
 }
 
-if (els.themeSelector) {
-
-  els.themeSelector.addEventListener("change", () => {
-
-    const value = els.themeSelector.value;
-
-    localStorage.setItem(
-      "gesempa-theme",
-      value
-    );
-
-    applyTheme(value);
-
-  });
-
-}
-
 els.prevMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
   await loadCalendarDays();
@@ -2143,7 +2091,6 @@ onAuthStateChanged(auth, async (user) => {
     loginView.classList.add("hidden");
     appView.classList.remove("hidden");
     
-    loadTheme();
 
     await refreshData();
   } catch (error) {
