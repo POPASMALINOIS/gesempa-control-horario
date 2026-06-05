@@ -1127,3 +1127,42 @@ textarea {
   line-height:1.4;
   margin-top:2px;
 }
+.export-panel{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:20px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.export-panel select{
+  min-width:180px;
+  padding:10px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+}
+
+.export-panel button{
+  white-space:nowrap;
+}
+
+@media (max-width:768px){
+
+  .export-panel{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .export-panel select{
+    width:100%;
+  }
+
+  .export-panel button{
+    width:100%;
+  }
+
+}
