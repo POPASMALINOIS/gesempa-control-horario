@@ -953,3 +953,69 @@ textarea {
   padding: 9px 12px;
   border-radius: 12px;
 }
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.counter-pill {
+  display: inline-flex;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.incident-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.incident-item:last-child {
+  border-bottom: 0;
+}
+
+.incident-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
+
+.incident-icon.high {
+  background: rgba(220,38,38,.12);
+  color: #b91c1c;
+}
+
+.incident-icon.medium {
+  background: rgba(245,158,11,.16);
+  color: #92400e;
+}
+
+.incident-icon.info {
+  background: rgba(124,58,237,.12);
+  color: var(--absence);
+}
+
+.incident-title {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.incident-text {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 2px;
+}
