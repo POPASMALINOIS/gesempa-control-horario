@@ -1092,8 +1092,18 @@ async function renderRecords() {
 
   const snap = await getDocs(q);
 
-  const records = snap.docs
-    .map(d => ({ id: d.id, ...d.data() }))
+  let records = snap.docs
+  .map(d => ({ id: d.id, ...d.data() }));
+
+  const selectedEmployee = els.exportEmployee?.value || "all";
+  
+  if (selectedEmployee !== "all") {
+    records = records.filter(
+      r => r.employeeId === selectedEmployee
+    );
+  }
+  
+  records = records
     .sort((a, b) => {
       const aKey = `${a.date || ""}_${a.clockIn || ""}`;
       const bKey = `${b.date || ""}_${b.clockIn || ""}`;
@@ -1839,6 +1849,24 @@ els.calendarEmployeeSelect.addEventListener("change", async () => {
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
 });
+
+if (els.exportEmployee) {
+  els.exportEmployee.addEventListener("change", async () => {
+    await renderRecords();
+  });
+}
+
+if (els.exportMonth) {
+  els.exportMonth.addEventListener("change", async () => {
+    await renderRecords();
+  });
+}
+
+if (els.exportYear) {
+  els.exportYear.addEventListener("change", async () => {
+    await renderRecords();
+  });
+}
 
 document.querySelectorAll(".paint-btn").forEach(btn => {
   btn.addEventListener("click", () => {
