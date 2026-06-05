@@ -53,13 +53,13 @@
             <h2 id="homeEmployeeName">—</h2>
             <span id="homeRole" class="role-pill">—</span>
           </div>
-      
+
           <div id="clockStatus" class="clock-status outside">Fuera</div>
         </div>
-      
+
         <div class="clock-card premium-clock">
           <button id="clockBtn" class="clock-btn" type="button">Fichar entrada</button>
-      
+
           <div class="today-grid">
             <div>
               <span>Entrada</span>
@@ -75,27 +75,38 @@
             </div>
           </div>
         </div>
-      
+
         <div class="home-grid">
           <div class="home-panel">
             <h3>Calendario de hoy</h3>
             <p id="todayCalendarStatus">Sin estado asignado.</p>
           </div>
-      
+
           <div class="home-panel">
             <h3>Próximos eventos</h3>
             <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
           </div>
         </div>
-      
+
         <div class="home-panel">
           <h3>Últimos fichajes</h3>
           <div id="latestRecordsList">Sin fichajes recientes.</div>
         </div>
-      
+
         <div class="mini-panel">
           <h3>Incidencias del día</h3>
           <p id="todayIncident">Sin incidencias detectadas.</p>
+        </div>
+
+        <div class="home-panel incidents-panel">
+          <div class="panel-title-row">
+            <h3>Incidencias automáticas</h3>
+            <span id="incidentsCounter" class="counter-pill">0</span>
+          </div>
+
+          <div id="incidentsList">
+            Sin incidencias detectadas.
+          </div>
         </div>
       </section>
 
@@ -142,7 +153,7 @@
             <h2>Fichajes</h2>
             <p>Historial y correcciones de registros horarios.</p>
           </div>
-        
+
           <button id="newRecordBtn" class="primary-action admin-only" type="button">
             + Nuevo fichaje
           </button>
@@ -158,47 +169,63 @@
             <p>Gestión de perfiles de empleados y administradores.</p>
           </div>
         </div>
-      
+
         <form id="employeeForm" class="employee-form">
           <input id="editingEmployeeId" type="hidden" />
-      
+
           <input id="employeeName" type="text" placeholder="Nombre completo" required />
           <input id="employeeEmail" type="email" placeholder="Email de acceso" required />
-      
+
           <select id="employeeRole">
             <option value="employee">Empleado</option>
             <option value="admin">Administrador</option>
           </select>
-      
+
           <input id="employeePosition" type="text" placeholder="Cargo / puesto" />
           <input id="employeePhone" type="text" placeholder="Teléfono" />
           <input id="employeeDni" type="text" placeholder="DNI / NIE" />
-      
+
           <label class="field-label">
             Fecha de nacimiento
             <input id="employeeBirthDate" type="date" />
           </label>
-      
+
           <label class="field-label">
             Fecha de alta en empresa
             <input id="employeeHireDate" type="date" />
           </label>
-      
+
           <input id="employeeSchedule" type="text" value="L-V 09:00-14:00 / 16:00-19:00" />
           <input id="employeeColor" type="color" value="#0f7a3b" />
-      
+
           <select id="employeeActive">
             <option value="true">Activo</option>
             <option value="false">Inactivo</option>
           </select>
-      
+
           <div class="form-actions">
             <button id="saveEmployeeBtn" class="primary-btn" type="submit">Guardar perfil</button>
             <button id="cancelEmployeeEditBtn" class="secondary-btn" type="button">Cancelar edición</button>
           </div>
         </form>
-      
+
         <div id="employeesList" class="employees-list"></div>
+      </section>
+
+      <section id="settingsTab" class="tab">
+        <div class="section-head">
+          <div>
+            <h2>Ajustes</h2>
+            <p>Configuración básica.</p>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <strong>Empresa</strong>
+          <span>GESEMPA-PYME</span>
+          <strong>Horario base</strong>
+          <span>L-V 09:00-14:00 / 16:00-19:00</span>
+        </div>
       </section>
     </main>
 
@@ -212,40 +239,40 @@
   </div>
 
   <div id="recordModal" class="modal hidden">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div>
-        <p class="eyebrow">Gestión de fichaje</p>
-        <h3 id="recordModalTitle">Nuevo fichaje</h3>
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">Gestión de fichaje</p>
+          <h3 id="recordModalTitle">Nuevo fichaje</h3>
+        </div>
+        <button id="closeRecordModalBtn" class="icon-btn" type="button">×</button>
       </div>
-      <button id="closeRecordModalBtn" class="icon-btn" type="button">×</button>
+
+      <input id="editingRecordId" type="hidden" />
+
+      <select id="recordEmployeeSelect"></select>
+
+      <label class="field-label">
+        Fecha
+        <input id="recordDate" type="date" />
+      </label>
+
+      <label class="field-label">
+        Hora entrada
+        <input id="recordClockIn" type="time" />
+      </label>
+
+      <label class="field-label">
+        Hora salida
+        <input id="recordClockOut" type="time" />
+      </label>
+
+      <textarea id="recordNotes" placeholder="Observaciones / motivo de corrección"></textarea>
+
+      <button id="saveRecordBtn" class="primary-btn" type="button">Guardar fichaje</button>
     </div>
-
-    <input id="editingRecordId" type="hidden" />
-
-    <select id="recordEmployeeSelect"></select>
-
-    <label class="field-label">
-      Fecha
-      <input id="recordDate" type="date" />
-    </label>
-
-    <label class="field-label">
-      Hora entrada
-      <input id="recordClockIn" type="time" />
-    </label>
-
-    <label class="field-label">
-      Hora salida
-      <input id="recordClockOut" type="time" />
-    </label>
-
-    <textarea id="recordNotes" placeholder="Observaciones / motivo de corrección"></textarea>
-
-    <button id="saveRecordBtn" class="primary-btn" type="button">Guardar fichaje</button>
   </div>
-</div>
-  
-  <script type="module" src="./app.js?v=50"></script>
+
+  <script type="module" src="./app.js?v=55"></script>
 </body>
 </html>
