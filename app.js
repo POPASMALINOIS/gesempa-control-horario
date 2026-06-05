@@ -119,6 +119,7 @@ const els = {
   recordClockOut: $("recordClockOut"),
   recordNotes: $("recordNotes"),
   saveRecordBtn: $("saveRecordBtn"),
+  recentMovementsList: $("recentMovementsList"),
 
   employeesList: $("employeesList"),
   employeeForm: $("employeeForm"),
@@ -1559,6 +1560,65 @@ async function renderAdminTodayDashboard() {
   els.statCompanyHoursToday.textContent = formatMinutes(totalMinutesToday);
 }
 
+async function renderRecentMovements() {
+
+  if (!isAdmin()) return;
+  if (!els.recentMovementsList) return;
+
+  const q = query(
+    collection(db, "timeRecords"),
+    where("companyId", "==", APP_COMPANY_ID)
+  );
+
+  const snap = await getDocs(q);
+
+  const movements = [];
+
+  snap.docs.forEach(docSnap => {
+
+    const record = {
+      id: docSnap.id,
+      ...docSnap.data()
+    };
+
+    if (record.clockIn) {
+      movements.push({
+        employee: record.employeeName,
+        time: record.clockIn,
+        type: "Entrada"
+      });
+    }
+
+    if (record.clockOut) {
+      movements.push({
+        employee: record.employeeName,
+        time: record.clockOut,
+        type: "Salida"
+      });
+    }
+
+  });
+
+  movements.sort((a, b) =>
+    new Date(b.time) - new Date(a.time)
+  );
+
+  const latest = movements.slice(0, 10);
+
+  if (!latest.length) {
+    els.recentMovementsList.innerHTML =
+      "Sin movimientos registrados.";
+    return;
+  }
+
+  els.recentMovementsList.innerHTML = latest.map(m => `
+    <div class="movement-item">
+      <strong>${timeLabel(m.time)}</strong>
+      <span>${m.employee} → ${m.type}</span>
+    </div>
+  `).join("");
+}
+
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
@@ -1580,6 +1640,7 @@ async function refreshData() {
   await renderLatestRecords();
   await renderIncidents();
   await renderAdminTodayDashboard();
+  await renderRecentMovements();
 }
 
 function switchTab(tabId) {
