@@ -1294,6 +1294,7 @@ async function paintCalendarDay(date) {
     renderCalendar();
     renderTodayCalendarStatus();
     renderUpcomingCalendarEvents();
+    await renderIncidents();
 
     await setDoc(doc(db, "calendarDays", id), {
       companyId: APP_COMPANY_ID,
@@ -1337,6 +1338,7 @@ async function paintCalendarDay(date) {
   renderCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
+  await renderIncidents();
 
   await setDoc(doc(db, "calendarDays", id), {
     companyId: APP_COMPANY_ID,
