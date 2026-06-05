@@ -1118,3 +1118,12 @@ textarea {
 .movement-item:last-child{
   border-bottom:none;
 }
+.working-now-list{
+  margin-top:8px;
+}
+
+.working-now-item{
+  font-size:.85rem;
+  line-height:1.4;
+  margin-top:2px;
+}
