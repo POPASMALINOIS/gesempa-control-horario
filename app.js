@@ -198,29 +198,45 @@ function formatMinutes(total) {
 }
 
 function fillExportSelectors() {
+  if (!els.exportYear || !els.exportMonth || !els.exportEmployee) return;
 
-  if (!els.exportYear) return;
+  const selectedEmployee = els.exportEmployee.value || "all";
+  const selectedMonth = els.exportMonth.value || String(new Date().getMonth());
+  const selectedYear = els.exportYear.value || String(new Date().getFullYear());
+
+  els.exportEmployee.innerHTML = `
+    <option value="all">Todos los empleados</option>
+  `;
+
+  state.employees.forEach(employee => {
+    els.exportEmployee.innerHTML += `
+      <option value="${employee.employeeId}">
+        ${employee.name || employee.email || "Empleado"}
+      </option>
+    `;
+  });
+
+  if ([...els.exportEmployee.options].some(option => option.value === selectedEmployee)) {
+    els.exportEmployee.value = selectedEmployee;
+  } else {
+    els.exportEmployee.value = "all";
+  }
 
   els.exportYear.innerHTML = "";
 
   for (let year = 2025; year <= 2035; year++) {
-
     const option = document.createElement("option");
+    option.value = String(year);
+    option.textContent = String(year);
 
-    option.value = year;
-    option.textContent = year;
-
-    if (year === new Date().getFullYear()) {
+    if (String(year) === selectedYear) {
       option.selected = true;
     }
 
     els.exportYear.appendChild(option);
   }
 
-  if (els.exportMonth) {
-    els.exportMonth.value = String(new Date().getMonth());
-  }
-
+  els.exportMonth.value = selectedMonth;
 }
 
 function isMasterAdmin() {
@@ -1674,6 +1690,7 @@ async function renderRecentMovements() {
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
+  fillExportSelectors();
 
   if (!state.selectedCalendarEmployeeId) {
     state.selectedCalendarEmployeeId = state.employee?.employeeId;
