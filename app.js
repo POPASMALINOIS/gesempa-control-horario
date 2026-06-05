@@ -1690,8 +1690,10 @@ async function renderRecentMovements() {
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
+  
+  console.log("EMPLEADOS CARGADOS:", state.employees);
   fillExportSelectors();
-
+  
   if (!state.selectedCalendarEmployeeId) {
     state.selectedCalendarEmployeeId = state.employee?.employeeId;
   }
