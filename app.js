@@ -1987,22 +1987,24 @@ els.calendarEmployeeSelect.addEventListener("change", async () => {
   renderUpcomingCalendarEvents();
 });
 
+async function handleExportFiltersChange() {
+  await new Promise(resolve => setTimeout(resolve, 50));
+  await renderRecords();
+}
+
 if (els.exportEmployee) {
-  els.exportEmployee.addEventListener("change", async () => {
-    await renderRecords();
-  });
+  els.exportEmployee.addEventListener("change", handleExportFiltersChange);
+  els.exportEmployee.addEventListener("input", handleExportFiltersChange);
 }
 
 if (els.exportMonth) {
-  els.exportMonth.addEventListener("change", async () => {
-    await renderRecords();
-  });
+  els.exportMonth.addEventListener("change", handleExportFiltersChange);
+  els.exportMonth.addEventListener("input", handleExportFiltersChange);
 }
 
 if (els.exportYear) {
-  els.exportYear.addEventListener("change", async () => {
-    await renderRecords();
-  });
+  els.exportYear.addEventListener("change", handleExportFiltersChange);
+  els.exportYear.addEventListener("input", handleExportFiltersChange);
 }
 
 document.querySelectorAll(".paint-btn").forEach(btn => {
