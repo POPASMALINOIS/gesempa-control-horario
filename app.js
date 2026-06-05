@@ -231,6 +231,76 @@ function isoToTimeInput(iso) {
   return new Date(iso).toTimeString().slice(0, 5);
 }
 
+function timeToMinutes(time) {
+  if (!time || !time.includes(":")) return null;
+
+  const [hours, minutes] = time.split(":").map(Number);
+
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+
+  return hours * 60 + minutes;
+}
+
+function getWeekdayFromDateKey(dateKey) {
+  const date = new Date(dateKey + "T00:00:00");
+  return date.getDay();
+  // 0 domingo, 1 lunes, 2 martes, 3 miércoles, 4 jueves, 5 viernes, 6 sábado
+}
+
+function getMonthFromDateKey(dateKey) {
+  const date = new Date(dateKey + "T00:00:00");
+  return date.getMonth() + 1;
+}
+
+function getExpectedScheduleForDate(dateKey) {
+  const weekday = getWeekdayFromDateKey(dateKey);
+  const month = getMonthFromDateKey(dateKey);
+
+  // Sábado o domingo
+  if (weekday === 0 || weekday === 6) {
+    return {
+      expectedStart: null,
+      expectedMinutes: 0,
+      label: "Fin de semana"
+    };
+  }
+
+  // Agosto completo: horario de verano de lunes a viernes
+  if (month === 8) {
+    return {
+      expectedStart: "09:30",
+      expectedMinutes: 270,
+      label: "Horario verano 09:30-14:00"
+    };
+  }
+
+  // Viernes ordinario
+  if (weekday === 5) {
+    return {
+      expectedStart: "09:30",
+      expectedMinutes: 270,
+      label: "Viernes 09:30-14:00"
+    };
+  }
+
+  // Lunes a jueves ordinario
+  return {
+    expectedStart: "09:30",
+    expectedMinutes: 450,
+    label: "L-J 09:30-14:00 / 16:30-19:30"
+  };
+}
+
+function minutesToHuman(minutes) {
+  const safeMinutes = Math.abs(minutes || 0);
+  const h = Math.floor(safeMinutes / 60);
+  const m = safeMinutes % 60;
+
+  if (h && m) return `${h}h ${m}m`;
+  if (h) return `${h}h`;
+  return `${m}m`;
+}
+
 async function ensureCompany() {
   const ref = doc(db, "companies", APP_COMPANY_ID);
   const snap = await getDoc(ref);
@@ -457,6 +527,7 @@ async function renderIncidents() {
 
   const incidents = [];
   const today = todayKey();
+  const toleranceMinutes = 10;
 
   const q = isAdmin()
     ? query(collection(db, "timeRecords"), where("companyId", "==", APP_COMPANY_ID))
@@ -475,6 +546,10 @@ async function renderIncidents() {
 
   records.forEach(record => {
     const employeeName = record.employeeName || "Empleado";
+    const schedule = getExpectedScheduleForDate(record.date);
+    const expectedStartMinutes = schedule.expectedStart
+      ? timeToMinutes(schedule.expectedStart)
+      : null;
 
     if (record.status === "open") {
       incidents.push({
@@ -503,6 +578,45 @@ async function renderIncidents() {
         title: employeeName,
         text: `Fichaje sin salida el ${dateLabel(record.date)}`
       });
+    }
+
+    if (record.clockIn && expectedStartMinutes !== null) {
+      const realStart = timeToMinutes(isoToTimeInput(record.clockIn));
+
+      if (realStart !== null) {
+        const delay = realStart - expectedStartMinutes;
+
+        if (delay > toleranceMinutes) {
+          incidents.push({
+            level: "medium",
+            icon: "⏱",
+            title: employeeName,
+            text: `Entrada tardía de ${minutesToHuman(delay)} el ${dateLabel(record.date)}`
+          });
+        }
+      }
+    }
+
+    if (record.status === "closed" && record.totalMinutes && schedule.expectedMinutes > 0) {
+      const difference = record.totalMinutes - schedule.expectedMinutes;
+
+      if (difference < -toleranceMinutes) {
+        incidents.push({
+          level: "high",
+          icon: "−",
+          title: employeeName,
+          text: `Déficit horario de ${minutesToHuman(difference)} el ${dateLabel(record.date)}`
+        });
+      }
+
+      if (difference > toleranceMinutes) {
+        incidents.push({
+          level: "medium",
+          icon: "+",
+          title: employeeName,
+          text: `Exceso de jornada de ${minutesToHuman(difference)} el ${dateLabel(record.date)}`
+        });
+      }
     }
   });
 
@@ -535,7 +649,7 @@ async function renderIncidents() {
     return;
   }
 
-  els.incidentsList.innerHTML = incidents.slice(0, 8).map(item => `
+  els.incidentsList.innerHTML = incidents.slice(0, 12).map(item => `
     <div class="incident-item">
       <div class="incident-icon ${item.level}">
         ${item.icon}
