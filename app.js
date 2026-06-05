@@ -751,7 +751,6 @@ async function saveManualRecord() {
 }
 
 async function deleteRecord(recordId) {
-  alert("Botón eliminar pulsado");
 
   if (!isAdmin()) {
     alert("Solo los administradores pueden eliminar fichajes.");
