@@ -98,6 +98,13 @@ const els = {
   todayIncident: $("todayIncident"),
   incidentsList: $("incidentsList"),
   incidentsCounter: $("incidentsCounter"),
+  statActiveEmployees: $("statActiveEmployees"),
+  statWorkingNow: $("statWorkingNow"),
+  statVacationToday: $("statVacationToday"),
+  statPermissionToday: $("statPermissionToday"),
+  statSickToday: $("statSickToday"),
+  statAbsenceToday: $("statAbsenceToday"),
+  statCompanyHoursToday: $("statCompanyHoursToday"),
   toggleIncidentsBtn: $("toggleIncidentsBtn"),
 
   recordsList: $("recordsList"),
@@ -1500,6 +1507,58 @@ async function paintCalendarDay(date) {
   }, { merge: true });
 }
 
+async function renderAdminTodayDashboard() {
+  if (!isAdmin()) return;
+  if (!els.statActiveEmployees) return;
+
+  const today = todayKey();
+
+  const activeEmployees = state.employees.filter(e => e.active !== false);
+
+  const recordsQuery = query(
+    collection(db, "timeRecords"),
+    where("companyId", "==", APP_COMPANY_ID),
+    where("date", "==", today)
+  );
+
+  const recordsSnap = await getDocs(recordsQuery);
+
+  const todayRecords = recordsSnap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+
+  const workingNow = todayRecords.filter(r => r.status === "open").length;
+
+  const totalMinutesToday = todayRecords.reduce((sum, record) => {
+    if (record.status === "closed") {
+      return sum + (record.totalMinutes || 0);
+    }
+
+    if (record.status === "open" && record.clockIn) {
+      return sum + minutesBetween(record.clockIn, nowIso());
+    }
+
+    return sum;
+  }, 0);
+
+  const todayCalendarItems = Object.values(state.calendarDays).filter(day => {
+    return day.date === today;
+  });
+
+  const countStatus = (status) => {
+    return todayCalendarItems.filter(day => day.status === status).length;
+  };
+
+  els.statActiveEmployees.textContent = String(activeEmployees.length);
+  els.statWorkingNow.textContent = String(workingNow);
+  els.statVacationToday.textContent = String(countStatus("vacation"));
+  els.statPermissionToday.textContent = String(countStatus("permission"));
+  els.statSickToday.textContent = String(countStatus("sick_leave"));
+  els.statAbsenceToday.textContent = String(countStatus("absence"));
+  els.statCompanyHoursToday.textContent = formatMinutes(totalMinutesToday);
+}
+
 async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
@@ -1520,6 +1579,7 @@ async function refreshData() {
   await renderRecords();
   await renderLatestRecords();
   await renderIncidents();
+  await renderAdminTodayDashboard();
 }
 
 function switchTab(tabId) {
