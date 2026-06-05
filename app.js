@@ -149,6 +149,8 @@ const els = {
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
 
+  themeSelector: $("themeSelector"),
+
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
   prevMonthBtn: $("prevMonthBtn"),
