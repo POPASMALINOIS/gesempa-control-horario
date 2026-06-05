@@ -1663,6 +1663,12 @@ document.querySelectorAll(".bottom-nav button").forEach(btn => {
   });
 });
 
+if (els.toggleIncidentsBtn) {
+  els.toggleIncidentsBtn.addEventListener("click", () => {
+    els.incidentsList.classList.toggle("collapsed");
+  });
+}
+
 document.addEventListener("pointerup", () => {
   calendarPainting = false;
   calendarLastPaintedDate = null;
