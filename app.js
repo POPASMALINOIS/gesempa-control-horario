@@ -110,6 +110,12 @@ const els = {
 
   recordsList: $("recordsList"),
   newRecordBtn: $("newRecordBtn"),
+  
+  exportEmployee: $("exportEmployee"),
+  exportMonth: $("exportMonth"),
+  exportYear: $("exportYear"),
+  exportExcelBtn: $("exportExcelBtn"),
+  
   recordModal: $("recordModal"),
   recordModalTitle: $("recordModalTitle"),
   closeRecordModalBtn: $("closeRecordModalBtn"),
@@ -189,6 +195,32 @@ function formatMinutes(total) {
   const h = Math.floor((total || 0) / 60);
   const m = (total || 0) % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+function fillExportSelectors() {
+
+  if (!els.exportYear) return;
+
+  els.exportYear.innerHTML = "";
+
+  for (let year = 2025; year <= 2035; year++) {
+
+    const option = document.createElement("option");
+
+    option.value = year;
+    option.textContent = year;
+
+    if (year === new Date().getFullYear()) {
+      option.selected = true;
+    }
+
+    els.exportYear.appendChild(option);
+  }
+
+  if (els.exportMonth) {
+    els.exportMonth.value = String(new Date().getMonth());
+  }
+
 }
 
 function isMasterAdmin() {
@@ -1661,6 +1693,8 @@ async function refreshData() {
   await renderIncidents();
   await renderAdminTodayDashboard();
   await renderRecentMovements();
+  
+  fillExportSelectors();
 }
 
 function switchTab(tabId) {
