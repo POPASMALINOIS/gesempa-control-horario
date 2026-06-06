@@ -2009,10 +2009,6 @@ if (els.exportExcelBtn) {
   els.exportExcelBtn.addEventListener("click", exportMonthlyExcel);
 }
 
-if (els.changePasswordBtn) {
-  els.changePasswordBtn.addEventListener("click", changeUserPassword);
-}
-
 if (els.recordModal) {
   els.recordModal.addEventListener("click", (event) => {
     if (event.target === els.recordModal) {
