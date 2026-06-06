@@ -1868,3 +1868,40 @@ button:active {
     }
 
 }
+.erp-home.active{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.erp-two-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+#adminRecentMovements{
+  width:100%;
+}
+
+.erp-table-placeholder .movement-item{
+  display:grid;
+  grid-template-columns:90px 1fr 120px;
+  gap:16px;
+  padding:9px 0;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.erp-table-placeholder .movement-item strong{
+  font-weight:600;
+}
+
+.erp-table-placeholder .movement-item span{
+  color:#333;
+}
+
+@media(max-width:1000px){
+  .erp-two-columns{
+    grid-template-columns:1fr;
+  }
+}
