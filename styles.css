@@ -1943,3 +1943,35 @@ button:active {
     grid-template-columns:1fr;
   }
 }
+.erp-home.active{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.erp-top-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.erp-bottom-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+#adminRecentMovements{
+  width:100%;
+}
+
+.incidents-panel{
+  display:none !important;
+}
+
+@media(max-width:1000px){
+  .erp-top-grid,
+  .erp-bottom-grid{
+    grid-template-columns:1fr;
+  }
+}
