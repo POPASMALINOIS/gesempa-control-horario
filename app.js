@@ -9,10 +9,12 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
-  inMemoryPersistence,
-  updateProfile
+  browserLocalPersistence,
+  updateProfile,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
 import {
   getFirestore,
   doc,
