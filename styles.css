@@ -1943,3 +1943,203 @@ button:active {
     grid-template-columns:1fr;
   }
 }
+/* ================================
+   FIX AGRESIVO ERP HOME v0.9
+================================ */
+
+#homeTab.erp-home.active{
+  display:grid !important;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-areas:
+    "user user"
+    "clock summary"
+    "moves moves"
+    "calendar events"
+    "records records";
+  gap:14px;
+  align-items:start;
+}
+
+.erp-user-bar{
+  grid-area:user;
+  height:36px;
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  border:1px solid #d6d6d6;
+  background:#fff;
+  font-size:13px;
+}
+
+.erp-user-bar span{
+  line-height:1;
+}
+
+.erp-user-bar .separator{
+  color:#999;
+  margin:0 4px;
+}
+
+.erp-two-columns{
+  display:contents !important;
+}
+
+.erp-two-columns > .erp-panel:nth-child(1){
+  grid-area:clock;
+}
+
+.erp-two-columns > .erp-panel:nth-child(2){
+  grid-area:summary;
+}
+
+#adminTodayDashboard{
+  grid-area:summary !important;
+}
+
+#adminRecentMovements{
+  grid-area:moves !important;
+  width:100%;
+}
+
+#adminRecentMovements .erp-table-placeholder{
+  min-height:auto;
+}
+
+#adminRecentMovements .movement-item{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:16px;
+  padding:7px 12px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+#adminRecentMovements .movement-item strong{
+  font-size:13px;
+}
+
+#adminRecentMovements .movement-item span{
+  font-size:13px;
+}
+
+.erp-panel{
+  background:#fff;
+  border:1px solid #d6d6d6;
+  border-radius:0;
+  box-shadow:none;
+  padding:0;
+}
+
+.erp-panel-head{
+  height:34px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #e5e5e5;
+  background:#f8f8f8;
+}
+
+.erp-panel-head h2{
+  font-size:13px;
+  font-weight:700;
+  margin:0;
+}
+
+.erp-data-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  margin:0;
+  gap:0;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.erp-data-grid div{
+  padding:12px;
+  border-right:1px solid #e5e5e5;
+}
+
+.erp-data-grid div:last-child{
+  border-right:none;
+}
+
+.erp-data-grid span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  color:#666;
+  margin-bottom:5px;
+}
+
+.erp-data-grid strong{
+  font-size:24px;
+  font-weight:500;
+}
+
+.erp-primary-action{
+  margin:12px;
+  height:36px;
+  min-width:180px;
+  border-radius:0;
+  background:#0f7a3b;
+  color:#fff;
+}
+
+.erp-note{
+  margin:0 12px 12px;
+  font-size:12px;
+  color:#666;
+}
+
+.erp-summary-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+
+.erp-summary-list div{
+  padding:10px 12px;
+  border-right:1px solid #e5e5e5;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.erp-summary-list div:nth-child(2n){
+  border-right:none;
+}
+
+.erp-summary-list span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  color:#666;
+}
+
+.erp-summary-list strong{
+  font-size:22px;
+  font-weight:500;
+}
+
+.working-now-list{
+  padding:8px 12px;
+  font-size:12px;
+  color:#666;
+}
+
+.erp-two-columns:nth-of-type(2) > .erp-panel:nth-child(1){
+  grid-area:calendar;
+}
+
+.erp-two-columns:nth-of-type(2) > .erp-panel:nth-child(2){
+  grid-area:events;
+}
+
+#latestRecordsList{
+  padding:10px 12px;
+}
+
+.erp-home > .erp-panel:nth-last-of-type(2){
+  grid-area:records;
+}
+
+.incidents-panel{
+  display:none !important;
+}
