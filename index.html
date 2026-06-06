@@ -77,66 +77,30 @@
         <section id="homeTab" class="tab active erp-home">
 
           <div class="erp-user-strip">
-            <div>
-              <span>Usuario</span>
-              <strong id="homeEmployeeName">—</strong>
-            </div>
-        
-            <div>
-              <span>Rol</span>
-              <strong id="homeRole">—</strong>
-            </div>
-        
-            <div>
-              <span>Estado</span>
-              <strong id="clockStatus" class="erp-status outside">Fuera</strong>
-            </div>
+            <div><span>Usuario</span><strong id="homeEmployeeName">—</strong></div>
+            <div><span>Rol</span><strong id="homeRole">—</strong></div>
+            <div><span>Estado</span><strong id="clockStatus" class="erp-status outside">Fuera</strong></div>
           </div>
         
-          <div class="erp-main-grid">
+          <div class="erp-two-columns">
         
-            <section class="erp-panel erp-clock-panel">
-              <div class="erp-panel-head">
-                <h2>Registro de jornada</h2>
-              </div>
+            <section class="erp-panel">
+              <div class="erp-panel-head"><h2>Registro de jornada</h2></div>
         
               <div class="erp-data-grid">
-                <div>
-                  <span>Entrada</span>
-                  <strong id="todayIn">—</strong>
-                </div>
-        
-                <div>
-                  <span>Salida</span>
-                  <strong id="todayOut">—</strong>
-                </div>
-        
-                <div>
-                  <span>Horas hoy</span>
-                  <strong id="todayTotal">00:00</strong>
-                </div>
+                <div><span>Entrada</span><strong id="todayIn">—</strong></div>
+                <div><span>Salida</span><strong id="todayOut">—</strong></div>
+                <div><span>Horas hoy</span><strong id="todayTotal">00:00</strong></div>
               </div>
         
               <button id="clockBtn" class="erp-primary-action" type="button">
                 Fichar entrada
               </button>
         
-              <p id="todayIncident" class="erp-note">
-                Sin incidencias detectadas.
-              </p>
+              <p id="todayIncident" class="erp-note">Sin incidencias detectadas.</p>
             </section>
         
-            <section id="adminRecentMovements" class="erp-panel admin-only">
-              <div class="erp-panel-head">
-                <h2>Últimos movimientos</h2>
-              </div>
-        
-              <div id="recentMovementsList" class="erp-table-placeholder">
-                Sin movimientos registrados.
-              </div>
-            </section>
-        
-            <section id="adminTodayDashboard" class="erp-panel admin-only erp-summary-panel">
+            <section id="adminTodayDashboard" class="erp-panel admin-only">
               <div class="erp-panel-head">
                 <h2>Situación de hoy</h2>
                 <span class="counter-pill">Admin</span>
@@ -155,39 +119,42 @@
               <div id="workingNowList" class="working-now-list"></div>
             </section>
         
+          </div>
+        
+          <section id="adminRecentMovements" class="erp-panel admin-only">
+            <div class="erp-panel-head"><h2>Últimos movimientos</h2></div>
+            <div id="recentMovementsList" class="erp-table-placeholder">
+              Sin movimientos registrados.
+            </div>
+          </section>
+        
+          <div class="erp-two-columns">
             <section class="erp-panel">
-              <div class="erp-panel-head">
-                <h2>Calendario de hoy</h2>
-              </div>
+              <div class="erp-panel-head"><h2>Calendario de hoy</h2></div>
               <p id="todayCalendarStatus">Sin estado asignado.</p>
             </section>
         
             <section class="erp-panel">
-              <div class="erp-panel-head">
-                <h2>Próximos eventos</h2>
-              </div>
+              <div class="erp-panel-head"><h2>Próximos eventos</h2></div>
               <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
             </section>
-        
-            <section class="erp-panel">
-              <div class="erp-panel-head">
-                <h2>Últimos fichajes</h2>
-              </div>
-              <div id="latestRecordsList">Sin fichajes recientes.</div>
-            </section>
-        
-            <section class="erp-panel incidents-panel">
-              <button id="toggleIncidentsBtn" class="incidents-toggle" type="button">
-                <span>Incidencias automáticas</span>
-                <span id="incidentsCounter" class="counter-pill">0</span>
-              </button>
-        
-              <div id="incidentsList" class="incidents-list collapsed">
-                Sin incidencias detectadas.
-              </div>
-            </section>
-        
           </div>
+        
+          <section class="erp-panel">
+            <div class="erp-panel-head"><h2>Últimos fichajes</h2></div>
+            <div id="latestRecordsList">Sin fichajes recientes.</div>
+          </section>
+        
+          <section class="erp-panel incidents-panel">
+            <button id="toggleIncidentsBtn" class="incidents-toggle" type="button">
+              <span>Incidencias automáticas</span>
+              <span id="incidentsCounter" class="counter-pill">0</span>
+            </button>
+        
+            <div id="incidentsList" class="incidents-list collapsed">
+              Sin incidencias detectadas.
+            </div>
+          </section>
         
         </section>
 
@@ -384,6 +351,6 @@
   </div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=91"></script>
+  <script type="module" src="./app.js?v=92"></script>
 </body>
 </html>
