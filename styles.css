@@ -1690,11 +1690,18 @@ button:active {
 
 .erp-user-strip{
     display:grid;
-    grid-template-columns:1fr 1fr 220px;
-    background:#f7f7f7;
-    border:1px solid #dcdcdc;
-    padding:14px 18px;
-    gap:20px;
+    grid-template-columns:2fr 1fr 1fr;
+    background:#fff;
+    border:1px solid #d9d9d9;
+}
+
+.erp-user-strip > div{
+    padding:12px 16px;
+    border-right:1px solid #e5e5e5;
+}
+
+.erp-user-strip > div:last-child{
+    border-right:none;
 }
 
 .erp-user-strip span{
@@ -1702,14 +1709,14 @@ button:active {
     font-size:11px;
     text-transform:uppercase;
     letter-spacing:.08em;
-    color:#666;
+    color:#777;
     margin-bottom:4px;
 }
 
 .erp-user-strip strong{
     font-size:14px;
     font-weight:600;
-    color:#111;
+    color:#222;
 }
 
 .erp-status{
@@ -1725,7 +1732,7 @@ button:active {
 .erp-panel{
     background:#fff;
     border:1px solid #dcdcdc;
-    padding:18px;
+    padding:0;
     border-radius:0;
     box-shadow:none;
 }
@@ -1753,25 +1760,32 @@ button:active {
 .erp-data-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-bottom:20px;
+    border-bottom:1px solid #e5e5e5;
+    margin:0;
+    gap:0;
 }
 
 .erp-data-grid div{
-    border:1px solid #e5e5e5;
-    padding:14px;
+    padding:16px;
+    border-right:1px solid #e5e5e5;
+}
+
+.erp-data-grid div:last-child{
+    border-right:none;
 }
 
 .erp-data-grid span{
     display:block;
-    font-size:12px;
-    color:#666;
+    font-size:11px;
+    color:#777;
+    text-transform:uppercase;
     margin-bottom:6px;
 }
 
 .erp-data-grid strong{
-    font-size:22px;
-    font-weight:600;
+    display:block;
+    font-size:28px;
+    font-weight:500;
 }
 
 .erp-primary-action{
@@ -1796,29 +1810,32 @@ button:active {
 }
 
 .erp-summary-list{
-    display:flex;
-    flex-direction:column;
+    display:grid;
+    grid-template-columns:1fr 1fr;
 }
 
 .erp-summary-list div{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid #ededed;
+    padding:14px;
+    border-right:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
 }
 
-.erp-summary-list div:last-child{
-    border-bottom:none;
+.erp-summary-list div:nth-child(2n){
+    border-right:none;
 }
 
 .erp-summary-list span{
-    color:#555;
+    display:block;
+    font-size:11px;
+    color:#777;
+    text-transform:uppercase;
 }
 
 .erp-summary-list strong{
-    font-size:16px;
-    font-weight:700;
+    display:block;
+    margin-top:6px;
+    font-size:24px;
+    font-weight:500;
 }
 
 .erp-table-placeholder{
