@@ -152,6 +152,12 @@ const els = {
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
 
+  currentPassword: $("currentPassword"),
+  newPassword: $("newPassword"),
+  repeatNewPassword: $("repeatNewPassword"),
+  changePasswordBtn: $("changePasswordBtn"),
+  changePasswordMessage: $("changePasswordMessage"),
+
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
   prevMonthBtn: $("prevMonthBtn"),
