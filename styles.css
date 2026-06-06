@@ -1701,3 +1701,193 @@ button:active {
     grid-template-columns:1fr;
   }
 }
+/* =======================================================
+   ERP DESKTOP LAYOUT
+======================================================= */
+
+.erp-home{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.erp-user-strip{
+    display:grid;
+    grid-template-columns:1fr 1fr 220px;
+    background:#f7f7f7;
+    border:1px solid #dcdcdc;
+    padding:14px 18px;
+    gap:20px;
+}
+
+.erp-user-strip span{
+    display:block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#666;
+    margin-bottom:4px;
+}
+
+.erp-user-strip strong{
+    font-size:14px;
+    font-weight:600;
+    color:#111;
+}
+
+.erp-status{
+    font-weight:700;
+}
+
+.erp-main-grid{
+    display:grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap:18px;
+}
+
+.erp-panel{
+    background:#fff;
+    border:1px solid #dcdcdc;
+    padding:18px;
+    border-radius:0;
+    box-shadow:none;
+}
+
+.erp-panel-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:1px solid #e6e6e6;
+}
+
+.erp-panel-head h2{
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+    color:#111;
+}
+
+.erp-clock-panel{
+    min-height:250px;
+}
+
+.erp-data-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.erp-data-grid div{
+    border:1px solid #e5e5e5;
+    padding:14px;
+}
+
+.erp-data-grid span{
+    display:block;
+    font-size:12px;
+    color:#666;
+    margin-bottom:6px;
+}
+
+.erp-data-grid strong{
+    font-size:22px;
+    font-weight:600;
+}
+
+.erp-primary-action{
+    background:#0f7a3b;
+    color:#fff;
+    border:none;
+    padding:12px 24px;
+    border-radius:0;
+    width:auto;
+    font-size:14px;
+    font-weight:600;
+}
+
+.erp-note{
+    margin-top:18px;
+    color:#666;
+    font-size:13px;
+}
+
+.erp-summary-panel{
+    grid-column:2;
+}
+
+.erp-summary-list{
+    display:flex;
+    flex-direction:column;
+}
+
+.erp-summary-list div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #ededed;
+}
+
+.erp-summary-list div:last-child{
+    border-bottom:none;
+}
+
+.erp-summary-list span{
+    color:#555;
+}
+
+.erp-summary-list strong{
+    font-size:16px;
+    font-weight:700;
+}
+
+.erp-table-placeholder{
+    min-height:220px;
+}
+
+.erp-table-placeholder .movement-item{
+    display:grid;
+    grid-template-columns:70px 1fr 100px;
+    align-items:center;
+    gap:12px;
+    padding:10px 0;
+    border-bottom:1px solid #ededed;
+}
+
+.erp-table-placeholder .movement-item:last-child{
+    border-bottom:none;
+}
+
+.counter-pill{
+    border-radius:0;
+    background:#f3f3f3;
+    color:#444;
+    border:1px solid #ddd;
+}
+
+@media(max-width:1200px){
+
+    .erp-main-grid{
+        grid-template-columns:1fr;
+    }
+
+    .erp-summary-panel{
+        grid-column:auto;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .erp-user-strip{
+        grid-template-columns:1fr;
+    }
+
+    .erp-data-grid{
+        grid-template-columns:1fr;
+    }
+
+}
