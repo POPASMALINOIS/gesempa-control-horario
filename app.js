@@ -1898,6 +1898,51 @@ function switchTab(tabId) {
   if (btn) btn.classList.add("active");
 }
 
+async function changeUserPassword() {
+  if (!state.user) {
+    alert("No hay usuario conectado.");
+    return;
+  }
+
+  const currentPassword = els.currentPassword?.value || "";
+  const newPassword = els.newPassword?.value || "";
+  const repeatPassword = els.repeatNewPassword?.value || "";
+
+  if (!currentPassword || !newPassword || !repeatPassword) {
+    els.changePasswordMessage.textContent = "Debes rellenar todos los campos.";
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    els.changePasswordMessage.textContent = "La nueva contraseña debe tener al menos 6 caracteres.";
+    return;
+  }
+
+  if (newPassword !== repeatPassword) {
+    els.changePasswordMessage.textContent = "Las nuevas contraseñas no coinciden.";
+    return;
+  }
+
+  try {
+    const credential = EmailAuthProvider.credential(
+      state.user.email,
+      currentPassword
+    );
+
+    await reauthenticateWithCredential(state.user, credential);
+    await updatePassword(state.user, newPassword);
+
+    els.currentPassword.value = "";
+    els.newPassword.value = "";
+    els.repeatNewPassword.value = "";
+
+    els.changePasswordMessage.textContent = "Contraseña actualizada correctamente.";
+  } catch (error) {
+    console.error(error);
+    els.changePasswordMessage.textContent = "Error cambiando la contraseña. Revisa la contraseña actual.";
+  }
+}
+
 els.loginBtn.addEventListener("click", async () => {
   showMessage("");
 
