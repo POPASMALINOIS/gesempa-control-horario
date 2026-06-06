@@ -77,32 +77,16 @@
         <section id="homeTab" class="tab active erp-home">
 
           <div class="erp-user-bar">
-
-              <span id="homeEmployeeName"></span>
-          
-              <span class="separator">•</span>
-          
-              <span id="homeRole"></span>
-          
-              <span class="separator">•</span>
-          
-              <span>
-                  Estado:
-                  <strong id="clockStatus"></strong>
-              </span>
-          
+            <span id="homeEmployeeName"></span>
+            <span class="separator">•</span>
+            <span id="homeRole"></span>
+            <span class="separator">•</span>
+            <span>Estado: <strong id="clockStatus"></strong></span>
           </div>
-
-          <section id="adminRecentMovements" class="erp-panel admin-only">
-            <div class="erp-panel-head"><h2>Últimos movimientos</h2></div>
-            <div id="recentMovementsList" class="erp-table-placeholder">
-              Sin movimientos registrados.
-            </div>
-          </section>
         
-          <div class="erp-two-columns">
+          <div class="erp-top-grid">
         
-            <section class="erp-panel">
+            <section class="erp-panel erp-clock-panel">
               <div class="erp-panel-head"><h2>Registro de jornada</h2></div>
         
               <div class="erp-data-grid">
@@ -111,14 +95,11 @@
                 <div><span>Horas hoy</span><strong id="todayTotal">00:00</strong></div>
               </div>
         
-              <button id="clockBtn" class="erp-primary-action" type="button">
-                Fichar entrada
-              </button>
-        
+              <button id="clockBtn" class="erp-primary-action" type="button">Fichar entrada</button>
               <p id="todayIncident" class="erp-note">Sin incidencias detectadas.</p>
             </section>
         
-            <section id="adminTodayDashboard" class="erp-panel admin-only">
+            <section id="adminTodayDashboard" class="erp-panel admin-only erp-summary-panel">
               <div class="erp-panel-head">
                 <h2>Situación de hoy</h2>
                 <span class="counter-pill">Admin</span>
@@ -136,6 +117,34 @@
         
               <div id="workingNowList" class="working-now-list"></div>
             </section>
+        
+          </div>
+        
+          <section id="adminRecentMovements" class="erp-panel admin-only">
+            <div class="erp-panel-head"><h2>Últimos movimientos</h2></div>
+            <div id="recentMovementsList" class="erp-table-placeholder">
+              Sin movimientos registrados.
+            </div>
+          </section>
+        
+          <div class="erp-bottom-grid">
+            <section class="erp-panel">
+              <div class="erp-panel-head"><h2>Calendario de hoy</h2></div>
+              <p id="todayCalendarStatus">Sin estado asignado.</p>
+            </section>
+        
+            <section class="erp-panel">
+              <div class="erp-panel-head"><h2>Próximos eventos</h2></div>
+              <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
+            </section>
+          </div>
+        
+          <section class="erp-panel">
+            <div class="erp-panel-head"><h2>Últimos fichajes</h2></div>
+            <div id="latestRecordsList">Sin fichajes recientes.</div>
+          </section>
+        
+        </section>
         
           </div>
         
@@ -363,6 +372,6 @@
   </div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=96"></script>
+  <script type="module" src="./app.js?v=97"></script>
 </body>
 </html>
