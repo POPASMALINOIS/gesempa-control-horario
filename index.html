@@ -74,24 +74,33 @@
       </header>
 
       <main class="app-main">
-        <section id="homeTab" class="tab active dashboard-home">
+        <section id="homeTab" class="tab active erp-home">
 
-          <div class="dashboard-left">
-        
-            <div class="welcome-card">
-              <div>
-                <p class="eyebrow" id="homeGreeting">Buenos días</p>
-                <h2 id="homeEmployeeName">—</h2>
-                <span id="homeRole" class="role-pill">—</span>
-              </div>
-        
-              <div id="clockStatus" class="clock-status outside">Fuera</div>
+          <div class="erp-user-strip">
+            <div>
+              <span>Usuario</span>
+              <strong id="homeEmployeeName">—</strong>
             </div>
         
-            <div class="clock-card premium-clock">
-              <button id="clockBtn" class="clock-btn" type="button">Fichar entrada</button>
+            <div>
+              <span>Rol</span>
+              <strong id="homeRole">—</strong>
+            </div>
         
-              <div class="today-grid">
+            <div>
+              <span>Estado</span>
+              <strong id="clockStatus" class="erp-status outside">Fuera</strong>
+            </div>
+          </div>
+        
+          <div class="erp-main-grid">
+        
+            <section class="erp-panel erp-clock-panel">
+              <div class="erp-panel-head">
+                <h2>Registro de jornada</h2>
+              </div>
+        
+              <div class="erp-data-grid">
                 <div>
                   <span>Entrada</span>
                   <strong id="todayIn">—</strong>
@@ -107,31 +116,67 @@
                   <strong id="todayTotal">00:00</strong>
                 </div>
               </div>
-            </div>
         
-            <div class="dashboard-row">
-              <div class="home-panel">
-                <h3>Calendario de hoy</h3>
-                <p id="todayCalendarStatus">Sin estado asignado.</p>
+              <button id="clockBtn" class="erp-primary-action" type="button">
+                Fichar entrada
+              </button>
+        
+              <p id="todayIncident" class="erp-note">
+                Sin incidencias detectadas.
+              </p>
+            </section>
+        
+            <section id="adminRecentMovements" class="erp-panel admin-only">
+              <div class="erp-panel-head">
+                <h2>Últimos movimientos</h2>
               </div>
         
-              <div class="home-panel">
-                <h3>Próximos eventos</h3>
-                <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
+              <div id="recentMovementsList" class="erp-table-placeholder">
+                Sin movimientos registrados.
               </div>
-            </div>
+            </section>
         
-            <div class="home-panel">
-              <h3>Últimos fichajes</h3>
+            <section id="adminTodayDashboard" class="erp-panel admin-only erp-summary-panel">
+              <div class="erp-panel-head">
+                <h2>Situación de hoy</h2>
+                <span class="counter-pill">Admin</span>
+              </div>
+        
+              <div class="erp-summary-list">
+                <div><span>Empleados activos</span><strong id="statActiveEmployees">0</strong></div>
+                <div><span>Trabajando ahora</span><strong id="statWorkingNow">0</strong></div>
+                <div><span>Vacaciones</span><strong id="statVacationToday">0</strong></div>
+                <div><span>Permisos</span><strong id="statPermissionToday">0</strong></div>
+                <div><span>Bajas</span><strong id="statSickToday">0</strong></div>
+                <div><span>Ausencias</span><strong id="statAbsenceToday">0</strong></div>
+                <div><span>Horas registradas hoy</span><strong id="statCompanyHoursToday">00:00</strong></div>
+              </div>
+        
+              <div id="workingNowList" class="working-now-list"></div>
+            </section>
+        
+            <section class="erp-panel">
+              <div class="erp-panel-head">
+                <h2>Calendario de hoy</h2>
+              </div>
+              <p id="todayCalendarStatus">Sin estado asignado.</p>
+            </section>
+        
+            <section class="erp-panel">
+              <div class="erp-panel-head">
+                <h2>Próximos eventos</h2>
+              </div>
+              <div id="upcomingCalendarEvents">Sin eventos próximos.</div>
+            </section>
+        
+            <section class="erp-panel">
+              <div class="erp-panel-head">
+                <h2>Últimos fichajes</h2>
+              </div>
               <div id="latestRecordsList">Sin fichajes recientes.</div>
-            </div>
+            </section>
         
-            <div class="mini-panel">
-              <h3>Incidencias del día</h3>
-              <p id="todayIncident">Sin incidencias detectadas.</p>
-            </div>
-        
-            <div class="home-panel incidents-panel">
+            <section class="erp-panel incidents-panel">
               <button id="toggleIncidentsBtn" class="incidents-toggle" type="button">
                 <span>Incidencias automáticas</span>
                 <span id="incidentsCounter" class="counter-pill">0</span>
@@ -140,66 +185,7 @@
               <div id="incidentsList" class="incidents-list collapsed">
                 Sin incidencias detectadas.
               </div>
-            </div>
-        
-          </div>
-        
-          <div class="dashboard-right">
-        
-            <div id="adminTodayDashboard" class="home-panel admin-dashboard admin-only">
-              <div class="panel-title-row">
-                <h3>Resumen de hoy</h3>
-                <span class="counter-pill">Admin</span>
-              </div>
-        
-              <div class="admin-stats-grid">
-                <div>
-                  <span>Empleados activos</span>
-                  <strong id="statActiveEmployees">0</strong>
-                </div>
-        
-                <div>
-                  <span>Trabajando ahora</span>
-                  <strong id="statWorkingNow">0</strong>
-                  <div id="workingNowList" class="working-now-list"></div>
-                </div>
-        
-                <div>
-                  <span>Vacaciones</span>
-                  <strong id="statVacationToday">0</strong>
-                </div>
-        
-                <div>
-                  <span>Permisos</span>
-                  <strong id="statPermissionToday">0</strong>
-                </div>
-        
-                <div>
-                  <span>Bajas</span>
-                  <strong id="statSickToday">0</strong>
-                </div>
-        
-                <div>
-                  <span>Ausencias</span>
-                  <strong id="statAbsenceToday">0</strong>
-                </div>
-        
-                <div class="wide-stat">
-                  <span>Horas registradas hoy</span>
-                  <strong id="statCompanyHoursToday">00:00</strong>
-                </div>
-              </div>
-            </div>
-        
-            <div id="adminRecentMovements" class="home-panel admin-only">
-              <div class="panel-title-row">
-                <h3>Últimos movimientos</h3>
-              </div>
-        
-              <div id="recentMovementsList">
-                Sin movimientos registrados.
-              </div>
-            </div>
+            </section>
         
           </div>
         
