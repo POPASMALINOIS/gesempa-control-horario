@@ -1601,3 +1601,128 @@ button:active {
     display:block;
   }
 }
+/* v0.9.2 - Dashboard tipo SaaS */
+
+.dashboard-home.active{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(360px,.8fr);
+  gap:24px;
+  align-items:start;
+}
+
+.dashboard-left,
+.dashboard-right{
+  display:grid;
+  gap:18px;
+}
+
+.welcome-card{
+  background:linear-gradient(135deg,#063f20,#0f7a3b);
+  color:white;
+  border-radius:22px;
+  padding:28px;
+  min-height:190px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  box-shadow:0 18px 45px rgba(15,122,59,.22);
+}
+
+.welcome-card h2{
+  margin:4px 0 12px;
+  font-size:30px;
+  letter-spacing:-.7px;
+}
+
+.welcome-card .eyebrow{
+  color:rgba(255,255,255,.75);
+}
+
+.welcome-card .role-pill{
+  background:rgba(255,255,255,.15);
+  color:white;
+}
+
+.welcome-card .clock-status{
+  background:white;
+  color:#111827;
+  min-width:86px;
+}
+
+.premium-clock{
+  padding:22px;
+}
+
+.clock-btn{
+  min-height:82px;
+  font-size:22px;
+  border-radius:18px;
+}
+
+.today-grid{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.dashboard-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.dashboard-right .home-panel{
+  min-height:auto;
+}
+
+.admin-stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.admin-stats-grid > div{
+  min-height:112px;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:18px;
+}
+
+.admin-stats-grid span{
+  display:block;
+  color:#64748b;
+  font-size:13px;
+}
+
+.admin-stats-grid strong{
+  display:block;
+  font-size:34px;
+  margin-top:10px;
+}
+
+.wide-stat{
+  grid-column:1 / -1;
+}
+
+#adminRecentMovements{
+  margin:0;
+}
+
+@media(max-width:1000px){
+  .dashboard-home.active{
+    display:block;
+  }
+
+  .dashboard-left,
+  .dashboard-right{
+    display:block;
+  }
+
+  .dashboard-left > *,
+  .dashboard-right > *{
+    margin-bottom:16px;
+  }
+
+  .dashboard-row{
+    grid-template-columns:1fr;
+  }
+}
