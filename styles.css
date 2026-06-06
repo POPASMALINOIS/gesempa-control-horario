@@ -1719,6 +1719,27 @@ button:active {
     color:#222;
 }
 
+.erp-user-bar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    height:42px;
+    padding:0 16px;
+    background:#ffffff;
+    border:1px solid #dddddd;
+    font-size:13px;
+    color:#444444;
+}
+
+.erp-user-bar strong{
+    font-weight:600;
+    color:#111111;
+}
+
+.erp-user-bar .separator{
+    color:#999999;
+}
+
 .erp-status{
     font-weight:700;
 }
