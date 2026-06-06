@@ -305,8 +305,20 @@
         </div>
 
         <div class="settings-card">
-      
-      </div>
+          <h3>Cambiar contraseña</h3>
+        
+          <input id="currentPassword" type="password" placeholder="Contraseña actual" autocomplete="current-password" />
+        
+          <input id="newPassword" type="password" placeholder="Nueva contraseña" autocomplete="new-password" />
+        
+          <input id="repeatNewPassword" type="password" placeholder="Repetir nueva contraseña" autocomplete="new-password" />
+        
+          <button id="changePasswordBtn" class="primary-btn" type="button">
+            Cambiar contraseña
+          </button>
+        
+          <p id="changePasswordMessage" class="message"></p>
+        </div>
       </section>
     </main>
 
@@ -354,6 +366,6 @@
     </div>
   </div>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=80"></script>
+  <script type="module" src="./app.js?v=81"></script>
 </body>
 </html>
