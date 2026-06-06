@@ -9,9 +9,10 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
-  browserLocalPersistence,
-  updateProfile,
+  inMemoryPersistence,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -147,12 +148,6 @@ const els = {
   saveEmployeeBtn: $("saveEmployeeBtn"),
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
   employeesNavBtn: $("employeesNavBtn"),
-
-  currentPassword: $("currentPassword"),
-  newPassword: $("newPassword"),
-  repeatNewPassword: $("repeatNewPassword"),
-  changePasswordBtn: $("changePasswordBtn"),
-  changePasswordMessage: $("changePasswordMessage"),
 
   calendarTitle: $("calendarTitle"),
   calendarEmployeeSelect: $("calendarEmployeeSelect"),
@@ -1883,81 +1878,7 @@ async function refreshData() {
   
   fillExportSelectors();
 }
-/*
-async function changeUserPassword() {
 
-  if (!state.user) {
-    alert("No hay usuario conectado.");
-    return;
-  }
-
-  const currentPassword =
-    els.currentPassword?.value || "";
-
-  const newPassword =
-    els.newPassword?.value || "";
-
-  const repeatPassword =
-    els.repeatNewPassword?.value || "";
-
-  if (
-    !currentPassword ||
-    !newPassword ||
-    !repeatPassword
-  ) {
-    els.changePasswordMessage.textContent =
-      "Debes rellenar todos los campos.";
-    return;
-  }
-
-  if (newPassword.length < 6) {
-    els.changePasswordMessage.textContent =
-      "La nueva contraseña debe tener al menos 6 caracteres.";
-    return;
-  }
-
-  if (newPassword !== repeatPassword) {
-    els.changePasswordMessage.textContent =
-      "Las nuevas contraseñas no coinciden.";
-    return;
-  }
-
-  try {
-
-    const credential =
-      EmailAuthProvider.credential(
-        state.user.email,
-        currentPassword
-      );
-
-    await reauthenticateWithCredential(
-      state.user,
-      credential
-    );
-
-    await updatePassword(
-      state.user,
-      newPassword
-    );
-
-    els.currentPassword.value = "";
-    els.newPassword.value = "";
-    els.repeatNewPassword.value = "";
-
-    els.changePasswordMessage.textContent =
-      "Contraseña actualizada correctamente.";
-
-  } catch (error) {
-
-    console.error(error);
-
-    els.changePasswordMessage.textContent =
-      "La contraseña actual no es correcta.";
-
-  }
-
-}
-*/
 function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   document.querySelectorAll(".bottom-nav button").forEach(btn => btn.classList.remove("active"));
@@ -2041,11 +1962,7 @@ if (els.recordModal) {
     }
   });
 }
-/*
-if (els.changePasswordBtn) {
-  els.changePasswordBtn.addEventListener("click", changeUserPassword);
-}
-*/
+
 if (els.employeeForm) {
   els.employeeForm.addEventListener("submit", createEmployee);
 }
