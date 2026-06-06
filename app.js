@@ -2095,7 +2095,7 @@ document.querySelectorAll(".paint-btn").forEach(btn => {
   });
 });
 
-document.querySelectorAll(".bottom-nav button").forEach(btn => {
+document.querySelectorAll(".bottom-nav button, .sidebar-nav button").forEach(btn => {
   btn.addEventListener("click", () => {
     const tabId = btn.dataset.tab;
     if (tabId) switchTab(tabId);
