@@ -1886,7 +1886,7 @@ async function refreshData() {
   
   fillExportSelectors();
 }
-
+/*
 async function changeUserPassword() {
 
   if (!state.user) {
@@ -1960,7 +1960,7 @@ async function changeUserPassword() {
   }
 
 }
-
+*/
 function switchTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   document.querySelectorAll(".bottom-nav button").forEach(btn => btn.classList.remove("active"));
@@ -2044,11 +2044,11 @@ if (els.recordModal) {
     }
   });
 }
-
+/*
 if (els.changePasswordBtn) {
   els.changePasswordBtn.addEventListener("click", changeUserPassword);
 }
-
+*/
 if (els.employeeForm) {
   els.employeeForm.addEventListener("submit", createEmployee);
 }
