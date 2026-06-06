@@ -322,13 +322,53 @@
       </section>
     </main>
 
-    <nav class="bottom-nav">
-      <button data-tab="homeTab" class="active" type="button">Inicio</button>
-      <button data-tab="calendarTab" type="button">Calendario</button>
-      <button data-tab="recordsTab" type="button">Fichajes</button>
-      <button data-tab="employeesTab" id="employeesNavBtn" type="button">Equipo</button>
-      <button data-tab="settingsTab" type="button">Ajustes</button>
-    </nav>
+    <aside class="sidebar">
+
+      <div class="sidebar-top">
+    
+        <div class="sidebar-logo">
+          <img src="icon-192.png" alt="GESEMPA">
+          <div>
+            <strong>GESEMPA</strong>
+            <span>Control Horario</span>
+          </div>
+        </div>
+    
+        <nav class="sidebar-nav">
+    
+          <button data-tab="homeTab" class="active">
+            Inicio
+          </button>
+    
+          <button data-tab="recordsTab">
+            Fichajes
+          </button>
+    
+          <button data-tab="calendarTab">
+            Calendario
+          </button>
+    
+          <button data-tab="employeesTab" id="employeesNavBtn">
+            Equipo
+          </button>
+    
+          <button data-tab="settingsTab">
+            Ajustes
+          </button>
+    
+        </nav>
+    
+      </div>
+    
+      <div class="sidebar-bottom">
+    
+        <button id="logoutBtnSidebar">
+          Cerrar sesión
+        </button>
+    
+      </div>
+    
+    </aside>
   </div>
 
   <div id="recordModal" class="modal hidden">
@@ -366,6 +406,6 @@
     </div>
   </div>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=82"></script>
+  <script type="module" src="./app.js?v=83"></script>
 </body>
 </html>
