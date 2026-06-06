@@ -668,21 +668,6 @@ button {
   }
 }
 
-.home-hero .eyebrow {
-  color: rgba(255,255,255,.76);
-}
-
-.home-hero h2 {
-  margin: 0 0 8px;
-  font-size: 25px;
-  line-height: 1.15;
-}
-
-.home-hero .role-pill {
-  background: rgba(255,255,255,.16);
-  color: white;
-}
-
 .home-panel {
   background: white;
   border: 1px solid var(--border);
@@ -770,16 +755,8 @@ button {
 }
 
 @media (max-width: 720px) {
-  .home-hero {
-    align-items: stretch;
-  }
-
   .home-grid {
     grid-template-columns: 1fr;
-  }
-
-  .home-hero h2 {
-    font-size: 22px;
   }
 }
 
@@ -1271,20 +1248,6 @@ button:active {
   border: 1px solid rgba(0,0,0,.06);
   box-shadow: 0 10px 30px rgba(17,24,39,.05);
 }
-
-/* HOME HERO */
-
-.home-hero {
-  border-radius: 18px;
-  background:
-    linear-gradient(135deg, #06491f 0%, #0b6b35 100%);
-  box-shadow: 0 20px 50px rgba(11,107,53,.20);
-}
-
-.home-hero h2 {
-  letter-spacing: -.6px;
-}
-
 /* CLOCK */
 
 .clock-btn {
@@ -1394,11 +1357,6 @@ button:active {
     padding: 14px;
   }
 
-  .home-hero {
-    border-radius: 16px;
-    padding: 20px;
-  }
-
   .clock-btn {
     min-height: 64px;
     font-size: 20px;
@@ -1504,10 +1462,6 @@ button:active {
 .clock-card{
     max-width:none;
 }
-
-.home-hero{
-    max-width:none;
-}
 /* v0.9.1 - Dashboard escritorio */
 
 #homeTab{
@@ -1521,13 +1475,6 @@ button:active {
   align-items:start;
 }
 
-.home-hero{
-  grid-column:1 / 2;
-  min-height:150px;
-  display:flex;
-  align-items:center;
-}
-
 .clock-card{
   grid-column:1 / 2;
 }
@@ -1536,13 +1483,6 @@ button:active {
   grid-column:2 / 3;
   grid-row:1 / span 2;
   min-height:100%;
-}
-
-.home-grid{
-  grid-column:1 / -1;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
 }
 
 .home-panel,
@@ -1624,18 +1564,10 @@ button:active {
   min-width:86px;
 }
 
-.premium-clock{
-  padding:22px;
-}
-
 .clock-btn{
   min-height:82px;
   font-size:22px;
   border-radius:18px;
-}
-
-.today-grid{
-  grid-template-columns:repeat(3,1fr);
 }
 
 .dashboard-row{
