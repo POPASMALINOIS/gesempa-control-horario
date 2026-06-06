@@ -8,8 +8,8 @@
   --muted: #748077;
   --border: #dde5dd;
   --danger: #b42318;
-  --radius: 18px;
-  --shadow: 0 14px 35px rgba(15, 122, 59, .08);
+  --radius: 0px;
+  --shadow: none;
 
   --work: #0f7a3b;
   --day_off: #cfd8d3;
@@ -667,20 +667,6 @@ button {
     grid-template-columns: 1fr;
   }
 }
-.home-hero {
-  background:
-    linear-gradient(135deg, rgba(15,122,59,.96), rgba(7,87,42,.96)),
-    radial-gradient(circle at top right, rgba(255,255,255,.25), transparent 35%);
-  color: white;
-  border-radius: 26px;
-  padding: 22px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: center;
-  box-shadow: 0 18px 45px rgba(15, 122, 59, .22);
-  margin-bottom: 16px;
-}
 
 .home-hero .eyebrow {
   color: rgba(255,255,255,.76);
@@ -695,17 +681,6 @@ button {
 .home-hero .role-pill {
   background: rgba(255,255,255,.16);
   color: white;
-}
-
-.premium-clock {
-  border-radius: 26px;
-}
-
-.home-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(300px,1fr));
-    gap:20px;
-    margin-top:20px;
 }
 
 .home-panel {
