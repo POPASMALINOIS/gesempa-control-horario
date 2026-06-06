@@ -1533,3 +1533,71 @@ button:active {
 .home-hero{
     max-width:none;
 }
+/* v0.9.1 - Dashboard escritorio */
+
+#homeTab{
+  display:none;
+}
+
+#homeTab.active{
+  display:grid;
+  grid-template-columns: 1.4fr .9fr;
+  gap:22px;
+  align-items:start;
+}
+
+.home-hero{
+  grid-column:1 / 2;
+  min-height:150px;
+  display:flex;
+  align-items:center;
+}
+
+.clock-card{
+  grid-column:1 / 2;
+}
+
+.admin-dashboard{
+  grid-column:2 / 3;
+  grid-row:1 / span 2;
+  min-height:100%;
+}
+
+.home-grid{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.home-panel,
+.mini-panel,
+.clock-card{
+  background:#fff;
+}
+
+#adminRecentMovements{
+  margin:14px 0;
+  box-shadow:none;
+  border:1px solid #e5e7eb;
+}
+
+.admin-stats-grid{
+  grid-template-columns:1fr 1fr;
+}
+
+.wide-stat{
+  grid-column:1 / -1;
+}
+
+.home-panel:nth-of-type(4),
+.mini-panel,
+.incidents-panel{
+  grid-column:1 / -1;
+}
+
+@media(max-width:900px){
+  #homeTab.active{
+    display:block;
+  }
+}
