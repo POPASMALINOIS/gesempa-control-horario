@@ -101,9 +101,15 @@ button {
   margin-top: 10px;
 }
 
-.ghost-btn {
-  background: #eef4ef;
-  color: var(--green-dark);
+.ghost-btn{
+    background:transparent;
+    color:#555;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:0;
+
+    padding:8px 12px;
 }
 
 .small-btn {
@@ -126,13 +132,23 @@ button {
 }
 
 .app-header{
-    height:72px;
-    background:#fff;
-    border-bottom:1px solid #e5e7eb;
+    height:52px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #dcdcdc;
+
+    padding:0 18px;
+
+    position:sticky;
+    top:0;
+    z-index:10;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 30px;
+
+    box-shadow:none;
 }
 
 .main-shell{
@@ -149,8 +165,8 @@ button {
 }
 
 .brand img {
-  width: 42px;
-  height: 42px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
 
@@ -158,6 +174,16 @@ button {
   display: block;
   color: var(--muted);
   font-size: 13px;
+}
+
+.brand strong{
+    font-size:14px;
+    font-weight:700;
+}
+
+.brand span{
+    font-size:11px;
+    color:#666;
 }
 
 .app-main{
@@ -1415,14 +1441,33 @@ button:active {
 
 .sidebar-nav button{
     background:transparent;
-    color:white;
+    border:none;
+    border-left:3px solid transparent;
+
+    color:#b9c0c8;
+
     text-align:left;
-    padding:14px;
-    border-radius:12px;
+
+    padding:14px 18px;
+
+    width:100%;
+
+    border-radius:0;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    transition:none;
 }
 
 .sidebar-nav button.active{
-    background:#0f7a3b;
+    background:transparent;
+    border-left:3px solid #0f7a3b;
+
+    color:#ffffff;
+
+    font-weight:700;
 }
 
 .sidebar-bottom button{
