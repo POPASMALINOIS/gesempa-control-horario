@@ -1944,3 +1944,165 @@ button:active {
     grid-template-columns:1fr;
   }
 }
+/* =========================
+   OFFICE DESKTOP HOME FINAL
+========================= */
+
+#homeTab.office-home.active{
+  display:flex !important;
+  flex-direction:column;
+  gap:14px;
+}
+
+.office-user-line{
+  height:36px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 12px;
+  background:#fff;
+  border:1px solid #d6d6d6;
+  font-size:13px;
+}
+
+.office-main-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.office-secondary-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.office-panel{
+  background:#fff;
+  border:1px solid #d6d6d6;
+  border-radius:0;
+  box-shadow:none;
+}
+
+.office-panel-head{
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 12px;
+  background:#f7f7f7;
+  border-bottom:1px solid #e2e2e2;
+}
+
+.office-panel-head h2{
+  margin:0;
+  font-size:13px;
+  font-weight:700;
+}
+
+.office-clock-data{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-bottom:1px solid #e5e5e5;
+}
+
+.office-clock-data div{
+  padding:14px 12px;
+  border-right:1px solid #e5e5e5;
+}
+
+.office-clock-data div:last-child{
+  border-right:none;
+}
+
+.office-clock-data span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  color:#666;
+  margin-bottom:6px;
+}
+
+.office-clock-data strong{
+  font-size:26px;
+  font-weight:500;
+}
+
+.office-primary-btn{
+  margin:12px;
+  min-width:180px;
+  height:36px;
+  border-radius:0;
+  background:#0f7a3b;
+  color:#fff;
+}
+
+.office-note{
+  margin:0 12px 12px;
+  font-size:12px;
+  color:#666;
+}
+
+.office-summary-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+
+.office-summary-list div{
+  padding:12px;
+  border-right:1px solid #e5e5e5;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.office-summary-list div:nth-child(2n){
+  border-right:none;
+}
+
+.office-summary-list span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  color:#666;
+  margin-bottom:5px;
+}
+
+.office-summary-list strong{
+  font-size:22px;
+  font-weight:500;
+}
+
+.office-tag{
+  font-size:11px;
+  padding:2px 6px;
+  border:1px solid #d6d6d6;
+  background:#fff;
+}
+
+.office-table .movement-item{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:16px;
+  padding:8px 12px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.office-table .movement-item strong,
+.office-table .movement-item span{
+  font-size:13px;
+}
+
+.office-records #latestRecordsList{
+  padding:10px 12px;
+}
+
+.office-panel p,
+.office-panel > div:not(.office-panel-head):not(.office-clock-data):not(.office-summary-list){
+  padding:10px 12px;
+}
+
+@media(max-width:1000px){
+  .office-main-row,
+  .office-secondary-row{
+    grid-template-columns:1fr;
+  }
+}
