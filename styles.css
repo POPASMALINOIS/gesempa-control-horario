@@ -1,24 +1,22 @@
 /* ==========================================================================
-   DISEÑO PREMIUM INSPIRADO EN PERSONIO / FACTORIAL (GESEMPA-PYME)
+   SISTEMA DE DISEÑO INSPIRADO EN PERSONIO / FACTORIAL (GESEMPA-PYME)
    ========================================================================== */
 
 :root {
-  /* Paleta de colores moderna y vibrante */
-  --green: #00a86b;          /* Verde tecnológico más vivo */
-  --green-dark: #007a4b;
+  --green: #00a86b;          /* Verde SaaS corporativo vibrante */
+  --green-dark: #008754;
   --green-soft: #e6f7f0;
-  --bg: #f8fafc;             /* Gris azulado muy limpio para el fondo */
+  --bg: #f8fafc;             /* Fondo gris azulado ultra limpio */
   --card: #ffffff;
-  --text: #0f172a;           /* Slate 900 para una lectura premium */
-  --muted: #64748b;          /* Slate 500 para textos secundarios */
-  --border: #e2e8f0;         /* Slate 200 para líneas sutiles */
+  --text: #0f172a;           /* Slate 900 para lectura premium */
+  --muted: #64748b;          /* Slate 500 para textos aclarados */
+  --border: #e2e8f0;         /* Líneas divisorias tenues */
   --danger: #ef4444;
-  --radius: 16px;            /* Esquinas redondeadas modernas */
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-
-  /* Estado de Calendarios */
+  --radius: 12px;            
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  
+  /* Colores de estados en calendarios */
   --work: #00a86b;
   --day_off: #cbd5e1;
   --permission: #f59e0b;
@@ -30,12 +28,12 @@
 
 * { 
   box-sizing: border-box; 
-  transition: all 0.2s ease; /* Transiciones suaves globales */
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -44,68 +42,70 @@ body {
 .hidden { display: none !important; }
 
 /* ==========================================================================
-   VISTA DE LOGIN (Rediseño limpio y minimalista)
+   VISTA ACCESO (LOGIN)
    ========================================================================== */
 .login-view {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(circle at top right, #f0fdf4, transparent 40%), var(--bg);
+  background: radial-gradient(circle at top right, #f0fdf4, transparent 45%), var(--bg);
 }
 
 .login-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: 20px;
   padding: 40px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  text-align: center;
 }
 
 .login-logo {
-  max-width: 140px;
+  max-height: 40px;
+  width: auto;
   margin-bottom: 24px;
 }
 
 .login-card h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .login-card p {
   color: var(--muted);
-  margin: 6px 0 32px;
+  margin: 6px 0 28px;
   font-size: 14px;
 }
 
-/* Form Inputs universales */
+/* Inputs y Selects */
 input, select, textarea {
   width: 100%;
   border: 1px solid var(--border);
   background: #fff;
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
   font-size: 14px;
   color: var(--text);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-family: inherit;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.12);
 }
 
-/* Botones modernos */
+/* Botones */
 button {
   border: 0;
-  border-radius: 10px;
-  padding: 12px 20px;
+  border-radius: 8px;
+  padding: 11px 18px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -120,29 +120,26 @@ button {
   background: var(--green);
   color: white;
 }
-
 .primary-btn:hover { background: var(--green-dark); }
 
 .secondary-btn {
   background: var(--green-soft);
   color: var(--green-dark);
 }
-
-.secondary-btn:hover { background: #d1f2e4; }
+.secondary-btn:hover { background: #d2f1e4; }
 
 .ghost-btn {
   background: transparent;
   color: var(--muted);
   border: 1px solid var(--border);
 }
-
 .ghost-btn:hover {
   background: #f1f5f9;
   color: var(--text);
 }
 
 /* ==========================================================================
-   ESTRUCTURA APP / SIDEBAR (Inspirado en Factorial Dark Mode Sidebar)
+   ESTRUCTURA APP LAYOUT (SIDEBAR LATERAL)
    ========================================================================== */
 .app {
   display: flex;
@@ -150,8 +147,8 @@ button {
 }
 
 .sidebar {
-  width: 260px;
-  background: #0f172a; /* Slate 900: Acabado elegante y premium */
+  width: 250px;
+  background: #1e293b; /* Antracita Slate Premium */
   color: #fff;
   padding: 24px 16px;
   display: flex;
@@ -165,19 +162,21 @@ button {
   gap: 12px;
   align-items: center;
   margin-bottom: 32px;
-  padding-left: 8px;
+  padding-left: 6px;
 }
 
 .sidebar-logo img {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .sidebar-logo strong {
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  color: #f8fafc;
+  display: block;
 }
 
 .sidebar-logo span {
@@ -189,7 +188,7 @@ button {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .sidebar-nav button {
@@ -201,10 +200,11 @@ button {
   font-weight: 500;
   border-radius: 8px;
   width: 100%;
+  justify-content: flex-start;
 }
 
 .sidebar-nav button:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: #fff;
 }
 
@@ -215,17 +215,16 @@ button {
 
 .sidebar-bottom button {
   width: 100%;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
   color: #f87171;
   border-radius: 8px;
 }
-
 .sidebar-bottom button:hover {
   background: #ef4444;
   color: #fff;
 }
 
-/* Shell de contenido principal */
+/* Contenedor derecho */
 .main-shell {
   flex: 1;
   display: flex;
@@ -233,8 +232,9 @@ button {
   min-width: 0;
 }
 
+/* REESTILIZACIÓN DEL HEADER (FIJO Y CORREGIDO) */
 .app-header {
-  height: 64px;
+  height: 60px;
   background: #fff;
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
@@ -243,46 +243,66 @@ button {
   justify-content: space-between;
 }
 
+.app-header .brand {
+  display: flex;
+  align-items: center;
+}
+
+.app-header .brand img {
+  max-height: 28px; /* Forzado estricto para que nunca se deforme o corte */
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.app-header .brand div {
+  display: none; /* Quitamos textos redundantes si ya está el logo */
+}
+
 .app-main {
   padding: 32px;
   background: var(--bg);
+  overflow-y: auto;
+  flex: 1;
 }
 
 /* ==========================================================================
-   DASHBOARD / HOME (Efecto Tarjeta Fluida de Personio)
+   VISTA CONTROL INICIO (DASHBOARD COMPACTO REORDENADO)
    ========================================================================== */
-#homeTab.office-home.active {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr);
+.office-home {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
 .office-user-line {
-  grid-column: 1 / -1;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: 8px;
+  padding: 10px 16px;
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 30px;
+  font-size: 13px;
   color: var(--muted);
+  align-self: flex-start;
   box-shadow: var(--shadow-sm);
 }
 
 .office-user-line strong {
   color: var(--green);
+  font-weight: 600;
 }
 
-.office-main-row, .office-secondary-row {
-  grid-column: 1 / -1;
+/* Distribución paralela en filas para evitar scroll masivo */
+.office-main-row, 
+.office-secondary-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
 
-/* Paneles del Dashboard estilo Factorial */
+/* Paneles del Dashboard */
 .office-panel {
   background: #fff;
   border: 1px solid var(--border);
@@ -294,7 +314,7 @@ button {
 }
 
 .office-panel-head {
-  padding: 20px 24px;
+  padding: 16px 20px;
   background: #fff;
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -304,25 +324,24 @@ button {
 
 .office-panel-head h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text);
 }
 
-/* Grid de fichaje rápido */
+/* Módulo Fichar */
 .office-clock-data {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: #f8fafc;
+  background: #fafafa;
   border-bottom: 1px solid var(--border);
 }
 
 .office-clock-data div {
-  padding: 20px;
+  padding: 16px;
   text-align: center;
   border-right: 1px solid var(--border);
 }
-
 .office-clock-data div:last-child { border-right: 0; }
 
 .office-clock-data span {
@@ -331,226 +350,220 @@ button {
   font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .office-clock-data strong {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text);
 }
 
 .office-primary-btn {
-  margin: 20px 24px;
-  padding: 14px;
-  font-size: 15px;
+  margin: 16px;
+  padding: 12px;
+  font-size: 14px;
   background: var(--green);
   color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .office-note {
-  margin: 0 24px 20px;
+  margin: 0 16px 16px;
   font-size: 13px;
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-/* Estadísticas de Administrador */
+/* Métricas del Admin */
 .office-summary-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
 .office-summary-list div {
-  padding: 18px 24px;
+  padding: 14px 20px;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-
 .office-summary-list div:nth-child(2n) { border-right: 0; }
 
 .office-summary-list span {
   display: block;
   font-size: 11px;
-  font-weight: 600;
   color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .office-summary-list strong {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
-  color: var(--text);
 }
 
 .office-tag {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 4px 10px;
-  background: #eff6ff;
-  color: #2563eb;
-  border-radius: 999px;
+  padding: 2px 8px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  border-radius: 20px;
+}
+
+/* Listados genéricos interiores */
+.office-panel p, #latestRecordsList, #upcomingCalendarEvents {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
 }
 
 /* ==========================================================================
-   TABLAS Y LISTAS (Movimientos y Fichajes)
+   TABLAS Y REGISTROS (ÚLTIMOS MOVIMIENTOS)
    ========================================================================== */
-.office-movements { grid-column: 1 / -1; }
+.office-table {
+  font-size: 14px;
+}
 
-.office-table .movement-item {
+.movement-item {
   display: grid;
-  grid-template-columns: 100px 1fr;
-  padding: 14px 24px;
+  grid-template-columns: 110px 1fr;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   align-items: center;
 }
+.movement-item:last-child { border-bottom: 0; }
 
-.office-table .movement-item:hover {
-  background: #f8fafc;
-}
-
-.office-table .movement-item strong {
-  color: var(--text);
-  font-size: 14px;
-}
-
-.office-table .movement-item span {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.office-panel p, 
-.office-panel > div:not(.office-panel-head):not(.office-clock-data):not(.office-summary-list):not(.office-table) {
-  padding: 16px 24px;
-  font-size: 14px;
-}
+.movement-item strong { color: var(--text); }
+.movement-item span { color: var(--muted); }
 
 /* ==========================================================================
-   SECCIÓN CALENDARIO (Limpio y minimalista)
+   VISTA CALENDARIO
    ========================================================================== */
 .calendar-toolbar {
-  margin-bottom: 24px;
-}
-
-.calendar-toolbar h2 {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.calendar-controls {
-  background: #fff;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
+.calendar-toolbar h2 { margin: 0; font-size: 20px; font-weight: 700; }
+
+.calendar-controls {
+  display: flex;
+  gap: 16px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.calendar-controls select { margin-bottom: 0; width: auto; min-width: 200px; }
 
 .view-toggle {
   background: #f1f5f9;
-  padding: 4px;
-  border-radius: 8px;
-}
-
-.view-toggle button {
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 3px;
   border-radius: 6px;
+  display: flex;
 }
+.view-toggle button { padding: 6px 12px; font-size: 13px; border-radius: 4px; background: transparent; color: var(--muted); }
+.view-toggle button.active { background: #fff; color: var(--text); box-shadow: var(--shadow-sm); }
 
 .paint-toolbar {
-  gap: 10px;
-  padding-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
 }
-
 .paint-btn {
-  border: 1px solid var(--border);
   background: #fff;
-  font-weight: 500;
-  padding: 8px 16px;
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 20px;
 }
+.paint-btn.active { border-color: var(--text); background: #f1f5f9; }
 
-.paint-btn.active {
-  box-shadow: none;
-  font-weight: 600;
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
 }
+.dot.work { background: var(--work); }
+.dot.day_off { background: var(--day_off); }
+.dot.permission { background: var(--permission); }
+.dot.sick_leave { background: var(--sick_leave); }
+.dot.holiday { background: var(--holiday); }
+.dot.vacation { background: var(--vacation); }
+.dot.absence { background: var(--absence); }
 
-/* Grid del calendario mensual */
 .monthly-calendar {
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-}
-
-.calendar-day {
-  min-height: 70px;
-  border-radius: 10px;
   background: #fff;
   border: 1px solid var(--border);
-  padding: 10px;
-}
-
-.calendar-day.today {
-  outline: 2px solid var(--green);
-  outline-offset: 1px;
-}
-
-.calendar-day:hover:not(.empty) {
-  transform: translateY(-2px);
+  border-radius: var(--radius);
+  padding: 16px;
   box-shadow: var(--shadow-sm);
 }
 
 /* ==========================================================================
-   MODALES (Estilo Factorial Slider / Floating Card)
+   MODALES (DISEÑO FLUIDO PREMIUM)
    ========================================================================== */
 .modal {
-  background: rgba(15, 23, 42, 0.3);
-  backdrop-filter: blur(4px); /* Cristalizado elegante detras */
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 999;
 }
 
 .modal-card {
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  animation: modalSlide 0.3s ease-out;
+  background: #fff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
 }
 
-@keyframes modalSlide {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.modal-head h3 { margin: 0; font-size: 18px; font-weight: 600; }
+
+.icon-btn {
+  background: transparent;
+  font-size: 20px;
+  color: var(--muted);
+  padding: 4px;
 }
 
 /* ==========================================================================
-   RESPONSIVE / MEDIA QUERIES
+   RESPONSIVE MODERNO
    ========================================================================== */
 @media (max-width: 1024px) {
-  #homeTab.office-home.active,
-  .office-main-row,
+  .office-main-row, 
   .office-secondary-row {
-    display: flex !important;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 16px;
   }
   
   .sidebar {
-    width: 70px;
+    width: 68px;
     padding: 16px 8px;
   }
-  
-  .sidebar-logo span, .sidebar-logo div, .sidebar-nav button span, .sidebar-bottom button {
+  .sidebar-logo span, 
+  .sidebar-logo div, 
+  .sidebar-nav button span,
+  .sidebar-bottom button {
     display: none;
   }
   
-  .app-header {
-    padding: 0 16px;
-  }
-  
-  .app-main {
-    padding: 16px;
-  }
+  .app-header { padding: 0 16px; }
+  .app-main { padding: 16px; }
 }
