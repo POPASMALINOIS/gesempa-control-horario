@@ -79,6 +79,9 @@ const state = {
 let calendarPainting = false;
 let calendarLastPaintedDate = null;
 
+// ==========================================
+// REFERENCIAS DEL DOM CORREGIDAS
+// ==========================================
 const els = {
   authEmail: $("authEmail"),
   authPassword: $("authPassword"),
@@ -87,6 +90,7 @@ const els = {
   authMessage: $("authMessage"),
 
   logoutBtn: $("logoutBtn"),
+  logoutBtnSidebar: $("logoutBtnSidebar"), // <-- NUEVO BOTON SIDEBAR
   currentEmployeeName: $("currentEmployeeName"),
   currentRole: $("currentRole"),
   homeGreeting: $("homeGreeting"),
@@ -150,7 +154,7 @@ const els = {
   employeeActive: $("employeeActive"),
   saveEmployeeBtn: $("saveEmployeeBtn"),
   cancelEmployeeEditBtn: $("cancelEmployeeEditBtn"),
-  employeesNavBtn: $("employeesNavBtn"),
+  employeesNavBtn: document.querySelector(".employees-sidebar-btn"), // <-- CORRECCIÓN BÚSQUEDA BOTÓN
 
   currentPassword: $("currentPassword"),
   newPassword: $("newPassword"),
@@ -316,7 +320,6 @@ function timeToMinutes(time) {
 function getWeekdayFromDateKey(dateKey) {
   const date = new Date(dateKey + "T00:00:00");
   return date.getDay();
-  // 0 domingo, 1 lunes, 2 martes, 3 miércoles, 4 jueves, 5 viernes, 6 sábado
 }
 
 function getMonthFromDateKey(dateKey) {
@@ -330,37 +333,21 @@ function getExpectedScheduleForDate(dateKey) {
 
   // Sábado o domingo
   if (weekday === 0 || weekday === 6) {
-    return {
-      expectedStart: null,
-      expectedMinutes: 0,
-      label: "Fin de semana"
-    };
+    return { expectedStart: null, expectedMinutes: 0, label: "Fin de semana" };
   }
 
   // Agosto completo: horario de verano de lunes a viernes
   if (month === 8) {
-    return {
-      expectedStart: "09:30",
-      expectedMinutes: 270,
-      label: "Horario verano 09:30-14:00"
-    };
+    return { expectedStart: "09:30", expectedMinutes: 270, label: "Horario verano 09:30-14:00" };
   }
 
   // Viernes ordinario
   if (weekday === 5) {
-    return {
-      expectedStart: "09:30",
-      expectedMinutes: 270,
-      label: "Viernes 09:30-14:00"
-    };
+    return { expectedStart: "09:30", expectedMinutes: 270, label: "Viernes 09:30-14:00" };
   }
 
   // Lunes a jueves ordinario
-  return {
-    expectedStart: "09:30",
-    expectedMinutes: 450,
-    label: "L-J 09:30-14:00 / 16:30-19:30"
-  };
+  return { expectedStart: "09:30", expectedMinutes: 450, label: "L-J 09:30-14:00 / 16:30-19:30" };
 }
 
 function minutesToHuman(minutes) {
@@ -449,7 +436,7 @@ async function createUserAndEmployee(user, name, email, role = "employee") {
     dni: "",
     birthDate: "",
     hireDate: "",
-    color: "#0f7a3b",
+    color: "#00a86b",
     baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
     clockStatus: "outside",
     todayWorkStatus: "work",
@@ -486,7 +473,7 @@ async function loadProfile(user) {
       userId: user.uid,
       name: state.profile.name || fallbackName,
       email: state.profile.email || email,
-      color: "#0f7a3b",
+      color: "#00a86b",
       baseSchedule: "L-V 09:00-14:00 / 16:00-19:00",
       role: finalRole,
       position: finalRole === "admin" ? "Administrador" : "Empleado",
@@ -1861,7 +1848,6 @@ async function refreshData() {
   await loadProfile(state.user);
   await loadEmployees();
   
-  console.log("EMPLEADOS CARGADOS:", state.employees);
   fillExportSelectors();
   
   if (!state.selectedCalendarEmployeeId) {
@@ -1878,24 +1864,43 @@ async function refreshData() {
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
   setTimeout(async () => {
-  await renderRecords();
-  await renderLatestRecords();
-  await renderIncidents();
-  await renderAdminTodayDashboard();
-  await renderRecentMovements();
-}, 100);
+    await renderRecords();
+    await renderLatestRecords();
+    await renderIncidents();
+    await renderAdminTodayDashboard();
+    await renderRecentMovements();
+  }, 50);
   
   fillExportSelectors();
 }
 
+// ==========================================
+// FUNCIÓN CENTRAL DE RUTEO CORREGIDA
+// ==========================================
 function switchTab(tabId) {
-  document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-  document.querySelectorAll(".bottom-nav button").forEach(btn => btn.classList.remove("active"));
+  // 1. Ocultar de forma segura todas las pestañas inyectando '.hidden'
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.classList.remove("active");
+    tab.classList.add("hidden");
+  });
 
-  $(tabId).classList.add("active");
+  // 2. Deseleccionar los botones del menú lateral
+  document.querySelectorAll(".sidebar-nav button").forEach(btn => {
+    btn.classList.remove("active");
+  });
 
-  const btn = document.querySelector(`[data-tab="${tabId}"]`);
-  if (btn) btn.classList.add("active");
+  // 3. Encender la pestaña solicitada (limpiando '.hidden')
+  const targetTab = $(tabId);
+  if (targetTab) {
+    targetTab.classList.remove("hidden");
+    targetTab.classList.add("active");
+  }
+
+  // 4. Marcar en verde el botón que acabamos de pulsar
+  const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
+  if (activeBtn) {
+    activeBtn.classList.add("active");
+  }
 }
 
 async function changeUserPassword() {
@@ -1943,6 +1948,10 @@ async function changeUserPassword() {
   }
 }
 
+// ==========================================
+// LISTENERS (EVENTOS DE CLICS)
+// ==========================================
+
 els.loginBtn.addEventListener("click", async () => {
   showMessage("");
 
@@ -1987,9 +1996,15 @@ if (els.registerBtn) {
   });
 }
 
-els.logoutBtn.addEventListener("click", () => {
-  signOut(auth);
-});
+// Botones de Cerrar Sesión
+if (els.logoutBtn) {
+  els.logoutBtn.addEventListener("click", () => signOut(auth));
+}
+
+// NUEVO: Botón de Cerrar Sesión del Menú Lateral
+if (els.logoutBtnSidebar) {
+  els.logoutBtnSidebar.addEventListener("click", () => signOut(auth));
+}
 
 els.clockBtn.addEventListener("click", handleClock);
 
@@ -2095,10 +2110,15 @@ document.querySelectorAll(".paint-btn").forEach(btn => {
   });
 });
 
-document.querySelectorAll(".bottom-nav button, .sidebar-nav button").forEach(btn => {
+// ==========================================
+// LISTENER DEL MENÚ LATERAL
+// ==========================================
+document.querySelectorAll(".sidebar-nav button").forEach(btn => {
   btn.addEventListener("click", () => {
     const tabId = btn.dataset.tab;
-    if (tabId) switchTab(tabId);
+    if (tabId) {
+      switchTab(tabId);
+    }
   });
 });
 
@@ -2136,17 +2156,6 @@ document.addEventListener("touchmove", function (event) {
   }
 }, { passive: false });
 
-// --- ENLAZAR BOTONES DE LA BARRA DE NAVEGACIÓN (SPA) ---
-document.querySelectorAll(".bottom-nav button, .nav-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const tabId = btn.dataset.tab;
-    if (tabId) {
-      switchTab(tabId);
-    }
-  });
-});
-
-
 onAuthStateChanged(auth, async (user) => {
   state.user = user;
 
@@ -2160,6 +2169,8 @@ onAuthStateChanged(auth, async (user) => {
     loginView.classList.add("hidden");
     appView.classList.remove("hidden");
     
+    // Forzamos el renderizado en la pestaña "homeTab" al abrir el programa
+    switchTab("homeTab");
 
     await refreshData();
   } catch (error) {
