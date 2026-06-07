@@ -2136,6 +2136,17 @@ document.addEventListener("touchmove", function (event) {
   }
 }, { passive: false });
 
+// --- ENLAZAR BOTONES DE LA BARRA DE NAVEGACIÓN (SPA) ---
+document.querySelectorAll(".bottom-nav button, .nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const tabId = btn.dataset.tab;
+    if (tabId) {
+      switchTab(tabId);
+    }
+  });
+});
+
+
 onAuthStateChanged(auth, async (user) => {
   state.user = user;
 
