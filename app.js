@@ -1112,6 +1112,61 @@ function closeNoteModal() {
 
 }
 
+async function saveCalendarNote() {
+  const date = els.noteDate.value;
+  const title = els.noteTitle.value.trim();
+  const description = els.noteDescription.value.trim();
+  const time = els.noteTime.value;
+  const priority = els.notePriority.value || "normal";
+  const editingId = els.editingNoteId.value;
+
+  if (!date) {
+    alert("No se ha seleccionado ningún día.");
+    return;
+  }
+
+  if (!title) {
+    alert("Introduce un título para la nota.");
+    return;
+  }
+
+  if (!state.selectedCalendarEmployeeId) {
+    alert("No hay empleado seleccionado.");
+    return;
+  }
+
+  const selectedEmployee = state.employees.find(
+    e => e.employeeId === state.selectedCalendarEmployeeId
+  );
+
+  const [year, month] = date.split("-").map(Number);
+
+  const payload = {
+    companyId: APP_COMPANY_ID,
+    employeeId: state.selectedCalendarEmployeeId,
+    employeeName: selectedEmployee?.name || getEmployeeDisplayName(),
+    date,
+    year,
+    month,
+    title,
+    description,
+    time,
+    priority,
+    updatedBy: state.user.uid,
+    updatedAt: serverTimestamp()
+  };
+
+  if (editingId) {
+    await setDoc(doc(db, "calendarNotes", editingId), payload, { merge: true });
+  } else {
+    payload.createdBy = state.user.uid;
+    payload.createdAt = serverTimestamp();
+    await addDoc(collection(db, "calendarNotes"), payload);
+  }
+
+  closeNoteModal();
+}
+
 async function saveManualRecord() {
   if (!isAdmin()) {
     alert("Solo el administrador puede guardar fichajes manuales.");
