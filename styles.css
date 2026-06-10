@@ -2941,3 +2941,29 @@ body{
 .mini-calendar-day.absence{
   background:#f1eaff;
 }
+.mini-calendar-day{
+  position:relative;
+}
+
+.mini-day-number{
+  position:relative;
+  z-index:2;
+}
+
+.mini-note-dot{
+  position:absolute;
+  right:8px;
+  bottom:8px;
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:#111827;
+}
+
+.mini-calendar-day.has-important-note .mini-note-dot{
+  background:#f59e0b;
+}
+
+.mini-calendar-day.has-urgent-note .mini-note-dot{
+  background:#dc2626;
+}
