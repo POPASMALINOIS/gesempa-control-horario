@@ -2999,3 +2999,185 @@ body{
 .upcoming-note-item.important strong{
   color:#b45309;
 }
+.app-header{
+    display:none !important;
+}
+/* ==========================
+   GESEMPA EDITORIAL UI
+========================== */
+
+body{
+    background:#f7f6f2;
+    color:#111111;
+    font-family:
+    "Inter",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.app-main{
+    padding:40px;
+}
+
+.sidebar{
+    background:#111111;
+    width:260px;
+}
+
+.sidebar-logo strong{
+    font-size:16px;
+    letter-spacing:.08em;
+}
+
+.sidebar-logo span{
+    opacity:.55;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.sidebar-nav button{
+    font-size:14px;
+    font-weight:500;
+    padding:14px 16px;
+    transition:.2s;
+}
+
+.sidebar-nav button:hover{
+    background:rgba(255,255,255,.04);
+}
+
+.sidebar-nav button.active{
+    background:rgba(255,255,255,.06);
+    border-left:2px solid #ffffff;
+}
+
+.office-panel{
+    background:transparent;
+    border:none;
+}
+
+.office-panel-head{
+    background:transparent;
+    border:none;
+    padding:0;
+    margin-bottom:20px;
+    height:auto;
+}
+
+.office-panel-head h2{
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:-0.02em;
+}
+
+.office-user-line{
+    background:transparent;
+    border:none;
+    padding:0;
+    font-size:14px;
+    color:#666;
+    margin-bottom:20px;
+}
+
+.office-clock-data{
+    border:none;
+    gap:24px;
+}
+
+.office-clock-data div{
+    border:none;
+    background:#ffffff;
+    padding:24px;
+}
+
+.office-clock-data strong{
+    font-size:32px;
+    font-weight:300;
+}
+
+.office-summary-list{
+    gap:1px;
+    background:#e5e5e5;
+}
+
+.office-summary-list div{
+    background:#ffffff;
+    border:none;
+    padding:24px;
+}
+
+.office-summary-list strong{
+    font-size:30px;
+    font-weight:300;
+}
+
+.office-primary-btn{
+    border-radius:0;
+    height:52px;
+    font-weight:600;
+    letter-spacing:.03em;
+}
+
+#dashboardMiniCalendar,
+.upcoming-calendar-notes{
+    background:#ffffff;
+    padding:20px;
+}
+
+.mini-calendar-head{
+    border:none;
+    padding:0 0 20px 0;
+    font-size:20px;
+    font-weight:500;
+}
+
+.mini-calendar-weekdays span{
+    border:none;
+    font-weight:600;
+}
+
+.mini-calendar-day{
+    border:1px solid #f0f0f0;
+    min-height:72px;
+}
+
+.upcoming-note-item{
+    border-bottom:1px solid #efefef;
+    padding:16px 0;
+}
+
+.section-head h2,
+.calendar-toolbar h2{
+    font-size:28px;
+    font-weight:500;
+    letter-spacing:-0.03em;
+}
+
+.calendar-toolbar,
+.section-head{
+    margin-bottom:30px;
+}
+.login-card{
+    border:none;
+    border-radius:0;
+    background:#ffffff;
+    max-width:500px;
+    padding:50px;
+}
+
+.login-card h1{
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:-0.03em;
+}
+
+input,
+select,
+textarea{
+    border-radius:0;
+    border:1px solid #dcdcdc;
+}
+
+button{
+    border-radius:0;
+}
