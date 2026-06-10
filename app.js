@@ -1632,9 +1632,13 @@ function renderDashboardMiniCalendar() {
 
   container.innerHTML = html;
 
-  container.querySelectorAll(".mini-calendar-day[data-date]").forEach(day => {
+  const miniDays = container.querySelectorAll(".mini-calendar-day[data-date]");
+
+  miniDays.forEach(day => {
     day.addEventListener("click", () => {
-      openNoteModal(day.dataset.date);
+      const date = day.getAttribute("data-date");
+      console.log("CLICK MINI CALENDAR:", date);
+      openNoteModal(date);
     });
   });
 }
