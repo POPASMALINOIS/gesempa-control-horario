@@ -81,6 +81,7 @@ const state = {
 
 let calendarPainting = false;
 let calendarLastPaintedDate = null;
+let calendarNotesUnsubscribe = null;
 
 const els = {
   authEmail: $("authEmail"),
@@ -580,6 +581,61 @@ async function loadCalendarDays() {
     if (item.date && item.status) {
       state.calendarDays[item.date] = item;
     }
+  });
+}
+
+function listenCalendarNotes() {
+  if (!state.selectedCalendarEmployeeId) return;
+
+  if (calendarNotesUnsubscribe) {
+    calendarNotesUnsubscribe();
+    calendarNotesUnsubscribe = null;
+  }
+
+  const q = query(
+    collection(db, "calendarNotes"),
+    where("companyId", "==", APP_COMPANY_ID),
+    where("employeeId", "==", state.selectedCalendarEmployeeId),
+    where("year", "==", currentYear())
+  );
+
+  calendarNotesUnsubscribe = onSnapshot(q, (snap) => {
+    state.calendarNotes = {};
+    state.upcomingNotes = [];
+
+    snap.docs.forEach(docSnap => {
+      const note = {
+        id: docSnap.id,
+        ...docSnap.data()
+      };
+
+      if (!note.date) return;
+
+      if (!state.calendarNotes[note.date]) {
+        state.calendarNotes[note.date] = [];
+      }
+
+      state.calendarNotes[note.date].push(note);
+    });
+
+    const today = todayKey();
+
+    state.upcomingNotes = Object.values(state.calendarNotes)
+      .flat()
+      .filter(note => note.date >= today)
+      .sort((a, b) => {
+        const aKey = `${a.date || ""}_${a.time || "99:99"}`;
+        const bKey = `${b.date || ""}_${b.time || "99:99"}`;
+        return aKey.localeCompare(bKey);
+      })
+      .slice(0, 8);
+
+    renderCalendar();
+    renderDashboardMiniCalendar();
+    renderUpcomingCalendarNotes();
+
+  }, (error) => {
+    console.error("Error escuchando notas del calendario:", error);
   });
 }
 
@@ -1919,6 +1975,7 @@ async function refreshData() {
 
   await loadTodayRecord();
   await loadCalendarDays();
+  listenCalendarNotes();
 
   renderShell();
   renderClock();
@@ -2110,6 +2167,7 @@ els.yearViewBtn.addEventListener("click", () => {
 els.calendarEmployeeSelect.addEventListener("change", async () => {
   state.selectedCalendarEmployeeId = els.calendarEmployeeSelect.value;
   await loadCalendarDays();
+  listenCalendarNotes();
   refreshCalendarViews();
 });
 
