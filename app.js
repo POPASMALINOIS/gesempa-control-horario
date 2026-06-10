@@ -1616,7 +1616,7 @@ function renderDashboardMiniCalendar() {
           : "";
 
     html += `
-      <div class="mini-calendar-day ${status} ${today} ${noteClass}" title="${hasNotes ? `${notes.length} nota(s)` : ""}">
+      <div class="mini-calendar-day ${status} ${today} ${noteClass}" data-date="${date}" title="${hasNotes ? `${notes.length} nota(s)` : ""}">
         <span class="mini-day-number">${day}</span>
 
         ${
@@ -1631,6 +1631,12 @@ function renderDashboardMiniCalendar() {
   html += `</div>`;
 
   container.innerHTML = html;
+
+  container.querySelectorAll(".mini-calendar-day[data-date]").forEach(day => {
+    day.addEventListener("click", () => {
+      openNoteModal(day.dataset.date);
+    });
+  });
 }
 
 function renderUpcomingCalendarNotes() {
