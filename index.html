@@ -324,6 +324,42 @@
     </div>
   </div>
 
+  <div id="noteModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Agenda diaria</p>
+        <h3 id="noteModalTitle">Nueva nota</h3>
+      </div>
+
+      <button id="closeNoteModalBtn" class="icon-btn" type="button">×</button>
+    </div>
+
+    <input id="editingNoteId" type="hidden" />
+    <input id="noteDate" type="hidden" />
+
+    <input id="noteTitle" type="text" placeholder="Título" />
+
+    <textarea id="noteDescription" placeholder="Descripción u observaciones"></textarea>
+
+    <input id="noteTime" type="time" />
+
+    <select id="notePriority">
+      <option value="normal">Normal</option>
+      <option value="important">Importante</option>
+      <option value="urgent">Urgente</option>
+    </select>
+
+    <button id="saveNoteBtn" class="primary-btn" type="button">
+      Guardar nota
+    </button>
+
+    <button id="deleteNoteBtn" class="secondary-btn hidden" type="button">
+      Eliminar nota
+    </button>
+  </div>
+</div>
+  
   <div id="recordModal" class="modal hidden">
     <div class="modal-card">
       <div class="modal-head">
