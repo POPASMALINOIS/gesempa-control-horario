@@ -1705,18 +1705,19 @@ function renderDashboardMiniCalendar() {
 
   const miniDays = container.querySelectorAll(".mini-calendar-day[data-date]");
 
-  miniDays.forEach(day => {
-  day.addEventListener("click", () => {
-    const date = day.getAttribute("data-date");
-    const notes = state.calendarNotes?.[date] || [];
-
-    if (notes.length) {
-      openNoteModal(date, notes[0]);
-    } else {
-      openNoteModal(date);
-    }
+    miniDays.forEach(day => {
+    day.addEventListener("click", () => {
+      const date = day.getAttribute("data-date");
+      const notes = state.calendarNotes?.[date] || [];
+  
+      if (notes.length) {
+        openNoteModal(date, notes[0]);
+      } else {
+        openNoteModal(date);
+      }
+    });
   });
-});
+}
 
 function renderUpcomingCalendarNotes() {
   const container = document.getElementById("upcomingCalendarNotes");
