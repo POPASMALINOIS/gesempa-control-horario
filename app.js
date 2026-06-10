@@ -180,6 +180,7 @@ const els = {
   noteTitle: $("noteTitle"),
   noteDescription: $("noteDescription"),
   noteTime: $("noteTime"),
+  noteType: $("noteType"),
   notePriority: $("notePriority"),
   saveNoteBtn: $("saveNoteBtn"),
   deleteNoteBtn: $("deleteNoteBtn")
@@ -1087,6 +1088,7 @@ function openNoteModal(date, note = null) {
     els.noteTitle.value = note.title || "";
     els.noteDescription.value = note.description || "";
     els.noteTime.value = note.time || "";
+    els.noteType.value = note.type || "general";
     els.notePriority.value = note.priority || "normal";
 
     els.deleteNoteBtn.classList.remove("hidden");
@@ -1100,6 +1102,7 @@ function openNoteModal(date, note = null) {
     els.noteTitle.value = "";
     els.noteDescription.value = "";
     els.noteTime.value = "";
+    els.noteType.value = "general";
     els.notePriority.value = "normal";
 
     els.deleteNoteBtn.classList.add("hidden");
@@ -1117,6 +1120,7 @@ async function saveCalendarNote() {
   const title = els.noteTitle.value.trim();
   const description = els.noteDescription.value.trim();
   const time = els.noteTime.value;
+  const type = els.noteType.value || "general";
   const priority = els.notePriority.value || "normal";
   const editingId = els.editingNoteId.value;
 
@@ -1151,6 +1155,7 @@ async function saveCalendarNote() {
     title,
     description,
     time,
+    type,
     priority,
     updatedBy: state.user.uid,
     updatedAt: serverTimestamp()
