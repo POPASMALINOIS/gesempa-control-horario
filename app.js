@@ -1707,11 +1707,15 @@ function renderDashboardMiniCalendar() {
 
   miniDays.forEach(day => {
     day.addEventListener("click", () => {
-      const date = day.getAttribute("data-date");
-      console.log("CLICK MINI CALENDAR:", date);
-      openNoteModal(date);
-    });
-  });
+  const date = day.getAttribute("data-date");
+  const notes = state.calendarNotes?.[date] || [];
+
+  if (notes.length) {
+    openNoteModal(date, notes[0]);
+  } else {
+    openNoteModal(date);
+  }
+});
 }
 
 function renderUpcomingCalendarNotes() {
