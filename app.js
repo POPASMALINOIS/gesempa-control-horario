@@ -170,7 +170,19 @@ const els = {
   monthViewBtn: $("monthViewBtn"),
   yearViewBtn: $("yearViewBtn"),
   monthlyCalendar: $("monthlyCalendar"),
-  annualCalendar: $("annualCalendar")
+  annualCalendar: $("annualCalendar"),
+
+  noteModal: $("noteModal"),
+  noteModalTitle: $("noteModalTitle"),
+  closeNoteModalBtn: $("closeNoteModalBtn"),
+  editingNoteId: $("editingNoteId"),
+  noteDate: $("noteDate"),
+  noteTitle: $("noteTitle"),
+  noteDescription: $("noteDescription"),
+  noteTime: $("noteTime"),
+  notePriority: $("notePriority"),
+  saveNoteBtn: $("saveNoteBtn"),
+  deleteNoteBtn: $("deleteNoteBtn")
 };
 
 function showMessage(text) {
