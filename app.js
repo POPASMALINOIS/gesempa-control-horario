@@ -1167,6 +1167,22 @@ async function saveCalendarNote() {
   closeNoteModal();
 }
 
+async function deleteCalendarNote() {
+  const editingId = els.editingNoteId.value;
+
+  if (!editingId) {
+    alert("No hay nota seleccionada para eliminar.");
+    return;
+  }
+
+  const confirmDelete = confirm("¿Seguro que quieres eliminar esta nota?");
+  if (!confirmDelete) return;
+
+  await deleteDoc(doc(db, "calendarNotes", editingId));
+
+  closeNoteModal();
+}
+
 async function saveManualRecord() {
   if (!isAdmin()) {
     alert("Solo el administrador puede guardar fichajes manuales.");
@@ -2285,6 +2301,10 @@ if (els.closeNoteModalBtn) {
 
 if (els.saveNoteBtn) {
   els.saveNoteBtn.addEventListener("click", saveCalendarNote);
+}
+
+if (els.deleteNoteBtn) {
+  els.deleteNoteBtn.addEventListener("click", deleteCalendarNote);
 }
 
 if (els.saveRecordBtn) {
