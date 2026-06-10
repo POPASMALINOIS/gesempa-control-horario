@@ -1459,6 +1459,49 @@ function renderCalendar() {
   }
 }
 
+function renderDashboardMiniCalendar() {
+  const container = document.getElementById("dashboardMiniCalendar");
+  if (!container) return;
+
+  const year = currentYear();
+  const month = currentMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const offset = firstWeekdayMondayBased(year, month);
+
+  let html = `
+    <div class="mini-calendar-head">
+      <strong>${MONTHS[month]} ${year}</strong>
+    </div>
+
+    <div class="mini-calendar-weekdays">
+      ${WEEKDAYS.map(day => `<span>${day}</span>`).join("")}
+    </div>
+
+    <div class="mini-calendar-days">
+  `;
+
+  for (let i = 0; i < offset; i++) {
+    html += `<div class="mini-calendar-day empty"></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = formatDateKey(year, month, day);
+    const record = state.calendarDays[date];
+    const status = record?.status || "";
+    const today = date === todayKey() ? "today" : "";
+
+    html += `
+      <div class="mini-calendar-day ${status} ${today}">
+        ${day}
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+
+  container.innerHTML = html;
+}
+
 function attachCalendarPaintEvents() {
   const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
 
@@ -1875,6 +1918,7 @@ async function refreshData() {
   renderClock();
   renderEmployees();
   renderCalendar();
+  renderDashboardMiniCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
   setTimeout(async () => {
