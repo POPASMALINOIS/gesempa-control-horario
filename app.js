@@ -1072,6 +1072,46 @@ function closeRecordModal() {
   }
 }
 
+function openNoteModal(date, note = null) {
+
+  els.noteModal.classList.remove("hidden");
+
+  els.noteDate.value = date;
+
+  if (note) {
+
+    els.noteModalTitle.textContent = "Editar nota";
+
+    els.editingNoteId.value = note.id || "";
+
+    els.noteTitle.value = note.title || "";
+    els.noteDescription.value = note.description || "";
+    els.noteTime.value = note.time || "";
+    els.notePriority.value = note.priority || "normal";
+
+    els.deleteNoteBtn.classList.remove("hidden");
+
+  } else {
+
+    els.noteModalTitle.textContent = "Nueva nota";
+
+    els.editingNoteId.value = "";
+
+    els.noteTitle.value = "";
+    els.noteDescription.value = "";
+    els.noteTime.value = "";
+    els.notePriority.value = "normal";
+
+    els.deleteNoteBtn.classList.add("hidden");
+  }
+}
+
+function closeNoteModal() {
+
+  els.noteModal.classList.add("hidden");
+
+}
+
 async function saveManualRecord() {
   if (!isAdmin()) {
     alert("Solo el administrador puede guardar fichajes manuales.");
@@ -2172,6 +2212,10 @@ if (els.newRecordBtn) {
 
 if (els.closeRecordModalBtn) {
   els.closeRecordModalBtn.addEventListener("click", closeRecordModal);
+}
+
+if (els.closeNoteModalBtn) {
+  els.closeNoteModalBtn.addEventListener("click", closeNoteModal);
 }
 
 if (els.saveRecordBtn) {
