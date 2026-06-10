@@ -1439,3 +1439,7 @@ body{
     flex-direction:column;
   }
 }
+#dashboardMiniCalendar{
+    min-height:320px;
+    background:#fafafa;
+}
