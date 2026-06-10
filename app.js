@@ -2283,6 +2283,10 @@ if (els.closeNoteModalBtn) {
   els.closeNoteModalBtn.addEventListener("click", closeNoteModal);
 }
 
+if (els.saveNoteBtn) {
+  els.saveNoteBtn.addEventListener("click", saveCalendarNote);
+}
+
 if (els.saveRecordBtn) {
   els.saveRecordBtn.addEventListener("click", saveManualRecord);
 }
