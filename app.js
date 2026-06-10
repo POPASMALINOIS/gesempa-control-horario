@@ -1549,9 +1549,29 @@ function renderDashboardMiniCalendar() {
     const status = record?.status || "";
     const today = date === todayKey() ? "today" : "";
 
+    const notes = state.calendarNotes?.[date] || [];
+    const hasNotes = notes.length > 0;
+
+    const urgent = notes.some(note => note.priority === "urgent");
+    const important = notes.some(note => note.priority === "important");
+
+    const noteClass = urgent
+      ? "has-urgent-note"
+      : important
+        ? "has-important-note"
+        : hasNotes
+          ? "has-note"
+          : "";
+
     html += `
-      <div class="mini-calendar-day ${status} ${today}">
-        ${day}
+      <div class="mini-calendar-day ${status} ${today} ${noteClass}" title="${hasNotes ? `${notes.length} nota(s)` : ""}">
+        <span class="mini-day-number">${day}</span>
+
+        ${
+          hasNotes
+            ? `<span class="mini-note-dot"></span>`
+            : ""
+        }
       </div>
     `;
   }
