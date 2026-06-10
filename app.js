@@ -72,7 +72,7 @@ const state = {
   recordsCacheLoaded: false,
   calendarDays: {},
   calendarNotes: {},
-  upcomingNotes: []
+  upcomingNotes: [],
   selectedCalendarEmployeeId: null,
   calendarDate: new Date(),
   calendarView: "month",
