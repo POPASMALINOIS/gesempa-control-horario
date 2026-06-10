@@ -1581,6 +1581,40 @@ function renderDashboardMiniCalendar() {
   container.innerHTML = html;
 }
 
+function renderUpcomingCalendarNotes() {
+  const container = document.getElementById("upcomingCalendarNotes");
+  if (!container) return;
+
+  const notes = state.upcomingNotes || [];
+
+  if (!notes.length) {
+    container.innerHTML = "Sin citas ni recordatorios próximos.";
+    return;
+  }
+
+  container.innerHTML = notes.map(note => {
+    const priorityLabel =
+      note.priority === "urgent"
+        ? "Urgente"
+        : note.priority === "important"
+          ? "Importante"
+          : "Normal";
+
+    return `
+      <div class="upcoming-note-item ${note.priority || "normal"}">
+        <div>
+          <strong>${note.title || "Sin título"}</strong>
+          <span>
+            ${dateLabel(note.date)}
+            ${note.time ? " · " + note.time : ""}
+            · ${priorityLabel}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
 function refreshCalendarViews() {
   renderCalendar();
   renderDashboardMiniCalendar();
