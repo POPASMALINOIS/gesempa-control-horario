@@ -1502,6 +1502,13 @@ function renderDashboardMiniCalendar() {
   container.innerHTML = html;
 }
 
+function refreshCalendarViews() {
+  renderCalendar();
+  renderDashboardMiniCalendar();
+  renderTodayCalendarStatus();
+  renderUpcomingCalendarEvents();
+}
+
 function attachCalendarPaintEvents() {
   const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
 
@@ -1575,10 +1582,7 @@ async function paintCalendarDay(date) {
   if (existing?.status === state.selectedCalendarStatus) {
     delete state.calendarDays[date];
 
-    renderCalendar();
-    renderDashboardMiniCalendar();
-    renderTodayCalendarStatus();
-    renderUpcomingCalendarEvents();
+    refreshCalendarViews();
     await renderIncidents();
 
     await setDoc(doc(db, "calendarDays", id), {
@@ -1620,10 +1624,7 @@ async function paintCalendarDay(date) {
     updatedBy: state.user.uid
   };
 
-  renderCalendar();
-  renderDashboardMiniCalendar();
-  renderTodayCalendarStatus();
-  renderUpcomingCalendarEvents();
+  refreshCalendarViews();
   await renderIncidents();
 
   await setDoc(doc(db, "calendarDays", id), {
@@ -2078,38 +2079,35 @@ if (els.cancelEmployeeEditBtn) {
 els.prevMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() - 1, 1);
   await loadCalendarDays();
-  renderCalendar();
+  refreshCalendarViews();
 });
 
 els.nextMonthBtn.addEventListener("click", async () => {
   state.calendarDate = new Date(currentYear(), currentMonth() + 1, 1);
   await loadCalendarDays();
-  renderCalendar();
+  refreshCalendarViews();
 });
 
 els.todayCalendarBtn.addEventListener("click", async () => {
   state.calendarDate = new Date();
   await loadCalendarDays();
-  renderCalendar();
+  refreshCalendarViews();
 });
 
 els.monthViewBtn.addEventListener("click", () => {
   state.calendarView = "month";
-  renderCalendar();
+  refreshCalendarViews();
 });
 
 els.yearViewBtn.addEventListener("click", () => {
   state.calendarView = "year";
-  renderCalendar();
+  refreshCalendarViews();
 });
 
 els.calendarEmployeeSelect.addEventListener("change", async () => {
   state.selectedCalendarEmployeeId = els.calendarEmployeeSelect.value;
   await loadCalendarDays();
-  renderCalendar();
-  renderDashboardMiniCalendar();
-  renderTodayCalendarStatus();
-  renderUpcomingCalendarEvents();
+  refreshCalendarViews();
 });
 
 async function handleExportFiltersChange() {
