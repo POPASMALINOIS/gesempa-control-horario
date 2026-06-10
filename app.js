@@ -28,7 +28,8 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -70,6 +71,8 @@ const state = {
   recordsCache: [],
   recordsCacheLoaded: false,
   calendarDays: {},
+  calendarNotes: {},
+  upcomingNotes: []
   selectedCalendarEmployeeId: null,
   calendarDate: new Date(),
   calendarView: "month",
