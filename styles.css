@@ -2884,3 +2884,60 @@ body{
     min-height:320px;
     background:#fafafa;
 }
+.mini-calendar-head{
+  padding:14px 16px;
+  font-size:16px;
+  border-bottom:1px solid var(--line);
+}
+
+.mini-calendar-weekdays,
+.mini-calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+}
+
+.mini-calendar-weekdays span{
+  padding:10px;
+  font-size:11px;
+  text-transform:uppercase;
+  color:#666;
+  border-bottom:1px solid var(--line);
+}
+
+.mini-calendar-day{
+  min-height:58px;
+  padding:10px;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  background:#fff;
+}
+
+.mini-calendar-day.empty{
+  background:#f8f8f8;
+}
+
+.mini-calendar-day.today{
+  outline:2px solid var(--green);
+  outline-offset:-2px;
+}
+
+.mini-calendar-day.work{
+  background:#e7f4ec;
+}
+
+.mini-calendar-day.vacation{
+  background:#e8f0ff;
+}
+
+.mini-calendar-day.permission{
+  background:#fff5db;
+}
+
+.mini-calendar-day.sick_leave{
+  background:#fdeaea;
+}
+
+.mini-calendar-day.absence{
+  background:#f1eaff;
+}
