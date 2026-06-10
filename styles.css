@@ -1071,3 +1071,45 @@ textarea {
     width: 100%;
   }
 }
+.note-main-line{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.note-type{
+  font-size:10px;
+  text-transform:uppercase;
+  border:1px solid var(--line);
+  padding:2px 6px;
+  color:#555;
+  background:#fff;
+}
+
+.upcoming-note-item p{
+  margin:6px 0 0;
+  padding:0 !important;
+  font-size:12px;
+  color:#666;
+}
+
+.upcoming-note-item.type-aeat{ border-left:3px solid #0f7a3b; padding-left:10px; }
+.upcoming-note-item.type-laboral{ border-left:3px solid #2563eb; padding-left:10px; }
+.upcoming-note-item.type-contable{ border-left:3px solid #111827; padding-left:10px; }
+.upcoming-note-item.type-cliente{ border-left:3px solid #f59e0b; padding-left:10px; }
+.upcoming-note-item.type-judicial{ border-left:3px solid #7c3aed; padding-left:10px; }
+.upcoming-note-item.type-reunion{ border-left:3px solid #dc2626; padding-left:10px; }
+
+.empty-notes{
+  min-height:180px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  color:#777;
+}
+
+.empty-notes-icon{
+  font-size:28px;
+  margin-bottom:8px;
+}
