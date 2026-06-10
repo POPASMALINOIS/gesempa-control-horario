@@ -2967,3 +2967,35 @@ body{
 .mini-calendar-day.has-urgent-note .mini-note-dot{
   background:#dc2626;
 }
+.upcoming-calendar-notes{
+  padding:10px 12px;
+}
+
+.upcoming-note-item{
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.upcoming-note-item:last-child{
+  border-bottom:none;
+}
+
+.upcoming-note-item strong{
+  display:block;
+  font-size:13px;
+}
+
+.upcoming-note-item span{
+  display:block;
+  margin-top:3px;
+  font-size:12px;
+  color:#666;
+}
+
+.upcoming-note-item.urgent strong{
+  color:#dc2626;
+}
+
+.upcoming-note-item.important strong{
+  color:#b45309;
+}
