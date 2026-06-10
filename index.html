@@ -49,7 +49,7 @@
           <button data-tab="homeTab" class="active" type="button">Inicio</button>
           <button data-tab="recordsTab" type="button">Fichajes</button>
           <button data-tab="calendarTab" type="button">Calendario</button>
-          <button data-tab="employeesTab" class="employees-sidebar-btn" type="button">Empleados</button>
+          <button data-tab="employeesTab" class="employees-sidebar-btn" type="button">Equipo</button>
           <button data-tab="settingsTab" type="button">Ajustes</button>
         </nav>
 
@@ -62,36 +62,35 @@
 
     <div class="main-shell">
 
-        <main class="app-main">
+      <header class="app-header">
+        <div class="brand">
+          <img src="./assets/logo-gesempa.png" alt="GESEMPA-PYME" />
+          <div>
+            <strong>GESEMPA-PYME</strong>
+            <span>Control horario</span>
+          </div>
+        </div>
+
+        <button id="logoutBtn" class="ghost-btn" type="button">Salir</button>
+      </header>
+
+      <main class="app-main">
 
         <section id="homeTab" class="tab active office-home">
-          <div class="welcome-header">
-          <div class="office-user-line">
-              <span id="homeEmployeeName">—</span>
-              <span>·</span>
-              <span id="homeRole">—</span>
-              <span>·</span>
-              <span>
-                  Estado:
-                  <strong id="clockStatus">Fuera</strong>
-              </span>
-          </div>
 
-            <h1 id="homeGreeting">
-              Buenas tardes
-            </h1>
-          
-            <p>
-              Aquí tienes el resumen de tu jornada y la situación actual del equipo.
-            </p>
-          
+          <div class="office-user-line">
+            <span id="homeEmployeeName">—</span>
+            <span>·</span>
+            <span id="homeRole">—</span>
+            <span>·</span>
+            <span>Estado: <strong id="clockStatus">—</strong></span>
           </div>
 
           <div class="office-main-row">
 
             <section class="office-panel office-clock">
               <div class="office-panel-head">
-                <h2>Mi jornada</h2>
+                <h2>Registro de jornada</h2>
               </div>
 
               <div class="office-clock-data">
@@ -158,12 +157,7 @@
               </div>
             
               <div id="upcomingCalendarNotes" class="upcoming-calendar-notes">
-
-                <div class="empty-notes">
-                  <div class="empty-notes-icon">📅</div>
-                  <p>Sin citas ni recordatorios próximos.</p>
-                </div>
-              
+                Sin citas ni recordatorios próximos.
               </div>
             </section>
 
@@ -402,6 +396,6 @@
   </div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=103"></script>
+  <script type="module" src="./app.js?v=101"></script>
 </body>
 </html>
