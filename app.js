@@ -1576,6 +1576,7 @@ async function paintCalendarDay(date) {
     delete state.calendarDays[date];
 
     renderCalendar();
+    renderDashboardMiniCalendar();
     renderTodayCalendarStatus();
     renderUpcomingCalendarEvents();
     await renderIncidents();
@@ -1620,6 +1621,7 @@ async function paintCalendarDay(date) {
   };
 
   renderCalendar();
+  renderDashboardMiniCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
   await renderIncidents();
@@ -2105,6 +2107,7 @@ els.calendarEmployeeSelect.addEventListener("change", async () => {
   state.selectedCalendarEmployeeId = els.calendarEmployeeSelect.value;
   await loadCalendarDays();
   renderCalendar();
+  renderDashboardMiniCalendar();
   renderTodayCalendarStatus();
   renderUpcomingCalendarEvents();
 });
