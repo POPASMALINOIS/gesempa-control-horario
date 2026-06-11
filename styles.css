@@ -1162,3 +1162,85 @@ textarea {
   }
 
 }
+/* CONTENEDOR GENERAL */
+
+.main-content{
+    flex:1;
+    width:100%;
+    max-width:none;
+    padding:24px 32px;
+    overflow:auto;
+}
+
+/* TAB CALENDARIO */
+
+#calendar.tab{
+    width:100%;
+    max-width:none;
+}
+
+/* CABECERA */
+
+.calendar-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:24px;
+}
+
+/* CONTROLES */
+
+.calendar-toolbar{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.calendar-toolbar select{
+    width:100%;
+}
+
+/* CATEGORIAS */
+
+.paint-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:24px;
+}
+
+/* CALENDARIO */
+
+.monthly-calendar{
+    width:100%;
+}
+
+/* DIAS */
+
+.month-days{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:2px;
+    width:100%;
+}
+
+/* ALTURA GRANDE */
+
+.calendar-day{
+    min-height:140px;
+}
+
+/* VERSION ESCRITORIO */
+
+@media (min-width:1200px){
+
+    .calendar-day{
+        min-height:170px;
+    }
+
+    .month-days{
+        gap:1px;
+    }
+}
