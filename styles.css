@@ -632,8 +632,13 @@ textarea {
 .dot.vacation { background: var(--vacation); }
 .dot.absence { background: var(--absence); }
 
-.monthly-calendar {
-  padding: 14px;
+.monthly-calendar{
+  background:#fff;
+  border:1px solid var(--border);
+  padding:8px;
+  height:calc(100vh - 180px);
+  display:flex;
+  flex-direction:column;
 }
 
 .weekdays,
