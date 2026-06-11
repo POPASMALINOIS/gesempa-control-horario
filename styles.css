@@ -638,9 +638,10 @@ textarea {
 
 .weekdays,
 .month-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:2px;
+  min-height:calc(100vh - 240px);
 }
 
 .weekdays span {
