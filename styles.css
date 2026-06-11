@@ -3060,3 +3060,120 @@ body{
     padding: 1px 3px;
   }
 }
+/* Calendario mensual ampliado tipo agenda */
+
+.monthly-calendar {
+  padding: 18px;
+}
+
+.weekdays,
+.month-days {
+  gap: 8px;
+}
+
+.calendar-day {
+  min-height: 145px;
+  padding: 12px;
+  border-radius: 12px;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.day-number {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.day-notes-preview {
+  width: 100%;
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.day-note-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 7px 9px;
+  background: rgba(255, 255, 255, .88);
+  color: #111827;
+  border-left: 0;
+  border-radius: 6px;
+}
+
+.day-note-line::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 999px;
+  background: #0f7a3b;
+}
+
+.day-note-line.important::before {
+  background: #f59e0b;
+}
+
+.day-note-line.urgent::before {
+  background: #dc2626;
+}
+
+.day-note-line em {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.day-note-more {
+  font-size: 12px;
+  font-weight: 800;
+  color: inherit;
+  opacity: .95;
+  margin-top: 2px;
+}
+
+@media (max-width: 720px) {
+  .monthly-calendar {
+    padding: 10px;
+  }
+
+  .weekdays,
+  .month-days {
+    gap: 5px;
+  }
+
+  .calendar-day {
+    min-height: 88px;
+    padding: 7px;
+    gap: 5px;
+  }
+
+  .day-number {
+    font-size: 14px;
+  }
+
+  .day-notes-preview {
+    gap: 4px;
+    margin-top: 3px;
+  }
+
+  .day-note-line {
+    font-size: 9px;
+    padding: 4px 5px;
+  }
+
+  .day-note-line::before {
+    width: 6px;
+    height: 6px;
+    min-width: 6px;
+  }
+}
