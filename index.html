@@ -344,6 +344,14 @@
 
     <input id="noteTime" type="time" />
 
+    <select id="noteType">
+      <option value="general">General</option>
+      <option value="appointment">Cita</option>
+      <option value="meeting">Reunión</option>
+      <option value="reminder">Recordatorio</option>
+      <option value="task">Tarea</option>
+    </select>
+
     <select id="notePriority">
       <option value="normal">Normal</option>
       <option value="important">Importante</option>
@@ -396,6 +404,6 @@
   </div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script type="module" src="./app.js?v=101"></script>
+  <script type="module" src="./app.js?v=102"></script>
 </body>
 </html>
