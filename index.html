@@ -2,6 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
   <title>Calendario y Control Horario GESEMPA-PYME</title>
 
   <link rel="manifest" href="./manifest.json" />
@@ -15,302 +16,315 @@
 
 <body>
 
-<div id="loginView" class="login-view">
-  <div class="login-card">
-    <img src="./assets/logo-gesempa.png" class="login-logo" alt="GESEMPA-PYME" />
+  <div id="loginView" class="login-view">
+    <div class="login-card">
+      <img src="./assets/logo-gesempa.png" class="login-logo" alt="GESEMPA-PYME" />
 
-    <h1>Calendario y Control Horario</h1>
-    <p>GESEMPA-PYME</p>
+      <h1>Calendario y Control Horario</h1>
+      <p>GESEMPA-PYME</p>
 
-    <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
-    <input id="authPassword" type="password" placeholder="Contraseña" autocomplete="current-password" />
+      <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
+      <input id="authPassword" type="password" placeholder="Contraseña" autocomplete="current-password" />
 
-    <button id="loginBtn" class="primary-btn" type="button">Entrar</button>
+      <button id="loginBtn" class="primary-btn" type="button">Entrar</button>
 
-    <div id="authMessage" class="message"></div>
+      <div id="authMessage" class="message"></div>
+    </div>
   </div>
-</div>
 
-<div id="appView" class="app hidden">
+  <div id="appView" class="app hidden">
 
-  <aside class="sidebar">
-    <div class="sidebar-top">
-      <div class="sidebar-logo">
-        <img src="./assets/icons/icon-192.png" alt="GESEMPA" />
-        <div>
-          <strong>GESEMPA</strong>
-          <span>Control Horario</span>
+    <aside class="sidebar">
+      <div class="sidebar-top">
+
+        <div class="sidebar-logo">
+          <img src="./assets/icons/icon-192.png" alt="GESEMPA" />
+          <div>
+            <strong>GESEMPA</strong>
+            <span>Control Horario</span>
+          </div>
         </div>
+
+        <nav class="sidebar-nav">
+          <button data-tab="homeTab" class="active" type="button">Inicio</button>
+          <button data-tab="recordsTab" type="button">Fichajes</button>
+          <button data-tab="calendarTab" type="button">Calendario</button>
+          <button data-tab="employeesTab" class="employees-sidebar-btn" type="button">Equipo</button>
+          <button data-tab="settingsTab" type="button">Ajustes</button>
+        </nav>
+
       </div>
 
-      <nav class="sidebar-nav">
-        <button data-tab="homeTab" class="active" type="button">Inicio</button>
-        <button data-tab="recordsTab" type="button">Fichajes</button>
-        <button data-tab="calendarTab" type="button">Calendario</button>
-        <button data-tab="employeesTab" class="employees-sidebar-btn admin-only" type="button">Equipo</button>
-        <button data-tab="settingsTab" type="button">Ajustes</button>
-      </nav>
-    </div>
+      <div class="sidebar-bottom">
+        <button id="logoutBtnSidebar" type="button">Cerrar sesión</button>
+      </div>
+    </aside>
 
-    <div class="sidebar-bottom">
-      <button id="logoutBtn" type="button">Cerrar sesión</button>
-    </div>
-  </aside>
+    <div class="main-shell">
 
-  <div class="main-shell">
-    <main class="app-main">
-
-      <section id="homeTab" class="tab active office-home">
-
-        <div class="welcome-header">
-          <p class="eyebrow">Panel de inicio</p>
-          <h1 id="homeGreeting">—</h1>
-          <p>Resumen de jornada, calendario y situación actual del equipo.</p>
+      <header class="app-header">
+        <div class="brand">
+          <img src="./assets/logo-gesempa.png" alt="GESEMPA-PYME" />
+          <div>
+            <strong>GESEMPA-PYME</strong>
+            <span>Control horario</span>
+          </div>
         </div>
 
-        <div class="office-user-line">
-          <span id="homeEmployeeName">—</span>
-          <span>·</span>
-          <span id="homeRole">—</span>
-          <span>·</span>
-          <span>Estado: <strong id="clockStatus">—</strong></span>
-        </div>
+        <button id="logoutBtn" class="ghost-btn" type="button">Salir</button>
+      </header>
 
-        <div class="office-main-row">
+      <main class="app-main">
 
-          <section class="office-panel office-clock">
-            <div class="office-panel-head">
-              <h2>Mi jornada</h2>
+        <section id="homeTab" class="tab active office-home">
+
+          <div class="office-user-line">
+            <span id="homeEmployeeName">—</span>
+            <span>·</span>
+            <span id="homeRole">—</span>
+            <span>·</span>
+            <span>Estado: <strong id="clockStatus">—</strong></span>
+          </div>
+
+          <div class="office-main-row">
+
+            <section class="office-panel office-clock">
+              <div class="office-panel-head">
+                <h2>Registro de jornada</h2>
+              </div>
+
+              <div class="office-clock-data">
+                <div>
+                  <span>Entrada</span>
+                  <strong id="todayIn">—</strong>
+                </div>
+
+                <div>
+                  <span>Salida</span>
+                  <strong id="todayOut">—</strong>
+                </div>
+
+                <div>
+                  <span>Horas hoy</span>
+                  <strong id="todayTotal">00:00</strong>
+                </div>
+              </div>
+
+              <button id="clockBtn" class="office-primary-btn" type="button">
+                Fichar entrada
+              </button>
+
+              <p id="todayIncident" class="office-note">
+                Sin incidencias detectadas.
+              </p>
+            </section>
+
+            <section id="adminTodayDashboard" class="office-panel office-summary admin-only">
+              <div class="office-panel-head">
+                <h2>Situación de hoy</h2>
+                <span class="office-tag">Admin</span>
+              </div>
+
+              <div class="office-summary-list">
+                <div><span>Empleados activos</span><strong id="statActiveEmployees">0</strong></div>
+                <div><span>Trabajando ahora</span><strong id="statWorkingNow">0</strong></div>
+                <div><span>Vacaciones</span><strong id="statVacationToday">0</strong></div>
+                <div><span>Permisos</span><strong id="statPermissionToday">0</strong></div>
+                <div><span>Bajas</span><strong id="statSickToday">0</strong></div>
+                <div><span>Ausencias</span><strong id="statAbsenceToday">0</strong></div>
+                <div><span>Horas registradas hoy</span><strong id="statCompanyHoursToday">00:00</strong></div>
+              </div>
+
+              <div id="workingNowList" class="working-now-list"></div>
+            </section>
+
+          </div>
+
+              <div class="office-secondary-row">
+
+            <section class="office-panel">
+              <div class="office-panel-head">
+                <h2>Mi calendario</h2>
+              </div>
+            
+              <div id="dashboardMiniCalendar"></div>
+            
+            </section>
+
+            <section class="office-panel">
+              <div class="office-panel-head">
+                <h2>Próximas citas y recordatorios</h2>
+              </div>
+            
+              <div id="upcomingCalendarNotes" class="upcoming-calendar-notes">
+                Sin citas ni recordatorios próximos.
+              </div>
+            </section>
+
+
+          </div>
+
+        </section>
+
+        <section id="calendarTab" class="tab">
+          <div class="calendar-toolbar">
+            <div>
+              <p class="eyebrow">Calendario laboral</p>
+              <h2 id="calendarTitle">—</h2>
             </div>
 
-            <div class="office-clock-data">
-              <div>
-                <span>Entrada</span>
-                <strong id="todayIn">—</strong>
-              </div>
+            <div class="calendar-actions">
+              <button id="prevMonthBtn" class="small-btn" type="button">‹</button>
+              <button id="todayCalendarBtn" class="small-btn" type="button">Hoy</button>
+              <button id="nextMonthBtn" class="small-btn" type="button">›</button>
+            </div>
+          </div>
 
-              <div>
-                <span>Salida</span>
-                <strong id="todayOut">—</strong>
-              </div>
+          <div class="calendar-controls">
+            <select id="calendarEmployeeSelect"></select>
 
-              <div>
-                <span>Horas hoy</span>
-                <strong id="todayTotal">00:00</strong>
-              </div>
+            <div class="view-toggle">
+              <button id="monthViewBtn" class="active" type="button">Mensual</button>
+              <button id="yearViewBtn" type="button">Anual</button>
+            </div>
+          </div>
+
+          <div class="paint-toolbar">
+            <button class="paint-btn active" data-status="work" type="button"><i class="dot work"></i>Trabajo</button>
+            <button class="paint-btn" data-status="day_off" type="button"><i class="dot day_off"></i>Día libre</button>
+            <button class="paint-btn" data-status="permission" type="button"><i class="dot permission"></i>Permiso</button>
+            <button class="paint-btn" data-status="sick_leave" type="button"><i class="dot sick_leave"></i>Baja</button>
+            <button class="paint-btn" data-status="holiday" type="button"><i class="dot holiday"></i>Festivo</button>
+            <button class="paint-btn" data-status="vacation" type="button"><i class="dot vacation"></i>Vacaciones</button>
+            <button class="paint-btn" data-status="absence" type="button"><i class="dot absence"></i>Ausencia</button>
+          </div>
+
+          <div id="monthlyCalendar" class="monthly-calendar"></div>
+          <div id="annualCalendar" class="annual-calendar hidden"></div>
+        </section>
+
+        <section id="recordsTab" class="tab">
+          <div class="section-head">
+            <div>
+              <h2>Fichajes</h2>
+              <p>Historial y correcciones de registros horarios.</p>
             </div>
 
-            <button id="clockBtn" class="office-primary-btn" type="button">
-              Fichar entrada
+            <button id="newRecordBtn" class="primary-action admin-only" type="button">
+              + Nuevo fichaje
+            </button>
+          </div>
+
+          <div class="export-panel admin-only">
+            <select id="exportEmployee">
+              <option value="all">Todos los empleados</option>
+            </select>
+
+            <select id="exportMonth">
+              <option value="0">Enero</option>
+              <option value="1">Febrero</option>
+              <option value="2">Marzo</option>
+              <option value="3">Abril</option>
+              <option value="4">Mayo</option>
+              <option value="5">Junio</option>
+              <option value="6">Julio</option>
+              <option value="7">Agosto</option>
+              <option value="8">Septiembre</option>
+              <option value="9">Octubre</option>
+              <option value="10">Noviembre</option>
+              <option value="11">Diciembre</option>
+            </select>
+
+            <select id="exportYear"></select>
+
+            <button id="exportExcelBtn" class="primary-btn" type="button">
+              Exportar Excel
+            </button>
+          </div>
+
+          <div id="recordsList" class="records-list"></div>
+        </section>
+
+        <section id="employeesTab" class="tab admin-only">
+          <div class="section-head">
+            <div>
+              <h2>Equipo</h2>
+              <p>Gestión de perfiles de empleados y administradores.</p>
+            </div>
+          </div>
+
+          <form id="employeeForm" class="employee-form">
+            <input id="editingEmployeeId" type="hidden" />
+
+            <input id="employeeName" type="text" placeholder="Nombre completo" required />
+            <input id="employeeEmail" type="email" placeholder="Email de acceso" required />
+
+            <select id="employeeRole">
+              <option value="employee">Empleado</option>
+              <option value="admin">Administrador</option>
+            </select>
+
+            <input id="employeePosition" type="text" placeholder="Cargo / puesto" />
+            <input id="employeePhone" type="text" placeholder="Teléfono" />
+            <input id="employeeDni" type="text" placeholder="DNI / NIE" />
+
+            <label class="field-label">
+              Fecha de nacimiento
+              <input id="employeeBirthDate" type="date" />
+            </label>
+
+            <label class="field-label">
+              Fecha de alta en empresa
+              <input id="employeeHireDate" type="date" />
+            </label>
+
+            <input id="employeeSchedule" type="text" value="L-J 09:30-14:00 / 16:30-19:30 · V 09:30-14:00" />
+            <input id="employeeColor" type="color" value="#0f7a3b" />
+
+            <select id="employeeActive">
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+
+            <div class="form-actions">
+              <button id="saveEmployeeBtn" class="primary-btn" type="submit">Guardar perfil</button>
+              <button id="cancelEmployeeEditBtn" class="secondary-btn" type="button">Cancelar edición</button>
+            </div>
+          </form>
+
+          <div id="employeesList" class="employees-list"></div>
+        </section>
+
+        <section id="settingsTab" class="tab">
+          <div class="section-head">
+            <div>
+              <h2>Ajustes</h2>
+              <p>Configuración básica.</p>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h3>Cambiar contraseña</h3>
+
+            <input id="currentPassword" type="password" placeholder="Contraseña actual" autocomplete="current-password" />
+
+            <input id="newPassword" type="password" placeholder="Nueva contraseña" autocomplete="new-password" />
+
+            <input id="repeatNewPassword" type="password" placeholder="Repetir nueva contraseña" autocomplete="new-password" />
+
+            <button id="changePasswordBtn" class="primary-btn" type="button">
+              Cambiar contraseña
             </button>
 
-            <p id="todayIncident" class="office-note">
-              Sin incidencias detectadas.
-            </p>
-          </section>
-
-          <section id="adminTodayDashboard" class="office-panel office-summary admin-only">
-            <div class="office-panel-head">
-              <h2>Situación de hoy</h2>
-              <span class="office-tag">Admin</span>
-            </div>
-
-            <div class="office-summary-list">
-              <div><span>Empleados activos</span><strong id="statActiveEmployees">0</strong></div>
-              <div><span>Trabajando ahora</span><strong id="statWorkingNow">0</strong></div>
-              <div><span>Vacaciones</span><strong id="statVacationToday">0</strong></div>
-              <div><span>Permisos</span><strong id="statPermissionToday">0</strong></div>
-              <div><span>Bajas</span><strong id="statSickToday">0</strong></div>
-              <div><span>Ausencias</span><strong id="statAbsenceToday">0</strong></div>
-              <div><span>Horas registradas hoy</span><strong id="statCompanyHoursToday">00:00</strong></div>
-            </div>
-
-            <div id="workingNowList" class="working-now-list"></div>
-          </section>
-
-        </div>
-
-        <div class="office-secondary-row">
-
-          <section class="office-panel">
-            <div class="office-panel-head">
-              <h2>Mi calendario</h2>
-            </div>
-
-            <div id="dashboardMiniCalendar"></div>
-          </section>
-
-          <section class="office-panel">
-            <div class="office-panel-head">
-              <h2>Próximas citas y recordatorios</h2>
-            </div>
-
-            <div id="upcomingCalendarNotes" class="upcoming-calendar-notes">
-              Sin citas ni recordatorios próximos.
-            </div>
-          </section>
-
-        </div>
-
-      </section>
-
-      <section id="calendarTab" class="tab">
-        <div class="calendar-toolbar">
-          <div>
-            <p class="eyebrow">Calendario laboral</p>
-            <h2 id="calendarTitle">—</h2>
+            <p id="changePasswordMessage" class="message"></p>
           </div>
+        </section>
 
-          <div class="calendar-actions">
-            <button id="prevMonthBtn" class="small-btn" type="button">‹</button>
-            <button id="todayCalendarBtn" class="small-btn" type="button">Hoy</button>
-            <button id="nextMonthBtn" class="small-btn" type="button">›</button>
-          </div>
-        </div>
-
-        <div class="calendar-controls">
-          <select id="calendarEmployeeSelect"></select>
-
-          <div class="view-toggle">
-            <button id="monthViewBtn" class="active" type="button">Mensual</button>
-            <button id="yearViewBtn" type="button">Anual</button>
-          </div>
-        </div>
-
-        <div class="paint-toolbar">
-          <button class="paint-btn active" data-status="work" type="button"><i class="dot work"></i>Trabajo</button>
-          <button class="paint-btn" data-status="day_off" type="button"><i class="dot day_off"></i>Día libre</button>
-          <button class="paint-btn" data-status="permission" type="button"><i class="dot permission"></i>Permiso</button>
-          <button class="paint-btn" data-status="sick_leave" type="button"><i class="dot sick_leave"></i>Baja</button>
-          <button class="paint-btn" data-status="holiday" type="button"><i class="dot holiday"></i>Festivo</button>
-          <button class="paint-btn" data-status="vacation" type="button"><i class="dot vacation"></i>Vacaciones</button>
-          <button class="paint-btn" data-status="absence" type="button"><i class="dot absence"></i>Ausencia</button>
-        </div>
-
-        <div id="monthlyCalendar" class="monthly-calendar"></div>
-        <div id="annualCalendar" class="annual-calendar hidden"></div>
-      </section>
-
-      <section id="recordsTab" class="tab">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Registro horario</p>
-            <h2>Fichajes</h2>
-          </div>
-
-          <button id="newRecordBtn" class="primary-action admin-only" type="button">
-            + Nuevo fichaje
-          </button>
-        </div>
-
-        <div class="export-panel admin-only">
-          <select id="exportEmployee">
-            <option value="all">Todos los empleados</option>
-          </select>
-
-          <select id="exportMonth">
-            <option value="0">Enero</option>
-            <option value="1">Febrero</option>
-            <option value="2">Marzo</option>
-            <option value="3">Abril</option>
-            <option value="4">Mayo</option>
-            <option value="5">Junio</option>
-            <option value="6">Julio</option>
-            <option value="7">Agosto</option>
-            <option value="8">Septiembre</option>
-            <option value="9">Octubre</option>
-            <option value="10">Noviembre</option>
-            <option value="11">Diciembre</option>
-          </select>
-
-          <select id="exportYear"></select>
-
-          <button id="exportExcelBtn" class="primary-btn" type="button">
-            Exportar Excel
-          </button>
-        </div>
-
-        <div id="recordsList" class="records-list"></div>
-      </section>
-
-      <section id="employeesTab" class="tab admin-only">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Administración</p>
-            <h2>Equipo</h2>
-          </div>
-        </div>
-
-        <form id="employeeForm" class="employee-form">
-          <input id="editingEmployeeId" type="hidden" />
-
-          <input id="employeeName" type="text" placeholder="Nombre completo" required />
-          <input id="employeeEmail" type="email" placeholder="Email de acceso" required />
-
-          <select id="employeeRole">
-            <option value="employee">Empleado</option>
-            <option value="admin">Administrador</option>
-          </select>
-
-          <input id="employeePosition" type="text" placeholder="Cargo / puesto" />
-          <input id="employeePhone" type="text" placeholder="Teléfono" />
-          <input id="employeeDni" type="text" placeholder="DNI / NIE" />
-
-          <label class="field-label">
-            Fecha de nacimiento
-            <input id="employeeBirthDate" type="date" />
-          </label>
-
-          <label class="field-label">
-            Fecha de alta en empresa
-            <input id="employeeHireDate" type="date" />
-          </label>
-
-          <input id="employeeSchedule" type="text" value="L-J 09:30-14:00 / 16:30-19:30 · V 09:30-14:00" />
-          <input id="employeeColor" type="color" value="#0f7a3b" />
-
-          <select id="employeeActive">
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
-          </select>
-
-          <div class="form-actions">
-            <button id="saveEmployeeBtn" class="primary-btn" type="submit">Guardar perfil</button>
-            <button id="cancelEmployeeEditBtn" class="secondary-btn" type="button">Cancelar edición</button>
-          </div>
-        </form>
-
-        <div id="employeesList" class="employees-list"></div>
-      </section>
-
-      <section id="settingsTab" class="tab">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Configuración</p>
-            <h2>Ajustes</h2>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <h3>Cambiar contraseña</h3>
-
-          <input id="currentPassword" type="password" placeholder="Contraseña actual" autocomplete="current-password" />
-          <input id="newPassword" type="password" placeholder="Nueva contraseña" autocomplete="new-password" />
-          <input id="repeatNewPassword" type="password" placeholder="Repetir nueva contraseña" autocomplete="new-password" />
-
-          <button id="changePasswordBtn" class="primary-btn" type="button">
-            Cambiar contraseña
-          </button>
-
-          <p id="changePasswordMessage" class="message"></p>
-        </div>
-      </section>
-
-    </main>
+      </main>
+    </div>
   </div>
-</div>
 
-<div id="noteModal" class="modal hidden">
+  <div id="noteModal" class="modal hidden">
   <div class="modal-card">
     <div class="modal-head">
       <div>
@@ -323,19 +337,12 @@
 
     <input id="editingNoteId" type="hidden" />
     <input id="noteDate" type="hidden" />
-    <input id="noteTitle" type="text" placeholder="Título" />
-    <textarea id="noteDescription" placeholder="Descripción u observaciones"></textarea>
-    <input id="noteTime" type="time" />
 
-    <select id="noteType">
-      <option value="general">General</option>
-      <option value="aeat">AEAT</option>
-      <option value="laboral">Laboral</option>
-      <option value="contable">Contable</option>
-      <option value="cliente">Cliente</option>
-      <option value="judicial">Judicial</option>
-      <option value="reunion">Reunión</option>
-    </select>
+    <input id="noteTitle" type="text" placeholder="Título" />
+
+    <textarea id="noteDescription" placeholder="Descripción u observaciones"></textarea>
+
+    <input id="noteTime" type="time" />
 
     <select id="notePriority">
       <option value="normal">Normal</option>
@@ -343,46 +350,52 @@
       <option value="urgent">Urgente</option>
     </select>
 
-    <button id="saveNoteBtn" class="primary-btn" type="button">Guardar nota</button>
-    <button id="deleteNoteBtn" class="secondary-btn hidden" type="button">Eliminar nota</button>
+    <button id="saveNoteBtn" class="primary-btn" type="button">
+      Guardar nota
+    </button>
+
+    <button id="deleteNoteBtn" class="secondary-btn hidden" type="button">
+      Eliminar nota
+    </button>
   </div>
 </div>
-
-<div id="recordModal" class="modal hidden">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div>
-        <p class="eyebrow">Gestión de fichaje</p>
-        <h3 id="recordModalTitle">Nuevo fichaje</h3>
+  
+  <div id="recordModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">Gestión de fichaje</p>
+          <h3 id="recordModalTitle">Nuevo fichaje</h3>
+        </div>
+        <button id="closeRecordModalBtn" class="icon-btn" type="button">×</button>
       </div>
-      <button id="closeRecordModalBtn" class="icon-btn" type="button">×</button>
+
+      <input id="editingRecordId" type="hidden" />
+
+      <select id="recordEmployeeSelect"></select>
+
+      <label class="field-label">
+        Fecha
+        <input id="recordDate" type="date" />
+      </label>
+
+      <label class="field-label">
+        Hora entrada
+        <input id="recordClockIn" type="time" />
+      </label>
+
+      <label class="field-label">
+        Hora salida
+        <input id="recordClockOut" type="time" />
+      </label>
+
+      <textarea id="recordNotes" placeholder="Observaciones / motivo de corrección"></textarea>
+
+      <button id="saveRecordBtn" class="primary-btn" type="button">Guardar fichaje</button>
     </div>
-
-    <input id="editingRecordId" type="hidden" />
-    <select id="recordEmployeeSelect"></select>
-
-    <label class="field-label">
-      Fecha
-      <input id="recordDate" type="date" />
-    </label>
-
-    <label class="field-label">
-      Hora entrada
-      <input id="recordClockIn" type="time" />
-    </label>
-
-    <label class="field-label">
-      Hora salida
-      <input id="recordClockOut" type="time" />
-    </label>
-
-    <textarea id="recordNotes" placeholder="Observaciones / motivo de corrección"></textarea>
-
-    <button id="saveRecordBtn" class="primary-btn" type="button">Guardar fichaje</button>
   </div>
-</div>
 
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-<script type="module" src="./app.js?v=107"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script type="module" src="./app.js?v=101"></script>
 </body>
 </html>
