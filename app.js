@@ -1575,11 +1575,35 @@ function renderMonthlyCalendar() {
     const status = record?.status;
     const todayClass = date === todayKey() ? "today" : "";
     const statusClass = status ? `status-${status}` : "";
-    const title = status ? `${date} · ${WORK_STATUSES[status]?.label}` : date;
+
+    const notes = state.calendarNotes?.[date] || [];
+    const previewNotes = notes
+      .sort((a, b) => `${a.time || "99:99"}`.localeCompare(`${b.time || "99:99"}`))
+      .slice(0, 2);
+
+    const hasMoreNotes = notes.length > 2;
+
+    const title = status
+      ? `${date} · ${WORK_STATUSES[status]?.label}`
+      : date;
 
     html += `
       <button class="calendar-day ${todayClass} ${statusClass}" type="button" data-date="${date}" title="${title}">
         <span class="day-number">${day}</span>
+
+        ${
+          previewNotes.length
+            ? `<div class="day-notes-preview">
+                ${previewNotes.map(note => `
+                  <span class="day-note-line ${note.priority || "normal"}">
+                    ${note.time ? `<em>${escapeHtml(note.time)}</em>` : ""}
+                    ${escapeHtml(note.title || "Nota")}
+                  </span>
+                `).join("")}
+                ${hasMoreNotes ? `<span class="day-note-more">+${notes.length - 2} más</span>` : ""}
+              </div>`
+            : ""
+        }
       </button>
     `;
   }
