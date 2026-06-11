@@ -2999,3 +2999,64 @@ body{
 .upcoming-note-item.important strong{
   color:#b45309;
 }
+.calendar-day {
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.day-notes-preview {
+  width: 100%;
+  display: grid;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.day-note-line {
+  display: block;
+  width: 100%;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 4px;
+  background: rgba(255,255,255,.75);
+  color: #111827;
+  border-left: 3px solid #111827;
+}
+
+.day-note-line em {
+  font-style: normal;
+  font-weight: 800;
+  margin-right: 3px;
+}
+
+.day-note-line.important {
+  border-left-color: #f59e0b;
+}
+
+.day-note-line.urgent {
+  border-left-color: #dc2626;
+}
+
+.day-note-more {
+  font-size: 10px;
+  font-weight: 700;
+  color: inherit;
+  opacity: .8;
+}
+
+@media (max-width: 720px) {
+  .calendar-day {
+    min-height: 64px;
+    padding: 5px;
+  }
+
+  .day-note-line {
+    font-size: 9px;
+    padding: 1px 3px;
+  }
+}
