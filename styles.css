@@ -641,12 +641,16 @@ textarea {
   flex-direction:column;
 }
 
-.weekdays,
-.month-days {
+.weekdays{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:2px;
-  min-height:calc(100vh - 240px);
+  margin-bottom:2px;
+}
+
+.month-days{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
 }
 
 .weekdays span {
@@ -1124,4 +1128,37 @@ textarea {
 .empty-notes-icon{
   font-size:28px;
   margin-bottom:8px;
+}
+#calendarTab{
+    height:calc(100vh - 70px);
+    display:flex;
+    flex-direction:column;
+}
+
+#calendarTab .calendar-toolbar{
+    margin-bottom:8px;
+}
+
+#calendarTab .calendar-controls{
+    margin-bottom:8px;
+}
+
+#calendarTab .paint-toolbar{
+    margin-bottom:8px;
+}
+@media(min-width:1200px){
+
+  .calendar-day{
+      font-size:16px;
+  }
+
+  .day-number{
+      font-size:18px;
+      font-weight:700;
+  }
+
+  .monthly-calendar{
+      height:calc(100vh - 165px);
+  }
+
 }
