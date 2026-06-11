@@ -1053,10 +1053,16 @@ textarea {
     border-right: 0;
   }
 
-  .calendar-day {
-    min-height: 46px;
+  .calendar-day{
+    min-height:auto;
+    height:100%;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding:8px;
   }
 
+  
   .mini-calendar-day {
     min-height: 46px;
     padding: 7px;
