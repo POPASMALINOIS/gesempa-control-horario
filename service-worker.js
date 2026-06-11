@@ -1,4 +1,4 @@
-const CACHE_NAME = "gesempa-control-horario-v106";
+const CACHE_NAME = "gesempa-control-horario-v107";
 
 const APP_SHELL = [
   "./",
