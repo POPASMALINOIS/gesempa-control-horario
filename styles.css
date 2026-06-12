@@ -1442,194 +1442,161 @@ button {
   }
 }
 /* =========================
-   RESTYLE EDITORIAL RADICAL 1.0
+   HOME COMPACTO SIN SCROLL
 ========================= */
 
-body {
-  background: #f6f5f1 !important;
-  color: #111 !important;
-  font-family: "Inter", system-ui, sans-serif !important;
-}
-
 .app-main {
-  padding: 28px !important;
-  background: #f6f5f1 !important;
+  padding: 14px !important;
 }
 
-.sidebar {
-  background: #050b12 !important;
-  width: 250px !important;
-  padding: 26px 18px !important;
+#homeTab.office-home.active {
+  gap: 10px !important;
 }
 
-.sidebar-logo {
-  margin-bottom: 44px !important;
+.office-main-row {
+  gap: 10px !important;
 }
 
-.sidebar-nav button {
-  height: 42px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #aeb7c2 !important;
-  padding: 0 14px !important;
-  border-left: 2px solid transparent !important;
-}
-
-.sidebar-nav button.active {
-  background: rgba(15, 122, 59, .18) !important;
-  color: #fff !important;
-  border-left-color: #0f7a3b !important;
-}
-
-.sidebar-nav button:hover {
-  background: rgba(255,255,255,.06) !important;
-  color: #fff !important;
-}
-
-.office-panel,
-.records-list,
-.employee-form,
-.employees-list,
-.settings-card,
-.monthly-calendar,
-.year-month,
-.export-panel {
-  background: #ffffff !important;
-  border: 1px solid #deded8 !important;
-  box-shadow: none !important;
+.office-secondary-row {
+  gap: 10px !important;
 }
 
 .office-panel-head {
-  height: 50px !important;
-  padding: 0 18px !important;
-  background: #fff !important;
-  border-bottom: 1px solid #ecece7 !important;
+  height: 32px !important;
+  padding: 0 10px !important;
 }
 
 .office-panel-head h2 {
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
+  font-size: 13px !important;
 }
 
 .office-clock-data div,
 .office-summary-list div {
-  padding: 22px 18px !important;
+  padding: 8px 10px !important;
 }
 
 .office-clock-data span,
 .office-summary-list span {
-  font-size: 11px !important;
-  letter-spacing: .06em !important;
-  color: #7a7a72 !important;
+  font-size: 9px !important;
+  margin-bottom: 3px !important;
 }
 
 .office-clock-data strong,
 .office-summary-list strong {
-  font-size: 30px !important;
-  font-weight: 500 !important;
-  letter-spacing: -0.04em !important;
+  font-size: 20px !important;
 }
 
-.office-primary-btn,
-.primary-btn,
-.primary-action {
-  background: #0f7a3b !important;
-  color: #fff !important;
-  height: 42px !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
+.office-primary-btn {
+  height: 30px !important;
+  margin: 8px 10px !important;
+  font-size: 12px !important;
 }
 
-#homeTab.office-home.active {
-  gap: 22px !important;
+.office-note {
+  margin: 0 10px 8px !important;
+  font-size: 11px !important;
 }
 
-.office-main-row {
-  gap: 22px !important;
+.working-now-list {
+  padding: 6px 10px !important;
 }
 
-.office-secondary-row {
-  gap: 22px !important;
-}
+/* Calendario Inicio compacto */
 
 #dashboardMiniCalendar {
-  padding: 24px !important;
+  padding: 10px !important;
+}
+
+.home-calendar-real-head {
+  padding: 0 0 8px !important;
+  font-size: 13px !important;
+}
+
+.home-calendar-real-weekdays span {
+  padding: 5px 4px !important;
+  font-size: 9px !important;
 }
 
 .home-calendar-real-day {
-  min-height: 145px !important;
-  padding: 14px !important;
+  min-height: 62px !important;
+  padding: 5px !important;
 }
 
 .home-real-day-number {
-  font-size: 15px !important;
-  font-weight: 800 !important;
+  font-size: 11px !important;
+  margin-bottom: 3px !important;
+}
+
+.home-real-notes-preview {
+  gap: 2px !important;
 }
 
 .home-real-note-line {
-  font-size: 12px !important;
-  padding: 8px 9px !important;
-  background: rgba(255,255,255,.92) !important;
+  font-size: 8px !important;
+  padding: 2px 4px !important;
+  gap: 3px !important;
 }
 
+.home-real-note-line::before {
+  width: 5px !important;
+  height: 5px !important;
+  min-width: 5px !important;
+}
+
+.home-real-note-more {
+  font-size: 8px !important;
+}
+
+/* Recordatorios compactos visibles */
+
 .upcoming-calendar-notes {
-  padding: 18px !important;
+  padding: 8px 10px !important;
+  gap: 6px !important;
+  min-height: 0 !important;
 }
 
 .home-note-card {
-  padding: 16px !important;
-  min-height: 68px !important;
-  border: 1px solid #e5e5df !important;
-  background: #fff !important;
+  min-height: 42px !important;
+  padding: 7px 9px !important;
+  grid-template-columns: 26px 1fr auto !important;
+  gap: 8px !important;
+}
+
+.home-note-icon {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 11px !important;
 }
 
 .home-note-content strong {
-  font-size: 15px !important;
+  font-size: 12px !important;
 }
 
 .home-note-content span,
 .home-note-content small {
-  font-size: 13px !important;
+  font-size: 10px !important;
+  margin-top: 1px !important;
 }
 
-.section-head h2,
-.calendar-toolbar h2 {
-  font-size: 26px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.05em !important;
+.home-note-priority {
+  font-size: 10px !important;
 }
 
-.section-head p,
-.eyebrow {
-  color: #77776f !important;
+/* Reducir altura general de paneles */
+
+.office-panel {
+  overflow: hidden !important;
 }
 
-input,
-select,
-textarea {
-  border: 1px solid #d9d9d2 !important;
-  border-radius: 0 !important;
-  background: #fff !important;
+.sidebar {
+  width: 220px !important;
 }
 
-.paint-btn,
-.view-toggle,
-.view-toggle button,
-.small-btn {
-  border-radius: 0 !important;
+.sidebar-logo {
+  margin-bottom: 24px !important;
 }
 
-.calendar-day {
-  border-radius: 0 !important;
-  min-height: 155px !important;
-}
-
-.day-note-line {
-  border-radius: 0 !important;
-}
-
-.record-item,
-.employee-item {
-  padding: 18px 0 !important;
+.sidebar-nav button {
+  padding: 9px 12px !important;
+  font-size: 12px !important;
 }
