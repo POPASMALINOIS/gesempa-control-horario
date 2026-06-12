@@ -1441,3 +1441,195 @@ button {
     grid-template-columns: 1fr;
   }
 }
+/* =========================
+   RESTYLE EDITORIAL RADICAL 1.0
+========================= */
+
+body {
+  background: #f6f5f1 !important;
+  color: #111 !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+
+.app-main {
+  padding: 28px !important;
+  background: #f6f5f1 !important;
+}
+
+.sidebar {
+  background: #050b12 !important;
+  width: 250px !important;
+  padding: 26px 18px !important;
+}
+
+.sidebar-logo {
+  margin-bottom: 44px !important;
+}
+
+.sidebar-nav button {
+  height: 42px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #aeb7c2 !important;
+  padding: 0 14px !important;
+  border-left: 2px solid transparent !important;
+}
+
+.sidebar-nav button.active {
+  background: rgba(15, 122, 59, .18) !important;
+  color: #fff !important;
+  border-left-color: #0f7a3b !important;
+}
+
+.sidebar-nav button:hover {
+  background: rgba(255,255,255,.06) !important;
+  color: #fff !important;
+}
+
+.office-panel,
+.records-list,
+.employee-form,
+.employees-list,
+.settings-card,
+.monthly-calendar,
+.year-month,
+.export-panel {
+  background: #ffffff !important;
+  border: 1px solid #deded8 !important;
+  box-shadow: none !important;
+}
+
+.office-panel-head {
+  height: 50px !important;
+  padding: 0 18px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #ecece7 !important;
+}
+
+.office-panel-head h2 {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.office-clock-data div,
+.office-summary-list div {
+  padding: 22px 18px !important;
+}
+
+.office-clock-data span,
+.office-summary-list span {
+  font-size: 11px !important;
+  letter-spacing: .06em !important;
+  color: #7a7a72 !important;
+}
+
+.office-clock-data strong,
+.office-summary-list strong {
+  font-size: 30px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.office-primary-btn,
+.primary-btn,
+.primary-action {
+  background: #0f7a3b !important;
+  color: #fff !important;
+  height: 42px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+#homeTab.office-home.active {
+  gap: 22px !important;
+}
+
+.office-main-row {
+  gap: 22px !important;
+}
+
+.office-secondary-row {
+  gap: 22px !important;
+}
+
+#dashboardMiniCalendar {
+  padding: 24px !important;
+}
+
+.home-calendar-real-day {
+  min-height: 145px !important;
+  padding: 14px !important;
+}
+
+.home-real-day-number {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+}
+
+.home-real-note-line {
+  font-size: 12px !important;
+  padding: 8px 9px !important;
+  background: rgba(255,255,255,.92) !important;
+}
+
+.upcoming-calendar-notes {
+  padding: 18px !important;
+}
+
+.home-note-card {
+  padding: 16px !important;
+  min-height: 68px !important;
+  border: 1px solid #e5e5df !important;
+  background: #fff !important;
+}
+
+.home-note-content strong {
+  font-size: 15px !important;
+}
+
+.home-note-content span,
+.home-note-content small {
+  font-size: 13px !important;
+}
+
+.section-head h2,
+.calendar-toolbar h2 {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.05em !important;
+}
+
+.section-head p,
+.eyebrow {
+  color: #77776f !important;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #d9d9d2 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+
+.paint-btn,
+.view-toggle,
+.view-toggle button,
+.small-btn {
+  border-radius: 0 !important;
+}
+
+.calendar-day {
+  border-radius: 0 !important;
+  min-height: 155px !important;
+}
+
+.day-note-line {
+  border-radius: 0 !important;
+}
+
+.record-item,
+.employee-item {
+  padding: 18px 0 !important;
+}
