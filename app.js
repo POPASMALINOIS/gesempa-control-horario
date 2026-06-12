@@ -1690,19 +1690,19 @@ function renderDashboardMiniCalendar() {
   const offset = firstWeekdayMondayBased(year, month);
 
   let html = `
-    <div class="mini-calendar-head">
+    <div class="home-calendar-real-head">
       <strong>${MONTHS[month]} ${year}</strong>
     </div>
 
-    <div class="mini-calendar-weekdays">
+    <div class="home-calendar-real-weekdays">
       ${WEEKDAYS.map(day => `<span>${day}</span>`).join("")}
     </div>
 
-    <div class="mini-calendar-days">
+    <div class="home-calendar-real-days">
   `;
 
   for (let i = 0; i < offset; i++) {
-    html += `<div class="mini-calendar-day empty"></div>`;
+    html += `<div class="home-calendar-real-day empty"></div>`;
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
@@ -1712,26 +1712,27 @@ function renderDashboardMiniCalendar() {
     const today = date === todayKey() ? "today" : "";
 
     const notes = state.calendarNotes?.[date] || [];
-    const hasNotes = notes.length > 0;
+    const previewNotes = notes
+      .sort((a, b) => `${a.time || "99:99"}`.localeCompare(`${b.time || "99:99"}`))
+      .slice(0, 2);
 
-    const urgent = notes.some(note => note.priority === "urgent");
-    const important = notes.some(note => note.priority === "important");
-
-    const noteClass = urgent
-      ? "has-urgent-note"
-      : important
-        ? "has-important-note"
-        : hasNotes
-          ? "has-note"
-          : "";
+    const hasMoreNotes = notes.length > 2;
 
     html += `
-      <div class="mini-calendar-day ${status} ${today} ${noteClass}" data-date="${date}" title="${hasNotes ? `${notes.length} nota(s)` : ""}">
-        <span class="mini-day-number">${day}</span>
+      <div class="home-calendar-real-day ${status} ${today}" data-date="${date}">
+        <span class="home-real-day-number">${day}</span>
 
         ${
-          hasNotes
-            ? `<span class="mini-note-dot"></span>`
+          previewNotes.length
+            ? `<div class="home-real-notes-preview">
+                ${previewNotes.map(note => `
+                  <span class="home-real-note-line ${note.priority || "normal"}">
+                    ${note.time ? `<em>${escapeHtml(note.time)}</em>` : ""}
+                    ${escapeHtml(note.title || "Nota")}
+                  </span>
+                `).join("")}
+                ${hasMoreNotes ? `<span class="home-real-note-more">+${notes.length - 2} más</span>` : ""}
+              </div>`
             : ""
         }
       </div>
@@ -1742,13 +1743,11 @@ function renderDashboardMiniCalendar() {
 
   container.innerHTML = html;
 
-  const miniDays = container.querySelectorAll(".mini-calendar-day[data-date]");
-
-    miniDays.forEach(day => {
+  container.querySelectorAll(".home-calendar-real-day[data-date]").forEach(day => {
     day.addEventListener("click", () => {
       const date = day.getAttribute("data-date");
       const notes = state.calendarNotes?.[date] || [];
-  
+
       if (notes.length) {
         openNoteModal(date, notes[0]);
       } else {
