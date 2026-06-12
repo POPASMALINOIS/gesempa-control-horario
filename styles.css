@@ -3299,3 +3299,164 @@ body{
 .app-main {
   background: #f4f4f1;
 }
+/* HOME 0.9.6 - calendario real en inicio */
+
+#dashboardMiniCalendar {
+  padding: 18px;
+  background: #ffffff;
+  min-height: auto;
+}
+
+.home-calendar-real-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 16px;
+  font-size: 15px;
+}
+
+.home-calendar-real-weekdays,
+.home-calendar-real-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.home-calendar-real-weekdays span {
+  padding: 10px 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+  color: #666;
+  border-bottom: 1px solid #e2e2dc;
+}
+
+.home-calendar-real-days {
+  border-left: 1px solid #e2e2dc;
+  border-top: 1px solid #e2e2dc;
+}
+
+.home-calendar-real-day {
+  min-height: 105px;
+  padding: 10px;
+  border-right: 1px solid #e2e2dc;
+  border-bottom: 1px solid #e2e2dc;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.home-calendar-real-day.empty {
+  background: #fafaf8;
+  cursor: default;
+}
+
+.home-calendar-real-day.work {
+  background: #e7f4ec;
+}
+
+.home-calendar-real-day.day_off {
+  background: #f1f1ef;
+}
+
+.home-calendar-real-day.permission {
+  background: #fff5db;
+}
+
+.home-calendar-real-day.sick_leave {
+  background: #fdeaea;
+}
+
+.home-calendar-real-day.holiday {
+  background: #eeeeee;
+}
+
+.home-calendar-real-day.vacation {
+  background: #e8f0ff;
+}
+
+.home-calendar-real-day.absence {
+  background: #f1eaff;
+}
+
+.home-calendar-real-day.today {
+  outline: 2px solid #0f7a3b;
+  outline-offset: -2px;
+}
+
+.home-real-day-number {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.home-real-notes-preview {
+  display: grid;
+  gap: 5px;
+}
+
+.home-real-note-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 7px;
+  background: rgba(255,255,255,.88);
+  color: #111827;
+  border-radius: 6px;
+}
+
+.home-real-note-line::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  border-radius: 999px;
+  background: #0f7a3b;
+}
+
+.home-real-note-line.important::before {
+  background: #f59e0b;
+}
+
+.home-real-note-line.urgent::before {
+  background: #dc2626;
+}
+
+.home-real-note-line em {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.home-real-note-more {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0f7a3b;
+}
+
+@media (max-width: 720px) {
+  #dashboardMiniCalendar {
+    padding: 10px;
+  }
+
+  .home-calendar-real-day {
+    min-height: 78px;
+    padding: 6px;
+  }
+
+  .home-real-day-number {
+    font-size: 12px;
+  }
+
+  .home-real-note-line {
+    font-size: 9px;
+    padding: 4px 5px;
+  }
+}
