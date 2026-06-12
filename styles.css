@@ -3469,3 +3469,99 @@ body{
     min-height:100px !important;
     border:1px solid #ddd !important;
 }
+/* HOME 0.9.6 - próximas citas modernas */
+
+.upcoming-calendar-notes {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  min-height: 160px;
+}
+
+.home-note-card {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e2dc;
+  border-radius: 0;
+  text-align: left;
+  color: #111827;
+}
+
+.home-note-card:hover {
+  background: #f7f7f4;
+}
+
+.home-note-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  background: #e7f4ec;
+  color: #0f7a3b;
+}
+
+.home-note-card.important .home-note-icon {
+  background: #fff5db;
+  color: #b45309;
+}
+
+.home-note-card.urgent .home-note-icon {
+  background: #fdeaea;
+  color: #dc2626;
+}
+
+.home-note-content strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.home-note-content span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #666;
+}
+
+.home-note-content small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #777;
+}
+
+.home-note-priority {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0f7a3b;
+}
+
+.home-note-card.important .home-note-priority {
+  color: #b45309;
+}
+
+.home-note-card.urgent .home-note-priority {
+  color: #dc2626;
+}
+
+.empty-notes-state {
+  padding: 16px;
+  font-size: 13px;
+  color: #666;
+}
+
+@media (max-width: 720px) {
+  .home-note-card {
+    grid-template-columns: 32px 1fr;
+  }
+
+  .home-note-priority {
+    grid-column: 2;
+  }
+}
