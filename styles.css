@@ -3250,3 +3250,52 @@ body{
     min-height: 340px;
   }
 }
+/* HOME 0.9.5 - eliminar header superior */
+
+.app-header {
+  display: none !important;
+}
+
+.app-main {
+  padding-top: 24px;
+}
+/* HOME 0.9.5 - calendario inicio protagonista */
+
+.office-secondary-row {
+  grid-template-columns: 1fr !important;
+}
+
+#dashboardMiniCalendar {
+  min-height: 520px;
+}
+
+.mini-calendar-days {
+  min-height: 420px;
+}
+
+.mini-calendar-day {
+  min-height: 70px;
+}
+/* HOME 0.9.5 - limpieza visual editorial */
+
+.office-panel {
+  border: 1px solid #d7d7d2;
+  background: #ffffff;
+}
+
+.office-panel-head {
+  height: 42px;
+  background: #ffffff;
+}
+
+.office-panel-head h2 {
+  font-size: 14px;
+}
+
+.office-user-line {
+  display: none;
+}
+
+.app-main {
+  background: #f4f4f1;
+}
