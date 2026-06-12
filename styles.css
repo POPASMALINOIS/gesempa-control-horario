@@ -3198,3 +3198,55 @@ body{
 .year-day.day_off {
   color: #111;
 }
+/* HOME 0.9.5 - calendario y citas a ancho completo */
+
+#homeTab.office-home.active {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.office-user-line {
+  grid-column: 1 / -1;
+}
+
+.office-main-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.office-secondary-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.office-secondary-row .office-panel {
+  width: 100%;
+}
+
+#dashboardMiniCalendar {
+  min-height: 430px;
+}
+
+.mini-calendar-day {
+  min-height: 64px;
+}
+
+.upcoming-calendar-notes {
+  min-height: 160px;
+}
+
+@media (max-width: 1000px) {
+  .office-main-row {
+    grid-template-columns: 1fr;
+  }
+
+  #dashboardMiniCalendar {
+    min-height: 340px;
+  }
+}
