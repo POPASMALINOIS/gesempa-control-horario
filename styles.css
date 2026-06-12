@@ -1600,3 +1600,27 @@ button {
   padding: 9px 12px !important;
   font-size: 12px !important;
 }
+/* AJUSTE FINAL HOME CALENDAR SIN SCROLL */
+
+.home-calendar-real-day {
+  min-height: 70px !important;
+  padding: 5px !important;
+}
+
+.home-calendar-real-weekdays span {
+  padding: 4px !important;
+}
+
+.home-real-day-number {
+  font-size: 11px !important;
+  margin-bottom: 2px !important;
+}
+
+.home-real-note-line {
+  font-size: 8px !important;
+  padding: 2px 4px !important;
+}
+
+#dashboardMiniCalendar {
+  padding: 8px !important;
+}
