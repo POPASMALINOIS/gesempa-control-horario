@@ -1644,10 +1644,13 @@ function renderAnnualCalendar() {
       const title = status ? `${date} · ${WORK_STATUSES[status]?.label || ""}` : date;
 
       daysHtml += `
-        <button class="year-day ${status}" type="button" data-date="${date}" title="${title}"></button>
+        <button class="year-day ${status}" type="button" data-date="${date}" title="${title}">
+          <span>${day}</span>
+        </button>
       `;
-    
-      return `
+    }
+
+    return `
       <div class="year-month">
         <h3>${monthName}</h3>
         <div class="year-days">${daysHtml}</div>
