@@ -1764,7 +1764,11 @@ function renderUpcomingCalendarNotes() {
   const notes = state.upcomingNotes || [];
 
   if (!notes.length) {
-    container.innerHTML = "Sin citas ni recordatorios próximos.";
+    container.innerHTML = `
+      <div class="empty-notes-state">
+        Sin citas ni recordatorios próximos.
+      </div>
+    `;
     return;
   }
 
@@ -1776,19 +1780,43 @@ function renderUpcomingCalendarNotes() {
           ? "Importante"
           : "Normal";
 
+    const icon =
+      note.priority === "urgent"
+        ? "!"
+        : note.priority === "important"
+          ? "●"
+          : "✓";
+
     return `
-      <div class="upcoming-note-item ${note.priority || "normal"}">
-        <div>
-          <strong>${note.title || "Sin título"}</strong>
+      <button class="home-note-card ${note.priority || "normal"}" type="button" data-note-id="${note.id}" data-date="${note.date}">
+        <div class="home-note-icon">${icon}</div>
+
+        <div class="home-note-content">
+          <strong>${escapeHtml(note.title || "Sin título")}</strong>
           <span>
             ${dateLabel(note.date)}
-            ${note.time ? " · " + note.time : ""}
-            · ${priorityLabel}
+            ${note.time ? " · " + escapeHtml(note.time) : " · Todo el día"}
           </span>
+          ${note.description ? `<small>${escapeHtml(note.description)}</small>` : ""}
         </div>
-      </div>
+
+        <div class="home-note-priority">
+          ${priorityLabel}
+        </div>
+      </button>
     `;
   }).join("");
+
+  container.querySelectorAll(".home-note-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const date = card.dataset.date;
+      const noteId = card.dataset.noteId;
+      const notesForDay = state.calendarNotes?.[date] || [];
+      const note = notesForDay.find(item => item.id === noteId);
+
+      openNoteModal(date, note || null);
+    });
+  });
 }
 
 function refreshCalendarViews() {
