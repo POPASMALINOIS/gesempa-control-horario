@@ -3198,30 +3198,3 @@ body{
 .year-day.day_off {
   color: #111;
 }
-.year-day {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 18px;
-  font-size: 9px;
-  font-weight: 800;
-  color: #111;
-}
-
-.year-day span {
-  line-height: 1;
-  pointer-events: none;
-}
-
-.year-day.work,
-.year-day.permission,
-.year-day.sick_leave,
-.year-day.holiday,
-.year-day.vacation,
-.year-day.absence {
-  color: #fff;
-}
-
-.year-day.day_off {
-  color: #111;
-}
