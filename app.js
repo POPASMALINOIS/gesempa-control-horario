@@ -1797,7 +1797,11 @@ function renderUpcomingCalendarNotes() {
             ${dateLabel(note.date)}
             ${note.time ? " · " + escapeHtml(note.time) : " · Todo el día"}
           </span>
-          ${note.description ? `<small>${escapeHtml(note.description)}</small>` : ""}
+          ${
+            note.description || note.notes || note.observations
+              ? `<small>${escapeHtml(note.description || note.notes || note.observations)}</small>`
+              : ""
+          }
         </div>
 
         <div class="home-note-priority">
