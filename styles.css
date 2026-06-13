@@ -2671,3 +2671,19 @@ body.dark-mode .monthly-calendar {
   border: 0 !important;
   padding: 0 !important;
 }
+/* SIDEBAR ICONOS REFINADOS */
+
+.nav-icon {
+  font-family: system-ui, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  opacity: .85 !important;
+}
+
+.sidebar-nav button.active .nav-icon {
+  color: #86efac !important;
+}
+
+.sidebar-nav button:hover .nav-icon {
+  opacity: 1 !important;
+}
