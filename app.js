@@ -2560,3 +2560,30 @@ setInterval(() => {
     renderClock();
   }
 }, 30000);
+/* =========================
+   MODO OSCURO
+========================= */
+
+const darkModeToggle = document.getElementById("darkModeToggle");
+
+if (darkModeToggle) {
+
+  const savedTheme = localStorage.getItem("gesempa-theme");
+
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    darkModeToggle.checked = true;
+  }
+
+  darkModeToggle.addEventListener("change", () => {
+
+    if (darkModeToggle.checked) {
+      document.body.classList.add("dark-mode");
+      localStorage.setItem("gesempa-theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem("gesempa-theme", "light");
+    }
+
+  });
+}
