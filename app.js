@@ -2005,9 +2005,17 @@ async function renderAdminTodayDashboard() {
     return sum;
   }, 0);
 
-  const todayCalendarItems = Object.values(state.calendarDays).filter(day => {
-    return day.date === today;
-  });
+  const calendarTodayQuery = query(
+    collection(db, "calendarDays"),
+    where("companyId", "==", APP_COMPANY_ID),
+    where("date", "==", today)
+  );
+
+  const calendarTodaySnap = await getDocs(calendarTodayQuery);
+
+  const todayCalendarItems = calendarTodaySnap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .filter(day => day.status && day.cleared !== true);
 
   const countStatus = (status) => {
     return todayCalendarItems.filter(day => day.status === status).length;
@@ -2015,28 +2023,47 @@ async function renderAdminTodayDashboard() {
 
   els.statActiveEmployees.textContent = String(activeEmployees.length);
   els.statWorkingNow.textContent = String(workingNow);
-  if (els.workingNowList) {
 
-  if (!openRecords.length) {
-
-    els.workingNowList.innerHTML =
-      "<small>Nadie trabajando ahora</small>";
-
-  } else {
-
-    els.workingNowList.innerHTML =
-      openRecords
-        .map(r =>
-          `<div class="working-now-item">🟢 ${r.employeeName}</div>`
-        )
-        .join("");
-  }
-}
   els.statVacationToday.textContent = String(countStatus("vacation"));
   els.statPermissionToday.textContent = String(countStatus("permission"));
   els.statSickToday.textContent = String(countStatus("sick_leave"));
   els.statAbsenceToday.textContent = String(countStatus("absence"));
+
   els.statCompanyHoursToday.textContent = formatMinutes(totalMinutesToday);
+
+  if (els.workingNowList) {
+    const employeesWithCalendarStatus = todayCalendarItems
+      .filter(day => ["vacation", "permission", "sick_leave", "absence", "day_off", "holiday"].includes(day.status))
+      .map(day => {
+        const label = WORK_STATUSES[day.status]?.label || day.statusLabel || "Estado";
+        return {
+          employeeName: day.employeeName || "Empleado",
+          label,
+          status: day.status
+        };
+      });
+
+    const workingItems = openRecords.map(r => ({
+      employeeName: r.employeeName || "Empleado",
+      label: "Trabajando ahora",
+      status: "work"
+    }));
+
+    const dashboardItems = [
+      ...workingItems,
+      ...employeesWithCalendarStatus
+    ];
+
+    if (!dashboardItems.length) {
+      els.workingNowList.innerHTML = "<small>Sin actividad registrada hoy</small>";
+    } else {
+      els.workingNowList.innerHTML = dashboardItems.map(item => `
+        <div class="working-now-item status-${item.status}">
+          ${item.status === "work" ? "🟢" : "•"} ${item.employeeName} · ${item.label}
+        </div>
+      `).join("");
+    }
+  }
 }
 
 async function renderRecentMovements() {
