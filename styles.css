@@ -2094,3 +2094,131 @@ button {
     padding:14px;
   }
 }
+/* =========================
+   CALENDARIO MINIMALISTA 1.3
+========================= */
+
+#calendarTab .calendar-toolbar {
+  margin-bottom: 18px;
+}
+
+#calendarTab .eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  color: #667085;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+#calendarTab #calendarTitle {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #101828;
+}
+
+.calendar-actions .small-btn {
+  height: 38px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e8e7e1;
+  color: #101828;
+}
+
+.calendar-controls select {
+  height: 42px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e8e7e1;
+}
+
+.view-toggle {
+  background: #ecece7;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.view-toggle button {
+  border-radius: 9px;
+  height: 34px;
+  font-size: 13px;
+}
+
+.view-toggle button.active {
+  background: #ffffff;
+  color: #101828;
+}
+
+.paint-toolbar {
+  padding: 4px 0 14px;
+  gap: 8px;
+}
+
+.paint-btn {
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e8e7e1;
+  color: #475467;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+.paint-btn.active {
+  background: #e7f4ec;
+  border-color: #b7dec5;
+  color: #07572a;
+}
+
+.monthly-calendar {
+  border-radius: 16px;
+  border: 1px solid #e8e7e1;
+  background: #ffffff;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+}
+
+.weekdays span {
+  font-size: 11px;
+  color: #667085;
+}
+
+.calendar-day {
+  border-radius: 12px;
+  border: 1px solid #efeee9;
+  background: #fafaf7;
+  transition: .12s ease;
+}
+
+.calendar-day:hover:not(.empty) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16,24,40,.06);
+}
+
+.day-number {
+  font-size: 18px;
+  letter-spacing: -0.04em;
+}
+
+.day-note-line {
+  border-radius: 8px;
+}
+
+.annual-calendar {
+  gap: 14px;
+}
+
+.year-month {
+  border-radius: 14px;
+  border: 1px solid #e8e7e1;
+  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+}
+
+.year-month h3 {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.year-day {
+  border-radius: 5px;
+}
