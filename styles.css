@@ -2222,3 +2222,122 @@ button {
 .year-day {
   border-radius: 5px;
 }
+/* =========================
+   DARK MODE 1.0
+========================= */
+
+.theme-switch{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.theme-switch span{
+  font-weight:700;
+  font-size:14px;
+}
+
+.theme-switch input{
+  width:20px;
+  height:20px;
+  margin:0;
+}
+
+/* VARIABLES */
+
+body.dark-mode{
+
+  --bg:#0b1118;
+  --card:#111827;
+
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+
+  --line:#1f2937;
+  --border:#1f2937;
+
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* PANEL GENERAL */
+
+body.dark-mode .office-panel,
+body.dark-mode .status-card,
+body.dark-mode .settings-card,
+body.dark-mode .employee-form,
+body.dark-mode .employees-list,
+body.dark-mode .records-list,
+body.dark-mode .monthly-calendar,
+body.dark-mode .year-month,
+body.dark-mode .modal-card{
+  background:#111827;
+  border-color:#1f2937;
+}
+
+/* TEXTOS */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode strong,
+body.dark-mode .employee-main strong{
+  color:#f3f4f6;
+}
+
+body.dark-mode span,
+body.dark-mode p,
+body.dark-mode small{
+  color:#9ca3af;
+}
+
+/* INPUTS */
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea{
+  background:#0f172a;
+  border-color:#1f2937;
+  color:#f3f4f6;
+}
+
+/* CALENDARIOS */
+
+body.dark-mode .calendar-day{
+  background:#0f172a;
+  border-color:#1f2937;
+}
+
+body.dark-mode .calendar-day.empty{
+  background:transparent;
+}
+
+body.dark-mode .home-calendar-real-day{
+  border-color:#1f2937;
+}
+
+body.dark-mode .home-calendar-real-days{
+  border-color:#1f2937;
+}
+
+body.dark-mode .home-calendar-real-weekdays span{
+  border-color:#1f2937;
+}
+
+/* SIDEBAR */
+
+body.dark-mode .sidebar{
+  background:#030712;
+}
+
+/* RECORDATORIOS */
+
+body.dark-mode .home-note-card{
+  background:#0f172a;
+  border-color:#1f2937;
+}
+
+body.dark-mode .home-note-card:hover{
+  background:#172033;
+}
