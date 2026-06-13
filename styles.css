@@ -2517,3 +2517,52 @@ body.dark-mode .delete-record-btn {
   background: rgba(239,68,68,.15) !important;
   color: #fca5a5 !important;
 }
+/* DARK MODE - FICHAJES FORZADO */
+
+body.dark-mode #recordsTab .records-list {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.dark-mode #recordsTab .record-item,
+body.dark-mode #recordsTab .advanced-record {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+  border-radius: 12px !important;
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode #recordsTab .record-main strong {
+  color: #f9fafb !important;
+}
+
+body.dark-mode #recordsTab .record-main span,
+body.dark-mode #recordsTab .record-main small {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode #recordsTab .export-panel {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+}
+
+body.dark-mode #recordsTab .export-panel select {
+  background: #111827 !important;
+  border-color: #2a3548 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode #recordsTab .export-panel button {
+  background: #0f172a !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode #recordsTab .edit-record-btn {
+  background: rgba(34,197,94,.16) !important;
+  color: #86efac !important;
+}
+
+body.dark-mode #recordsTab .delete-record-btn {
+  background: rgba(239,68,68,.16) !important;
+  color: #fca5a5 !important;
+}
