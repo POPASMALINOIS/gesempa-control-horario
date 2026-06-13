@@ -2450,3 +2450,22 @@ body.dark-mode .office-primary-btn {
   background: #16a34a !important;
   color: #ffffff !important;
 }
+/* DARK MODE - corregir huecos blancos calendario inicio */
+
+body.dark-mode .home-calendar-real-day.empty {
+  background: #111827 !important;
+  border-color: #263244 !important;
+}
+
+body.dark-mode .home-calendar-real-day.day_off {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode .home-calendar-real-days {
+  background: #111827 !important;
+}
+
+body.dark-mode #dashboardMiniCalendar {
+  background: #111827 !important;
+}
