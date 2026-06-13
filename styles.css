@@ -473,19 +473,22 @@ button {
 }
 
 .home-calendar-real-days {
-  border-left: 1px solid #f0efea;
-  border-top: 1px solid #f0efea;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  background: transparent;
 }
 
 .home-calendar-real-day {
   min-height: 70px;
   padding: 6px;
-  border-right: 1px solid #f0efea;
-  border-bottom: 1px solid #f0efea;
   background: #ffffff;
   position: relative;
   overflow: hidden;
   cursor: pointer;
+
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 8px;
 }
 
 .home-calendar-real-day.empty {
@@ -1630,6 +1633,7 @@ button {
 .home-calendar-real-day {
   min-height: 70px !important;
   padding: 5px !important;
+  border-radius: 8px !important;
 }
 
 .home-calendar-real-weekdays span {
@@ -2686,4 +2690,14 @@ body.dark-mode .monthly-calendar {
 
 .sidebar-nav button:hover .nav-icon {
   opacity: 1 !important;
+}
+/* HOME CALENDAR SEPARACIÓN ENTRE DÍAS */
+
+body.dark-mode .home-calendar-real-days {
+  gap: 6px;
+}
+
+body.dark-mode .home-calendar-real-day {
+  border: 1px solid #273449;
+  border-radius: 8px;
 }
