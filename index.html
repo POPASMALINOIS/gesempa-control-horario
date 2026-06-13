@@ -35,30 +35,52 @@
   <div id="appView" class="app hidden">
 
     <aside class="sidebar">
-      <div class="sidebar-top">
+  <div class="sidebar-top">
 
-        <div class="sidebar-logo">
-          <img src="./assets/icons/icon-192.png" alt="GESEMPA" />
-          <div>
-            <strong>GESEMPA</strong>
-            <span>Control Horario</span>
-          </div>
-        </div>
-
-        <nav class="sidebar-nav">
-          <button data-tab="homeTab" class="active" type="button">Inicio</button>
-          <button data-tab="recordsTab" type="button">Fichajes</button>
-          <button data-tab="calendarTab" type="button">Calendario</button>
-          <button data-tab="employeesTab" class="employees-sidebar-btn" type="button">Equipo</button>
-          <button data-tab="settingsTab" type="button">Ajustes</button>
-        </nav>
-
+    <div class="sidebar-logo">
+      <img src="./assets/icons/icon-192.png" alt="GESEMPA" />
+      <div>
+        <strong>GESEMPA</strong>
+        <span>Control horario</span>
       </div>
+    </div>
 
-      <div class="sidebar-bottom">
-        <button id="logoutBtnSidebar" type="button">Cerrar sesión</button>
-      </div>
-    </aside>
+    <nav class="sidebar-nav">
+      <button data-tab="homeTab" class="active" type="button">
+        <span class="nav-icon">⌂</span>
+        <span>Inicio</span>
+      </button>
+
+      <button data-tab="recordsTab" type="button">
+        <span class="nav-icon">◷</span>
+        <span>Fichajes</span>
+      </button>
+
+      <button data-tab="calendarTab" type="button">
+        <span class="nav-icon">□</span>
+        <span>Calendario</span>
+      </button>
+
+      <button data-tab="employeesTab" class="employees-sidebar-btn" type="button">
+        <span class="nav-icon">◇</span>
+        <span>Equipo</span>
+      </button>
+
+      <button data-tab="settingsTab" type="button">
+        <span class="nav-icon">⚙</span>
+        <span>Ajustes</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <div class="sidebar-bottom">
+    <button id="logoutBtnSidebar" type="button">
+      <span class="nav-icon">↩</span>
+      <span>Cerrar sesión</span>
+    </button>
+  </div>
+</aside>
 
     <div class="main-shell">
 
