@@ -2360,6 +2360,14 @@ els.logoutBtn.addEventListener("click", () => {
   signOut(auth);
 });
 
+const logoutBtnSidebar = document.getElementById("logoutBtnSidebar");
+
+if (logoutBtnSidebar) {
+  logoutBtnSidebar.addEventListener("click", () => {
+    signOut(auth);
+  });
+}
+
 els.clockBtn.addEventListener("click", handleClock);
 
 if (els.newRecordBtn) {
