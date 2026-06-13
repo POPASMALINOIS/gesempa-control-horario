@@ -2469,3 +2469,51 @@ body.dark-mode .home-calendar-real-days {
 body.dark-mode #dashboardMiniCalendar {
   background: #111827 !important;
 }
+/* ===================================
+   DARK MODE - FICHAJES
+=================================== */
+
+body.dark-mode .records-list {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.dark-mode .record-item {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  margin-bottom: 10px !important;
+}
+
+body.dark-mode .record-item strong {
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode .record-item span,
+body.dark-mode .record-item small,
+body.dark-mode .record-main {
+  color: #aeb8c7 !important;
+}
+
+body.dark-mode .export-panel {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+  border-radius: 12px !important;
+}
+
+body.dark-mode .export-panel select {
+  background: #111827 !important;
+  border: 1px solid #2a3548 !important;
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode .edit-record-btn {
+  background: rgba(34,197,94,.15) !important;
+  color: #86efac !important;
+}
+
+body.dark-mode .delete-record-btn {
+  background: rgba(239,68,68,.15) !important;
+  color: #fca5a5 !important;
+}
