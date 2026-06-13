@@ -2341,3 +2341,112 @@ body.dark-mode .home-note-card{
 body.dark-mode .home-note-card:hover{
   background:#172033;
 }
+/* DARK MODE AJUSTE VISUAL 1.1 */
+
+body.dark-mode .app-main {
+  background: #0b1118 !important;
+}
+
+body.dark-mode .office-panel,
+body.dark-mode .settings-card,
+body.dark-mode .employee-form,
+body.dark-mode .employees-list,
+body.dark-mode .record-item,
+body.dark-mode .home-note-card,
+body.dark-mode .monthly-calendar,
+body.dark-mode .year-month,
+body.dark-mode .export-panel {
+  background: #111827 !important;
+  border-color: #263244 !important;
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode .office-panel-head {
+  background: #111827 !important;
+  border-bottom-color: #263244 !important;
+}
+
+body.dark-mode .office-panel-head h2,
+body.dark-mode .section-head h2,
+body.dark-mode .calendar-toolbar h2,
+body.dark-mode #calendarTitle,
+body.dark-mode .record-main strong,
+body.dark-mode .employee-main strong {
+  color: #f9fafb !important;
+}
+
+body.dark-mode .office-clock-data div,
+body.dark-mode .office-summary-list div,
+body.dark-mode .home-note-card,
+body.dark-mode .employee-item {
+  background: #162033 !important;
+  border-color: #263244 !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0f172a !important;
+  border-color: #263244 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+body.dark-mode .home-calendar-real-day,
+body.dark-mode .calendar-day {
+  background: #162033 !important;
+  border-color: #263244 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode .home-calendar-real-day.work,
+body.dark-mode .calendar-day.status-work {
+  background: #0f7a3b !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .home-calendar-real-day.empty,
+body.dark-mode .calendar-day.empty {
+  background: #0b1118 !important;
+}
+
+body.dark-mode .home-real-note-line,
+body.dark-mode .day-note-line {
+  background: rgba(255,255,255,.92) !important;
+  color: #111827 !important;
+}
+
+body.dark-mode .home-note-content span,
+body.dark-mode .home-note-content small,
+body.dark-mode .record-main span,
+body.dark-mode .record-main small,
+body.dark-mode .employee-meta,
+body.dark-mode .section-head p {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .home-note-priority.urgent,
+body.dark-mode .home-note-card.urgent .home-note-priority {
+  color: #f87171 !important;
+}
+
+body.dark-mode .home-note-card.urgent .home-note-icon {
+  background: rgba(220,38,38,.18) !important;
+  color: #f87171 !important;
+}
+
+body.dark-mode .home-note-card.important .home-note-icon {
+  background: rgba(245,158,11,.18) !important;
+  color: #fbbf24 !important;
+}
+
+body.dark-mode .primary-btn,
+body.dark-mode .primary-action,
+body.dark-mode .office-primary-btn {
+  background: #16a34a !important;
+  color: #ffffff !important;
+}
