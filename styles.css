@@ -2566,3 +2566,108 @@ body.dark-mode #recordsTab .delete-record-btn {
   background: rgba(239,68,68,.16) !important;
   color: #fca5a5 !important;
 }
+/* DARK MODE - EQUIPO */
+
+body.dark-mode #employeesTab .employee-form,
+body.dark-mode #employeesTab .employees-list {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.dark-mode #employeesTab .field-label {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode #employeesTab .employee-form {
+  background: #111827 !important;
+  border: 1px solid #263244 !important;
+  border-radius: 14px !important;
+}
+
+body.dark-mode #employeesTab .employee-item {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+  border-radius: 14px !important;
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode #employeesTab .employee-main strong {
+  color: #f9fafb !important;
+}
+
+body.dark-mode #employeesTab .employee-meta {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode #employeesTab .employee-badge {
+  background: rgba(34,197,94,.16) !important;
+  color: #86efac !important;
+}
+
+body.dark-mode #employeesTab .employee-badge.inactive {
+  background: rgba(148,163,184,.16) !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode #employeesTab .edit-employee-btn {
+  background: rgba(34,197,94,.16) !important;
+  color: #86efac !important;
+  border: 1px solid #2a3548 !important;
+}
+
+body.dark-mode #employeesTab input,
+body.dark-mode #employeesTab select {
+  background: #0f172a !important;
+  border-color: #2a3548 !important;
+  color: #f9fafb !important;
+}
+/* ==================================
+   CALENDARIO PREMIUM DARK
+================================== */
+
+body.dark-mode .paint-btn {
+  background: #182233 !important;
+  border: 1px solid #2a3548 !important;
+  color: #cbd5e1 !important;
+  border-radius: 999px !important;
+}
+
+body.dark-mode .paint-btn:hover {
+  background: #223049 !important;
+}
+
+body.dark-mode .paint-btn.active {
+  background: rgba(34,197,94,.18) !important;
+  border-color: rgba(34,197,94,.45) !important;
+  color: #86efac !important;
+}
+
+body.dark-mode .calendar-controls select {
+  background: #111827 !important;
+  border: 1px solid #2a3548 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode .calendar-day {
+  background: #182233 !important;
+  border: 1px solid #243245 !important;
+  border-radius: 10px !important;
+}
+
+body.dark-mode .calendar-day:hover {
+  border-color: #3b82f6 !important;
+}
+
+body.dark-mode .day-number {
+  color: #f8fafc !important;
+}
+
+body.dark-mode .weekdays span {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .monthly-calendar {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
