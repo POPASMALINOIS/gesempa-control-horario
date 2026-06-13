@@ -263,12 +263,12 @@ button {
   display: none !important;
 }
 
-/* HOME */
+/* HOME - UI MINIMALISTA 1.1 */
 
 #homeTab.office-home.active {
   display: grid !important;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 14px;
   align-items: start;
 }
 
@@ -279,47 +279,51 @@ button {
 .office-main-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 
 .office-secondary-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 
+/* Paneles sin aspecto tabla antigua */
 .office-panel {
   background: #ffffff;
-  border: 1px solid #ecece7;
-  border-radius: 0;
-  box-shadow: none;
+  border: 1px solid #e8e7e1;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
   min-width: 0;
+  overflow: hidden;
 }
 
+/* Cabeceras limpias */
 .office-panel-head {
-  height: 42px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
+  padding: 0 18px;
   background: #ffffff;
-  border-bottom: 1px solid #ecece7;
+  border-bottom: 1px solid #f0efea;
 }
 
 .office-panel-head h2 {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #111827;
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #101828;
 }
 
 .office-tag {
   font-size: 11px;
-  padding: 2px 6px;
-  background: #f7f7f4;
-  border: 1px solid var(--line);
-  color: var(--muted);
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f4f4ef;
+  border: 1px solid #e8e7e1;
+  color: #667085;
 }
 
 /* REGISTRO JORNADA */
@@ -333,98 +337,111 @@ button {
 }
 
 .clock-status.outside {
-  color: #59625c;
+  color: #667085;
 }
 
 .office-clock-data {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
+  padding: 10px 12px 0;
+  gap: 10px;
 }
 
 .office-clock-data div {
-  padding: 13px 14px;
-  border-right: 1px solid var(--line);
-}
-
-.office-clock-data div:last-child {
+  padding: 14px;
   border-right: 0;
+  background: #fafaf7;
+  border: 1px solid #f0efea;
+  border-radius: 12px;
 }
 
 .office-clock-data span {
   display: block;
   font-size: 10px;
-  color: #666;
+  color: #7a7a72;
   text-transform: uppercase;
-  margin-bottom: 5px;
-  letter-spacing: .03em;
+  margin-bottom: 6px;
+  letter-spacing: .06em;
+  font-weight: 700;
 }
 
 .office-clock-data strong {
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  color: #101828;
 }
 
 .office-primary-btn {
   margin: 12px;
   height: 38px;
-  min-width: 180px;
+  min-width: 170px;
   background: var(--green);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  border-radius: 9px;
   transition: .15s ease;
 }
 
 .office-primary-btn:hover {
   transform: translateY(-1px);
+  background: #0d6d35;
 }
 
 .office-note {
   margin: 0 12px 12px;
   font-size: 12px;
-  color: #666;
+  color: #667085;
 }
 
 /* SITUACIÓN DE HOY */
 
 .office-summary-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 10px 12px 0;
+  gap: 10px;
 }
 
 .office-summary-list div {
-  padding: 13px 14px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  padding: 12px;
+  border: 1px solid #f0efea;
+  background: #fafaf7;
+  border-radius: 12px;
 }
 
 .office-summary-list div:nth-child(2n) {
-  border-right: 0;
+  border-right: 1px solid #f0efea;
 }
 
 .office-summary-list span {
   display: block;
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
-  color: #666;
-  margin-bottom: 5px;
-  letter-spacing: .03em;
+  color: #7a7a72;
+  margin-bottom: 6px;
+  letter-spacing: .06em;
+  font-weight: 700;
 }
 
 .office-summary-list strong {
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  color: #101828;
 }
 
 .working-now-list {
-  padding: 10px 14px;
-  font-size: 13px;
+  padding: 8px 14px 12px;
+  font-size: 12px;
+  color: #667085;
 }
 
 /* CALENDARIO HOME REAL */
 
 #dashboardMiniCalendar {
-  padding: 18px;
+  padding: 12px;
   background: #ffffff;
   min-height: auto;
 }
@@ -433,9 +450,11 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 0 16px;
-  font-size: 15px;
-  font-weight: 700;
+  padding: 2px 2px 10px;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #101828;
 }
 
 .home-calendar-real-weekdays,
@@ -445,24 +464,24 @@ button {
 }
 
 .home-calendar-real-weekdays span {
-  padding: 10px 8px;
-  font-size: 11px;
+  padding: 6px 4px;
+  font-size: 10px;
   font-weight: 800;
   text-align: center;
-  color: #666;
-  border-bottom: 1px solid #ecece7;
+  color: #7a7a72;
+  border-bottom: 1px solid #f0efea;
 }
 
 .home-calendar-real-days {
-  border-left: 1px solid #ecece7;
-  border-top: 1px solid #ecece7;
+  border-left: 1px solid #f0efea;
+  border-top: 1px solid #f0efea;
 }
 
 .home-calendar-real-day {
-  min-height: 120px;
-  padding: 10px;
-  border-right: 1px solid #ecece7;
-  border-bottom: 1px solid #ecece7;
+  min-height: 70px;
+  padding: 6px;
+  border-right: 1px solid #f0efea;
+  border-bottom: 1px solid #f0efea;
   background: #ffffff;
   position: relative;
   overflow: hidden;
@@ -475,31 +494,31 @@ button {
 }
 
 .home-calendar-real-day.work {
-  background: #e7f4ec;
+  background: #e9f5ee;
 }
 
 .home-calendar-real-day.day_off {
-  background: #f1f1ef;
+  background: #f3f3ef;
 }
 
 .home-calendar-real-day.permission {
-  background: #fff5db;
+  background: #fff7e6;
 }
 
 .home-calendar-real-day.sick_leave {
-  background: #fdeaea;
+  background: #fff0f0;
 }
 
 .home-calendar-real-day.holiday {
-  background: #eeeeee;
+  background: #efefef;
 }
 
 .home-calendar-real-day.vacation {
-  background: #e8f0ff;
+  background: #eef4ff;
 }
 
 .home-calendar-real-day.absence {
-  background: #f1eaff;
+  background: #f4efff;
 }
 
 .home-calendar-real-day.today {
@@ -509,38 +528,39 @@ button {
 
 .home-real-day-number {
   display: block;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 800;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
+  color: #101828;
 }
 
 .home-real-notes-preview {
   display: grid;
-  gap: 5px;
+  gap: 2px;
 }
 
 .home-real-note-line {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
-  font-size: 11px;
-  line-height: 1.2;
-  font-weight: 600;
+  font-size: 8px;
+  line-height: 1.1;
+  font-weight: 650;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 6px 7px;
-  background: rgba(255,255,255,.9);
-  color: #111827;
-  border-radius: 4px;
+  padding: 3px 4px;
+  background: rgba(255,255,255,.92);
+  color: #101828;
+  border-radius: 5px;
 }
 
 .home-real-note-line::before {
   content: "";
-  width: 7px;
-  height: 7px;
-  min-width: 7px;
+  width: 5px;
+  height: 5px;
+  min-width: 5px;
   border-radius: 999px;
   background: var(--green);
 }
@@ -559,7 +579,7 @@ button {
 }
 
 .home-real-note-more {
-  font-size: 11px;
+  font-size: 8px;
   font-weight: 800;
   color: var(--green);
 }
@@ -568,34 +588,38 @@ button {
 
 .upcoming-calendar-notes {
   display: grid;
-  gap: 10px;
-  padding: 14px;
-  min-height: 160px;
+  gap: 8px;
+  padding: 12px;
+  min-height: 0;
 }
 
 .home-note-card {
   width: 100%;
   display: grid;
-  grid-template-columns: 38px 1fr auto;
-  gap: 12px;
+  grid-template-columns: 30px 1fr auto;
+  gap: 10px;
   align-items: center;
-  padding: 12px;
+  padding: 10px;
   background: #ffffff;
-  border: 1px solid #ecece7;
+  border: 1px solid #f0efea;
+  border-radius: 12px;
   text-align: left;
-  color: #111827;
+  color: #101828;
   transition: .15s ease;
 }
 
 .home-note-card:hover {
-  background: #f7f7f4;
+  background: #fafaf7;
+  transform: translateY(-1px);
 }
 
 .home-note-icon {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
   display: grid;
   place-items: center;
+  font-size: 12px;
   font-weight: 900;
   background: #e7f4ec;
   color: var(--green);
@@ -613,26 +637,27 @@ button {
 
 .home-note-content strong {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .home-note-content span {
   display: block;
-  margin-top: 3px;
-  font-size: 12px;
-  color: #666;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #667085;
 }
 
 .home-note-content small {
   display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: #777;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #7a7a72;
 }
 
 .home-note-priority {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   color: var(--green);
 }
@@ -646,9 +671,9 @@ button {
 }
 
 .empty-notes-state {
-  padding: 16px;
+  padding: 14px;
   font-size: 13px;
-  color: #666;
+  color: #667085;
 }
 
 /* CALENDARIO PRINCIPAL */
