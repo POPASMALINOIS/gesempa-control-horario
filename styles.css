@@ -1681,3 +1681,92 @@ button {
     grid-template-columns: 1fr !important;
   }
 }
+/* SIDEBAR MINIMALISTA 1.1 */
+
+.sidebar {
+  width: 250px !important;
+  background: #070d14 !important;
+  padding: 22px 16px !important;
+}
+
+.sidebar-logo {
+  gap: 12px !important;
+  margin-bottom: 34px !important;
+  padding: 4px 6px !important;
+}
+
+.sidebar-logo img {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+}
+
+.sidebar-logo strong {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.sidebar-logo span {
+  font-size: 11px !important;
+  color: rgba(255,255,255,.55) !important;
+}
+
+.sidebar-nav {
+  gap: 6px !important;
+}
+
+.sidebar-nav button {
+  width: 100% !important;
+  height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  border-left: 0 !important;
+  color: rgba(255,255,255,.68) !important;
+  background: transparent !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+.sidebar-nav button:hover {
+  background: rgba(255,255,255,.06) !important;
+  color: #fff !important;
+}
+
+.sidebar-nav button.active {
+  background: rgba(15,122,59,.20) !important;
+  color: #fff !important;
+  box-shadow: inset 0 0 0 1px rgba(15,122,59,.28) !important;
+}
+
+.nav-icon {
+  width: 22px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 15px !important;
+  opacity: .9 !important;
+}
+
+.sidebar-bottom button {
+  width: 100% !important;
+  height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  background: rgba(220,38,38,.12) !important;
+  color: #fecaca !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.sidebar-bottom button:hover {
+  background: rgba(220,38,38,.22) !important;
+  color: #fff !important;
+}
