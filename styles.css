@@ -1624,3 +1624,35 @@ button {
 #dashboardMiniCalendar {
   padding: 8px !important;
 }
+/* FIX EXPORT PANEL - evitar que Exportar Excel se salga */
+
+.export-panel {
+  display: grid !important;
+  grid-template-columns: minmax(160px, 1fr) minmax(130px, .7fr) minmax(100px, .5fr) minmax(160px, .8fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.export-panel select,
+.export-panel button {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.export-panel button {
+  white-space: nowrap !important;
+}
+
+@media (max-width: 900px) {
+  .export-panel {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .export-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
