@@ -2771,3 +2771,17 @@ body.dark-mode .home-note-card.urgent .home-note-priority{
   background:rgba(239,68,68,.18);
   color:#fca5a5;
 }
+/* FIX SELECTORES FILTRO FICHAJES */
+
+.export-panel select {
+  height: 44px !important;
+  line-height: 44px !important;
+  padding: 0 14px !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.export-panel select option {
+  font-size: 14px;
+}
