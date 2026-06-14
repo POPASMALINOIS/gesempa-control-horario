@@ -1830,10 +1830,31 @@ function refreshCalendarViews() {
   renderUpcomingCalendarEvents();
 }
 
+function openCalendarDayForCurrentUser(date) {
+  if (!date) return;
+
+  const notes = state.calendarNotes?.[date] || [];
+
+  if (notes.length) {
+    openNoteModal(date, notes[0]);
+  } else {
+    openNoteModal(date);
+  }
+}
+
 function attachCalendarPaintEvents() {
   const days = els.monthlyCalendar.querySelectorAll(".calendar-day[data-date]");
 
   days.forEach(day => {
+
+    if (!isAdmin()) {
+      day.addEventListener("click", () => {
+        openCalendarDayForCurrentUser(day.dataset.date);
+      });
+
+      return;
+    }
+
     day.addEventListener("click", () => {
       paintCalendarDay(day.dataset.date);
     });
@@ -1883,10 +1904,10 @@ function attachCalendarPaintEvents() {
     });
   });
 }
-
 async function paintCalendarDay(date) {
   if (!isAdmin()) {
-    alert("De momento solo el administrador puede modificar el calendario.");
+    calendarPainting = false;
+    calendarLastPaintedDate = null;
     return;
   }
 
