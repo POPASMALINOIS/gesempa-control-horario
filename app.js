@@ -1659,14 +1659,15 @@ function renderAnnualCalendar() {
   }).join("");
 
  els.annualCalendar.querySelectorAll(".year-day[data-date]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (isAdmin()) {
-      paintCalendarDay(btn.dataset.date);
-    } else {
-      openCalendarDayForCurrentUser(btn.dataset.date);
-    }
-  });
-});
+   btn.addEventListener("click", () => {
+     if (isAdmin()) {
+       paintCalendarDay(btn.dataset.date);
+     } else {
+       openCalendarDayForCurrentUser(btn.dataset.date);
+     }
+   });
+ });
+ }
 
 function renderCalendar() {
   renderCalendarEmployeeSelect();
