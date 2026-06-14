@@ -2818,3 +2818,242 @@ select {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
+/* =========================
+   COLORES REALES ESTADOS CALENDARIO
+   MODO CLARO + MODO OSCURO
+========================= */
+
+/* PALETA ÚNICA */
+
+:root {
+  --color-work: #0f7a3b;
+  --color-day-off: #d7d7d2;
+  --color-permission: #f59e0b;
+  --color-sick-leave: #dc2626;
+  --color-holiday: #111827;
+  --color-vacation: #2563eb;
+  --color-absence: #7c3aed;
+}
+
+/* =========================
+   CALENDARIO PRINCIPAL - MODO CLARO
+========================= */
+
+.calendar-day.status-work {
+  background: var(--color-work) !important;
+  border-color: var(--color-work) !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-day_off {
+  background: var(--color-day-off) !important;
+  border-color: var(--color-day-off) !important;
+  color: #111827 !important;
+}
+
+.calendar-day.status-permission {
+  background: var(--color-permission) !important;
+  border-color: var(--color-permission) !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-sick_leave {
+  background: var(--color-sick-leave) !important;
+  border-color: var(--color-sick-leave) !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-holiday {
+  background: var(--color-holiday) !important;
+  border-color: var(--color-holiday) !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-vacation {
+  background: var(--color-vacation) !important;
+  border-color: var(--color-vacation) !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-absence {
+  background: var(--color-absence) !important;
+  border-color: var(--color-absence) !important;
+  color: #ffffff !important;
+}
+
+/* =========================
+   CALENDARIO INICIO - MODO CLARO
+========================= */
+
+.home-calendar-real-day.work {
+  background: var(--color-work) !important;
+  border-color: var(--color-work) !important;
+  color: #ffffff !important;
+}
+
+.home-calendar-real-day.day_off {
+  background: var(--color-day-off) !important;
+  border-color: var(--color-day-off) !important;
+  color: #111827 !important;
+}
+
+.home-calendar-real-day.permission {
+  background: var(--color-permission) !important;
+  border-color: var(--color-permission) !important;
+  color: #ffffff !important;
+}
+
+.home-calendar-real-day.sick_leave {
+  background: var(--color-sick-leave) !important;
+  border-color: var(--color-sick-leave) !important;
+  color: #ffffff !important;
+}
+
+.home-calendar-real-day.holiday {
+  background: var(--color-holiday) !important;
+  border-color: var(--color-holiday) !important;
+  color: #ffffff !important;
+}
+
+.home-calendar-real-day.vacation {
+  background: var(--color-vacation) !important;
+  border-color: var(--color-vacation) !important;
+  color: #ffffff !important;
+}
+
+.home-calendar-real-day.absence {
+  background: var(--color-absence) !important;
+  border-color: var(--color-absence) !important;
+  color: #ffffff !important;
+}
+
+/* =========================
+   VISTA ANUAL
+========================= */
+
+.year-day.work {
+  background: var(--color-work) !important;
+  color: #ffffff !important;
+}
+
+.year-day.day_off {
+  background: var(--color-day-off) !important;
+  color: #111827 !important;
+}
+
+.year-day.permission {
+  background: var(--color-permission) !important;
+  color: #ffffff !important;
+}
+
+.year-day.sick_leave {
+  background: var(--color-sick-leave) !important;
+  color: #ffffff !important;
+}
+
+.year-day.holiday {
+  background: var(--color-holiday) !important;
+  color: #ffffff !important;
+}
+
+.year-day.vacation {
+  background: var(--color-vacation) !important;
+  color: #ffffff !important;
+}
+
+.year-day.absence {
+  background: var(--color-absence) !important;
+  color: #ffffff !important;
+}
+
+/* =========================
+   MODO OSCURO - FORZAR COLORES REALES
+========================= */
+
+body.dark-mode .calendar-day.status-work,
+body.dark-mode .home-calendar-real-day.work,
+body.dark-mode .year-day.work {
+  background: var(--color-work) !important;
+  border-color: var(--color-work) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .calendar-day.status-day_off,
+body.dark-mode .home-calendar-real-day.day_off,
+body.dark-mode .year-day.day_off {
+  background: var(--color-day-off) !important;
+  border-color: var(--color-day-off) !important;
+  color: #111827 !important;
+}
+
+body.dark-mode .calendar-day.status-permission,
+body.dark-mode .home-calendar-real-day.permission,
+body.dark-mode .year-day.permission {
+  background: var(--color-permission) !important;
+  border-color: var(--color-permission) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .calendar-day.status-sick_leave,
+body.dark-mode .home-calendar-real-day.sick_leave,
+body.dark-mode .year-day.sick_leave {
+  background: var(--color-sick-leave) !important;
+  border-color: var(--color-sick-leave) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .calendar-day.status-holiday,
+body.dark-mode .home-calendar-real-day.holiday,
+body.dark-mode .year-day.holiday {
+  background: var(--color-holiday) !important;
+  border-color: var(--color-holiday) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .calendar-day.status-vacation,
+body.dark-mode .home-calendar-real-day.vacation,
+body.dark-mode .year-day.vacation {
+  background: var(--color-vacation) !important;
+  border-color: var(--color-vacation) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .calendar-day.status-absence,
+body.dark-mode .home-calendar-real-day.absence,
+body.dark-mode .year-day.absence {
+  background: var(--color-absence) !important;
+  border-color: var(--color-absence) !important;
+  color: #ffffff !important;
+}
+
+/* =========================
+   DÍAS SIN ESTADO EN MODO OSCURO
+========================= */
+
+body.dark-mode .calendar-day:not(.status-work):not(.status-day_off):not(.status-permission):not(.status-sick_leave):not(.status-holiday):not(.status-vacation):not(.status-absence) {
+  background: #182233 !important;
+  border-color: #2a3548 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode .home-calendar-real-day:not(.work):not(.day_off):not(.permission):not(.sick_leave):not(.holiday):not(.vacation):not(.absence) {
+  background: #182233 !important;
+  border-color: #2a3548 !important;
+  color: #f9fafb !important;
+}
+
+/* =========================
+   NOTAS DENTRO DE DÍAS CON COLOR
+========================= */
+
+.calendar-day .day-note-line,
+.home-calendar-real-day .home-real-note-line {
+  background: rgba(255,255,255,.88) !important;
+  color: #111827 !important;
+}
+
+body.dark-mode .calendar-day .day-note-line,
+body.dark-mode .home-calendar-real-day .home-real-note-line {
+  background: rgba(255,255,255,.92) !important;
+  color: #111827 !important;
+}
