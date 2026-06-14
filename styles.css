@@ -2785,3 +2785,13 @@ body.dark-mode .home-note-card.urgent .home-note-priority{
 .export-panel select option {
   font-size: 14px;
 }
+.export-panel {
+  padding: 14px !important;
+  border-radius: 14px !important;
+}
+
+.export-panel select {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: #e5e7eb !important;
+}
